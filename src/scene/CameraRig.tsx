@@ -19,6 +19,7 @@ export function CameraRig() {
     tPhi: 1.12,
     tRadius: OVERVIEW_RADIUS,
     offset: 0,
+    offsetY: 0,
     target: new THREE.Vector3(),
     goal: new THREE.Vector3(),
   })
@@ -28,7 +29,8 @@ export function CameraRig() {
       useStore.subscribe((s, prev) => {
         if (s.selectedId === prev.selectedId) return
         const body = s.selectedId ? bodyById.get(s.selectedId) : null
-        rig.current.tRadius = body ? body.radius * (body.kind === 'star' ? 5 : 6.5) : OVERVIEW_RADIUS
+        const narrow = window.innerWidth < window.innerHeight ? 1.7 : 1
+        rig.current.tRadius = (body ? body.radius * (body.kind === 'star' ? 5 : 6.5) : OVERVIEW_RADIUS) * narrow
         if (!body) rig.current.tPhi = 1.12
       }),
     [],
@@ -47,7 +49,7 @@ export function CameraRig() {
 
     const body = st.selectedId ? bodyById.get(st.selectedId) : null
     const minR = body ? body.radius * 2.6 : 22
-    const maxR = body ? body.radius * 16 : 150
+    const maxR = body ? body.radius * 18 : 220
     r.tRadius = clamp(r.tRadius * Math.exp(input.zoom), minR, maxR)
     input.zoom = 0
 
@@ -64,10 +66,14 @@ export function CameraRig() {
     camera.lookAt(r.target)
 
     // Shift the frame left on wide screens so the selected world isn't hidden behind the info panel.
-    const wantOffset = body && size.width > 900 ? size.width * 0.17 : 0
-    r.offset = damp(r.offset, wantOffset, 4, dt)
-    if (Math.abs(r.offset) > 0.5) {
-      camera.setViewOffset(size.width, size.height, r.offset, 0, size.width, size.height)
+    // On phones the panel is a bottom sheet, so shift the world up instead.
+    const wide = size.width > 900
+    const wantX = body && wide ? size.width * 0.17 : 0
+    const wantY = body && !wide ? size.height * 0.26 : 0
+    r.offset = damp(r.offset, wantX, 4, dt)
+    r.offsetY = damp(r.offsetY, wantY, 4, dt)
+    if (Math.abs(r.offset) > 0.5 || Math.abs(r.offsetY) > 0.5) {
+      camera.setViewOffset(size.width, size.height, r.offset, r.offsetY, size.width, size.height)
     } else if (camera.view) {
       camera.clearViewOffset()
     }

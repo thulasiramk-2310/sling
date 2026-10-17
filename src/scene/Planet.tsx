@@ -5,14 +5,8 @@ import * as THREE from 'three'
 import { orbitAngle, type Body } from '../data/bodies'
 import { input, registry } from '../core/input'
 import { useStore } from '../core/store'
-import {
-  haloFragment,
-  haloVertex,
-  planetFragment,
-  planetVertex,
-  ringFragment,
-  ringVertex,
-} from './shaders'
+import { haloFragment, haloVertex, ringFragment, ringVertex } from './shaders'
+import { Label, Moon, Reticle, makeSurface } from './Extras'
 
 const KIND: Record<Body['kind'], number> = { rocky: 0, earth: 1, gas: 2, ice: 3, star: 0 }
 
@@ -23,21 +17,7 @@ export function Planet({ body }: { body: Body }) {
   const active = useStore((s) => s.hoveredId === body.id || s.selectedId === body.id)
 
   const material = useMemo(
-    () =>
-      new THREE.ShaderMaterial({
-        vertexShader: planetVertex,
-        fragmentShader: planetFragment,
-        uniforms: {
-          uA: { value: new THREE.Color(body.colors[0]) },
-          uB: { value: new THREE.Color(body.colors[1]) },
-          uC: { value: new THREE.Color(body.colors[2]) },
-          uAtmo: { value: new THREE.Color(body.atmosphere) },
-          uKind: { value: KIND[body.kind] },
-          uTime: { value: 0 },
-          uSeed: { value: body.phase * 3.7 },
-          uHover: { value: 0 },
-        },
-      }),
+    () => makeSurface(body.colors, body.atmosphere, KIND[body.kind], body.phase * 3.7),
     [body],
   )
 
@@ -131,6 +111,9 @@ export function Planet({ body }: { body: Body }) {
             />
           )}
         </group>
+        {body.id === 'earth' && <Moon parentRadius={body.radius} />}
+        <Reticle body={body} />
+        <Label body={body} />
         <mesh ref={hit}>
           <sphereGeometry args={[Math.max(body.radius * 1.6, 1.3), 16, 12]} />
           <meshBasicMaterial colorWrite={false} depthWrite={false} />

@@ -8,6 +8,7 @@ import { Planet } from './Planet'
 import { Sun } from './Sun'
 import { CameraRig } from './CameraRig'
 import { Interaction } from './Interaction'
+import { AsteroidBelt } from './Extras'
 
 function SimClock() {
   useFrame((_, dt) => {
@@ -27,6 +28,7 @@ export function World() {
       <color attach="background" args={['#020308']} />
       <Stars radius={500} depth={120} count={7000} factor={7} saturation={0.15} fade speed={0.4} />
       {bodies.map((b) => (b.kind === 'star' ? <Sun key={b.id} body={b} /> : <Planet key={b.id} body={b} />))}
+      <AsteroidBelt />
       <SimClock />
       <CameraRig />
       <Interaction />
