@@ -1,3 +1,5 @@
+import { KEYBOARD_CSS, Keyboard, type KeyAction } from './keyboard'
+
 // The on-page layer: cursor, target highlight, status pill and toasts, isolated in a shadow root
 // so host pages can't restyle it and it never intercepts their pointer events.
 const CSS = `
@@ -26,6 +28,8 @@ const CSS = `
 .toast { position: fixed; left: 50%; bottom: 32px; transform: translate(-50%, 12px); padding: 12px 18px; border-radius: 12px; background: rgba(14, 17, 28, .92); color: #fff; font-size: 15px; opacity: 0; transition: opacity .25s, transform .25s; max-width: min(520px, calc(100vw - 32px)); text-align: center; }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
 @media (prefers-reduced-motion: reduce) { .cursor, .target, .toast { transition: none; } }
+.pill .kbtn { pointer-events: auto; border: 0; border-radius: 999px; padding: 4px 9px; background: rgba(255,255,255,.12); color: #fff; font: 600 11px system-ui, sans-serif; cursor: pointer; }
+${KEYBOARD_CSS}
 `
 
 const POSE_NAMES: Record<string, string> = {
@@ -38,6 +42,7 @@ const POSE_NAMES: Record<string, string> = {
   victory: 'Peace',
   rock: 'Rock',
   thumbsUp: 'Thumbs up',
+  smile: 'Smile',
   unknown: '…',
 }
 
@@ -52,11 +57,15 @@ export class Overlay {
   private pillPose: HTMLElement
   private toastEl: HTMLElement
   private toastTimer = 0
+  private root: ShadowRoot
+  private layer: HTMLElement
+  keyboard: Keyboard | null = null
   private readonly circumference = 2 * Math.PI * 22
 
   constructor(showPill = true) {
     this.host = document.createElement('gestureos-overlay')
-    const root = this.host.attachShadow({ mode: 'closed' })
+    const root = this.host.attachShadow({ mode: 'open' })
+    this.root = root
     root.innerHTML = `
       <style>${CSS}</style>
       <div class="layer">
@@ -71,7 +80,7 @@ export class Overlay {
           </svg>
         </div>
         <div class="pill" ${showPill ? '' : 'hidden'} role="status" aria-live="polite">
-          <span class="mark">G</span><span class="led"></span><span class="state">Paused</span><span class="pose">No hand</span>
+          <span class="mark">G</span><span class="led"></span><span class="state">Paused</span><span class="pose">No hand</span><button class="kbtn" type="button" aria-label="Show or hide the on-screen keyboard">⌨</button>
         </div>
         <div class="toast" role="status" aria-live="polite"></div>
       </div>`
@@ -84,6 +93,7 @@ export class Overlay {
     this.pillState = q('.state')
     this.pillPose = q('.pose')
     this.toastEl = q('.toast')
+    this.layer = q('.layer')
     document.documentElement.appendChild(this.host)
   }
 
@@ -120,10 +130,17 @@ export class Overlay {
     this.target.classList.add('on')
   }
 
-  setStatus(active: boolean, pose: string) {
+  attachKeyboard(onKey: (k: KeyAction) => void) {
+    this.keyboard = new Keyboard(this.root, this.layer, onKey, () => {})
+    this.pill.querySelector('.kbtn')!.addEventListener('click', () => this.keyboard?.toggle())
+    this.pill.style.pointerEvents = 'auto'
+    return this.keyboard
+  }
+
+  setStatus(active: boolean, pose: string, customName?: string) {
     this.pill.classList.toggle('on', active)
     this.pillState.textContent = active ? 'Active' : 'Paused'
-    this.pillPose.textContent = POSE_NAMES[pose] ?? pose
+    this.pillPose.textContent = customName ?? POSE_NAMES[pose] ?? pose
   }
 
   toast(text: string, ms = 1800) {

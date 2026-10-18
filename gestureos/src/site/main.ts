@@ -1,8 +1,12 @@
 import './site.css'
+import '../ui/components.css'
 import { GestureEngine } from '../engine/engine'
+import { FaceEngine, type FaceInput } from '../engine/faceEngine'
+import { mountCalibration } from '../ui/calibration'
+import { mountStudio } from '../ui/studio'
 import { fakeHand, type FakePose } from '../engine/fakeHand'
 import { DEFAULT_SETTINGS, MACRO_LABELS, POSE_LABELS, mergeSettings, type MacroAction, type Settings } from '../engine/settings'
-import { drawHands, startTracker, type Tracker } from '../engine/tracker'
+import { drawFace, drawHands, startFaceTracker, startTracker, type Tracker } from '../engine/tracker'
 import type { Frame, MacroPose, Point } from '../engine/types'
 import { Actuator } from '../actuator/actuator'
 
@@ -20,6 +24,7 @@ function loadSettings(): Settings {
 }
 let settings = loadSettings()
 function saveSettings(next: Settings) {
+  const modeChanged = next.inputMode !== settings.inputMode
   settings = next
   try {
     localStorage.setItem(STORE_KEY, JSON.stringify(next))
@@ -27,12 +32,22 @@ function saveSettings(next: Settings) {
     // Storage can be blocked (private mode); settings still apply for this visit.
   }
   engine.setSettings(next)
+  faceEngine.setSettings(next)
   actuator?.setSettings(next)
+  if (modeChanged && tracker) void toggleCamera().then(toggleCamera)
 }
 
 // ---------- Engine + camera ----------
 const engine = new GestureEngine()
 engine.setSettings(settings)
+const faceEngine = new FaceEngine()
+faceEngine.setSettings(settings)
+// Live hand landmarks for the calibration wizard and gesture studio.
+const handListeners = new Set<(hands: Point[][]) => void>()
+const handFeed = (cb: (hands: Point[][]) => void) => {
+  handListeners.add(cb)
+  return () => handListeners.delete(cb)
+}
 let actuator: Actuator | null = null
 let tracker: Tracker | null = null
 
@@ -60,9 +75,13 @@ async function toggleCamera() {
     return
   }
   setCameraLabel('Starting…', true)
-  status.textContent = 'Loading the hand model (about 8 MB, once)…'
+  const head = settings.inputMode === 'head'
+  status.textContent = head ? 'Loading the face model (about 4 MB, once)…' : 'Loading the hand model (about 8 MB, once)…'
   try {
-    tracker = await startTracker({ assetBase: import.meta.env.BASE_URL, onFrame })
+    if (head) {
+      faceEngine.setActive(true)
+      tracker = await startFaceTracker({ assetBase: import.meta.env.BASE_URL, onFrame: onFaceFrame })
+    } else tracker = await startTracker({ assetBase: import.meta.env.BASE_URL, onFrame })
   } catch (err) {
     setCameraLabel('Start camera')
     const name = err instanceof DOMException ? err.name : ''
@@ -80,7 +99,9 @@ async function toggleCamera() {
   $('#live').hidden = false
   $('#hero-art').hidden = true
   setCameraLabel('Stop camera')
-  status.textContent = 'Camera on. Hold an open palm still to wake GestureOS.'
+  status.textContent = head
+    ? 'Head mode on. Move your head to steer, open your mouth to click.'
+    : 'Camera on. Hold an open palm still to wake GestureOS.'
 }
 cameraButtons.forEach((b) => b.addEventListener('click', toggleCamera))
 
@@ -94,14 +115,36 @@ const POSE_HINTS: Record<string, string> = {
   victory: 'Peace · macro',
   rock: 'Rock · macro',
   thumbsUp: 'Thumbs up · play / pause',
+  smile: 'Smile',
   unknown: 'Tracking…',
 }
 
+function poseHint(pose: string) {
+  if (pose.startsWith('custom:')) return settings.customGestures.find((g) => `custom:${g.id}` === pose)?.name ?? 'Custom gesture'
+  return POSE_HINTS[pose] ?? pose
+}
+
 function onFrame(hands: Point[][], t: number) {
+  handListeners.forEach((cb) => cb(hands))
   const frame = engine.update(hands, t)
   actuator?.handle(frame)
   drawHands($<HTMLCanvasElement>('#live-canvas'), hands, frame.active ? '#2f5bea' : '#ff8a3d')
-  $('#stage-chip').textContent = `${frame.active ? 'Active' : 'Paused'} · ${POSE_HINTS[frame.pose]}`
+  $('#stage-chip').textContent = `${frame.active ? 'Active' : 'Paused'} · ${poseHint(frame.pose)}`
+  updateWake(frame)
+}
+
+const FACE_HINTS: Record<string, string> = {
+  none: 'Face the camera',
+  point: 'Steering with your head',
+  pinch: 'Mouth open · click or drag',
+  scroll: 'Eyebrows up · tilt to scroll',
+  smile: 'Smile · hold to right-click',
+}
+function onFaceFrame(face: FaceInput | null, t: number) {
+  const frame = faceEngine.update(face, t)
+  actuator?.handle(frame)
+  drawFace($<HTMLCanvasElement>('#live-canvas'), face, frame.active ? '#2f5bea' : '#ff8a3d')
+  $('#stage-chip').textContent = `${frame.active ? 'Active' : 'Paused'} · ${FACE_HINTS[frame.pose] ?? frame.pose}`
   updateWake(frame)
 }
 
@@ -406,7 +449,7 @@ $$<HTMLCanvasElement>('#glossary canvas').forEach((c) => {
 
 // ---------- Settings form ----------
 const form = $<HTMLFormElement>('#settings-form')
-const ranges = ['sensitivity', 'smoothing', 'scrollSpeed', 'dwellMs'] as const
+const ranges = ['sensitivity', 'smoothing', 'scrollSpeed', 'dwellMs', 'headGain'] as const
 const toggles = ['snap', 'dwell', 'swipeNavigation'] as const
 const fmt = (k: string, v: number) => (k === 'dwellMs' ? `${(v / 1000).toFixed(1)} s` : `${v.toFixed(2).replace(/\.?0+$/, '')}×`)
 
@@ -450,3 +493,15 @@ fillForm(settings)
 
 // Redraw canvases that read theme colors when the system theme flips.
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', drawMap)
+
+// ---------- Personalize: input mode, calibration, gesture studio ----------
+$$<HTMLInputElement>('input[name="inputMode"]').forEach((r) => {
+  r.checked = r.value === settings.inputMode
+  r.addEventListener('change', () => {
+    saveSettings({ ...settings, inputMode: r.value as Settings['inputMode'] })
+    $('#mode-note').textContent =
+      r.value === 'head' ? 'Head mode: the next camera start uses your face. Calibration and custom gestures apply to hand mode.' : 'Hand mode: the camera tracks your hands.'
+  })
+})
+mountCalibration($('#calibration'), { feed: handFeed, current: settings.calibration, onSave: (c) => saveSettings({ ...settings, calibration: c }) })
+mountStudio($('#studio'), { feed: handFeed, getSettings: () => settings, save: saveSettings })

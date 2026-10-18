@@ -1,4 +1,4 @@
-import { mergeSettings } from '../engine/settings'
+import { mergeSettings, safeUrl } from '../engine/settings'
 import { SETTINGS_KEY, type Message, type Status } from './messages'
 
 // Owns the offscreen camera page and relays gesture frames to whichever tab is in front.
@@ -8,7 +8,7 @@ let lastError: string | null = null
 let activeTab: number | null = null
 
 async function loadSettings() {
-  const stored = await chrome.storage.sync.get(SETTINGS_KEY)
+  const stored = await chrome.storage.local.get(SETTINGS_KEY)
   return mergeSettings(stored[SETTINGS_KEY])
 }
 
@@ -85,10 +85,15 @@ chrome.runtime.onMessage.addListener((msg: Message, sender, reply) => {
   return false
 })
 
-async function tabAction(tab: chrome.tabs.Tab, action: 'next-tab' | 'prev-tab' | 'zoom', value?: number) {
+async function tabAction(tab: chrome.tabs.Tab, action: 'next-tab' | 'prev-tab' | 'zoom' | 'open-url', value?: number | string) {
   if (action === 'zoom' && tab.id !== undefined) {
     const current = await chrome.tabs.getZoom(tab.id)
-    await chrome.tabs.setZoom(tab.id, Math.min(3, Math.max(0.3, current * (value ?? 1))))
+    await chrome.tabs.setZoom(tab.id, Math.min(3, Math.max(0.3, current * (typeof value === 'number' ? value : 1))))
+    return
+  }
+  if (action === 'open-url') {
+    const url = typeof value === 'string' ? safeUrl(value) : null
+    if (url) await chrome.tabs.create({ url, index: (tab.index ?? 0) + 1 })
     return
   }
   const tabs = await chrome.tabs.query({ windowId: tab.windowId })
@@ -101,7 +106,7 @@ chrome.tabs.onActivated.addListener(() => void refreshActiveTab())
 chrome.windows.onFocusChanged.addListener(() => void refreshActiveTab())
 
 chrome.storage.onChanged.addListener(async (changes, area) => {
-  if (area === 'sync' && changes[SETTINGS_KEY] && running) {
+  if (area === 'local' && changes[SETTINGS_KEY] && running) {
     chrome.runtime.sendMessage({ kind: 'offscreen-settings', settings: await loadSettings() } satisfies Message).catch(() => {})
   }
 })

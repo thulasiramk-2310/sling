@@ -1,4 +1,8 @@
 import './ext.css'
+import '../ui/components.css'
+import { mountCalibration } from '../ui/calibration'
+import { mountStudio } from '../ui/studio'
+import type { Point } from '../engine/types'
 import { MACRO_LABELS, POSE_LABELS, mergeSettings, type MacroAction, type Settings } from '../engine/settings'
 import { drawHands, startTracker, type Tracker } from '../engine/tracker'
 import type { MacroPose } from '../engine/types'
@@ -8,6 +12,11 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getEleme
 
 // Step 1: granting the camera here (a visible extension page) is what lets the hidden offscreen page use it later.
 let tracker: Tracker | null = null
+const listeners = new Set<(hands: Point[][]) => void>()
+const feed = (cb: (hands: Point[][]) => void) => {
+  listeners.add(cb)
+  return () => listeners.delete(cb)
+}
 $('grant').addEventListener('click', async () => {
   const status = $('grant-status')
   if (tracker) {
@@ -22,6 +31,7 @@ $('grant').addEventListener('click', async () => {
     tracker = await startTracker({
       assetBase: './',
       onFrame: (hands) => {
+        listeners.forEach((cb) => cb(hands))
         drawHands($<HTMLCanvasElement>('preview-canvas'), hands, '#5b7cff')
         status.textContent = hands.length ? `Tracking ${hands.length} hand${hands.length > 1 ? 's' : ''}. You're all set.` : 'Camera allowed. Show your hand to test tracking.'
       },
@@ -39,8 +49,9 @@ $('grant').addEventListener('click', async () => {
 })
 
 // Step 3: settings, saved to Chrome sync storage and picked up live by every tab.
-type RangeKey = 'sensitivity' | 'smoothing' | 'scrollSpeed' | 'dwellMs'
+type RangeKey = 'sensitivity' | 'smoothing' | 'scrollSpeed' | 'dwellMs' | 'headGain'
 const RANGES: { key: RangeKey; label: string; min: number; max: number; step: number }[] = [
+  { key: 'headGain', label: 'Head speed', min: 0.5, max: 2, step: 0.1 },
   { key: 'sensitivity', label: 'Sensitivity', min: 0.6, max: 1.6, step: 0.05 },
   { key: 'smoothing', label: 'Smoothing', min: 0.5, max: 2, step: 0.1 },
   { key: 'scrollSpeed', label: 'Scroll speed', min: 0.4, max: 2.5, step: 0.1 },
@@ -89,12 +100,24 @@ form.addEventListener('input', async () => {
   for (const p of Object.keys(next.macros) as MacroPose[]) next.macros[p] = $<HTMLSelectElement>(`macro-${p}`).value as MacroAction
   settings = next
   fill(next)
-  await chrome.storage.sync.set({ [SETTINGS_KEY]: next })
+  await save(next)
   $('saved').textContent = 'Saved. Open tabs update right away.'
 })
 form.addEventListener('submit', (e) => e.preventDefault())
 
-chrome.storage.sync.get(SETTINGS_KEY).then((s) => {
+async function save(next: Settings) {
+  settings = next
+  await chrome.storage.local.set({ [SETTINGS_KEY]: next })
+  $('saved').textContent = 'Saved. Open tabs update right away.'
+}
+
+chrome.storage.local.get(SETTINGS_KEY).then((s) => {
   settings = mergeSettings(s[SETTINGS_KEY])
   fill(settings)
+  document.querySelectorAll<HTMLInputElement>('input[name="inputMode"]').forEach((r) => {
+    r.checked = r.value === settings.inputMode
+    r.addEventListener('change', () => void save({ ...settings, inputMode: r.value as Settings['inputMode'] }))
+  })
+  mountCalibration($('calibration'), { feed, current: settings.calibration, onSave: (c) => void save({ ...settings, calibration: c }) })
+  mountStudio($('studio'), { feed, getSettings: () => settings, save: (s) => void save(s), allowTabActions: true })
 })

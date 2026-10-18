@@ -5,6 +5,7 @@ const dist = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y)
 export interface HandInfo {
   scale: number
   pinchRatio: number
+  middlePinchRatio: number
   // How far the index tip reaches from its knuckle; a closed fist keeps it tucked in.
   indexReach: number
   index: boolean
@@ -34,6 +35,7 @@ export function analyzeHand(lm: Point[]): HandInfo {
   return {
     scale,
     pinchRatio: dist(lm[4], lm[8]) / scale,
+    middlePinchRatio: dist(lm[4], lm[12]) / scale,
     indexReach: dist(lm[8], lm[5]) / scale,
     index: extended(8, 6, 5),
     middle: extended(12, 10, 9),

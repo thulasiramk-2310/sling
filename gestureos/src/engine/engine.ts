@@ -1,10 +1,9 @@
+import { featureDistance, handFeatures } from './features'
 import { analyzeHand, type HandInfo } from './hand'
 import { OneEuro } from './oneEuro'
 import { DEFAULT_SETTINGS, type Settings } from './settings'
 import type { Frame, GestureEvent, HoldKind, MacroPose, Point, Pose } from './types'
 
-const PINCH_ON = 0.3
-const PINCH_OFF = 0.45
 const PINCH_APPROACH = 0.6
 const ACTIVATE_MS = 800
 const DEACTIVATE_MS = 800
@@ -43,6 +42,7 @@ export class GestureEngine {
   private lastScrollY: number | null = null
   private swipeTrail: { t: number; x: number; y: number }[] = []
   private lastSwipeAt = -Infinity
+  private rightPinched = false
 
   setSettings(settings: Settings) {
     this.settings = settings
@@ -68,9 +68,10 @@ export class GestureEngine {
     }
 
     // Per-hand pinch with hysteresis; hands are ordered by screen x so the index stays stable.
+    const { pinchOn, pinchOff } = this.settings.calibration
     const order = hands.map((h, i) => ({ h, i })).sort((a, b) => a.h.palm.x - b.h.palm.x)
     const pinch = order.map(({ h }, k) =>
-      h.indexReach < 0.28 ? false : this.pinched[k] ? h.pinchRatio < PINCH_OFF : h.pinchRatio < PINCH_ON,
+      h.indexReach < 0.28 ? false : this.pinched[k] ? h.pinchRatio < pinchOff : h.pinchRatio < pinchOn,
     )
     this.pinched = pinch
 
@@ -84,7 +85,7 @@ export class GestureEngine {
     const k = this.primaryIndex(order.map((o) => o.h))
     const hand = order[k].h
     const isPinched = pinch[k] && !this.zooming
-    const pose = this.stablePose(this.classify(hand, isPinched), t)
+    const pose = this.stablePose(this.classify(hand, isPinched, handsLandmarks[order[k].i]), t)
 
     let holdKind: HoldKind = null
     let holdProgress = 0
@@ -113,15 +114,21 @@ export class GestureEngine {
       }
     }
 
-    if (MACRO_POSES.includes(pose)) {
+    const isCustom = pose.startsWith('custom:')
+    if (MACRO_POSES.includes(pose) || isCustom) {
       holdKind = 'macro'
       holdProgress = clamp01((t - this.poseSince) / MACRO_MS)
       if (holdProgress >= 1 && !this.macroFired && t - this.lastMacroAt > MACRO_COOLDOWN_MS) {
         this.macroFired = true
         this.lastMacroAt = t
-        events.push({ type: 'macro', pose: pose as MacroPose })
+        events.push(isCustom ? { type: 'custom', id: pose.slice(7) } : { type: 'macro', pose: pose as MacroPose })
       }
     }
+
+    // Thumb to middle finger is a right-click, kept apart from the thumb-to-index click.
+    const rightNow = !isPinched && hand.index && (this.rightPinched ? hand.middlePinchRatio < pinchOff : hand.middlePinchRatio < pinchOn)
+    if (rightNow && !this.rightPinched && this.cursor) events.push({ type: 'rightClick', x: this.cursor.x, y: this.cursor.y })
+    this.rightPinched = rightNow
 
     if (pose === 'scroll') {
       const y = hand.twoFinger.y
@@ -153,8 +160,10 @@ export class GestureEngine {
     return this.frame(t, hands.length, events, { kind: holdKind, progress: holdProgress }, this.pinchStrength(hand))
   }
 
-  private classify(h: HandInfo, pinched: boolean): Pose {
+  private classify(h: HandInfo, pinched: boolean, lm: Point[]): Pose {
     if (pinched) return 'pinch'
+    const custom = this.matchCustom(lm)
+    if (custom) return `custom:${custom}`
     const { index, middle, ring, pinky } = h
     if (index && middle && ring && pinky) return 'open'
     if (index && middle && !ring && !pinky) return h.spread < 0.38 ? 'scroll' : 'victory'
@@ -162,6 +171,18 @@ export class GestureEngine {
     if (index && !middle && !ring && !pinky) return 'point'
     if (!index && !middle && !ring && !pinky) return h.thumbUp ? 'thumbsUp' : 'fist'
     return 'unknown'
+  }
+
+  private matchCustom(lm: Point[]) {
+    const list = this.settings.customGestures
+    if (!list.length) return null
+    const f = handFeatures(lm)
+    let best: { id: string; d: number } | null = null
+    for (const g of list) {
+      const d = featureDistance(f, g.template) / g.radius
+      if (d < 1 && (!best || d < best.d)) best = { id: g.id, d }
+    }
+    return best?.id ?? null
   }
 
   // Poses must hold for a few frames before they count, except pinch which needs to feel instant.
@@ -204,10 +225,10 @@ export class GestureEngine {
 
   private trackCursor(h: HandInfo, pose: Pose, t: number) {
     const s = this.settings.sensitivity
-    const w = 0.7 / s
-    const hgt = 0.6 / s
-    const tx = clamp01((h.anchor.x - (0.5 - w / 2)) / w)
-    const ty = clamp01((h.anchor.y - (0.42 - hgt / 2)) / hgt)
+    // A calibrated comfort zone maps the user's own reach to the full screen.
+    const box = this.settings.calibration.box ?? { x0: 0.5 - 0.35 / s, x1: 0.5 + 0.35 / s, y0: 0.42 - 0.3 / s, y1: 0.42 + 0.3 / s }
+    const tx = clamp01((h.anchor.x - box.x0) / (box.x1 - box.x0))
+    const ty = clamp01((h.anchor.y - box.y0) / (box.y1 - box.y0))
     let x = this.fx.filter(tx, t)
     let y = this.fy.filter(ty, t)
     // Smart intent: as the fingers close in for a click, damp motion so the click lands where you aimed.
@@ -260,7 +281,8 @@ export class GestureEngine {
   }
 
   private pinchStrength(h: HandInfo) {
-    return clamp01((PINCH_APPROACH - h.pinchRatio) / (PINCH_APPROACH - PINCH_ON))
+    const on = this.settings.calibration.pinchOn
+    return clamp01((PINCH_APPROACH - h.pinchRatio) / (PINCH_APPROACH - on))
   }
 
   private reset() {
@@ -276,6 +298,7 @@ export class GestureEngine {
     this.pose = 'none'
     this.candidate = 'none'
     this.candidateFrames = 0
+    this.rightPinched = false
   }
 
   private frame(

@@ -11,7 +11,7 @@ export type Message =
   | { kind: 'offscreen-error'; error: string }
   | { kind: 'frame'; frame: Frame }
   | { kind: 'hide' }
-  | { kind: 'tab-action'; action: 'next-tab' | 'prev-tab' | 'zoom'; value?: number }
+  | { kind: 'tab-action'; action: 'next-tab' | 'prev-tab' | 'zoom' | 'open-url'; value?: number | string }
 
 export interface Status {
   running: boolean

@@ -1,6 +1,7 @@
 import type { Frame, GestureEvent, MacroPose } from '../engine/types'
-import { MACRO_LABELS, type MacroAction, type Settings } from '../engine/settings'
+import { MACRO_LABELS, safeUrl, type MacroAction, type Settings } from '../engine/settings'
 import { Overlay } from './overlay'
+import type { KeyAction, Keyboard } from './keyboard'
 
 const CLICKABLE =
   'a[href], button, input:not([type=hidden]), select, textarea, summary, label[for], [role=button], [role=link], [role=tab], [role=menuitem], [role=checkbox], [role=switch], [role=option], [onclick], [tabindex]:not([tabindex="-1"])'
@@ -14,12 +15,10 @@ export interface ActuatorHooks {
   onSwipe?: (dir: 'left' | 'right') => boolean
   onZoom?: (factor: number) => boolean
   onMacro?: (pose: MacroPose, action: MacroAction) => boolean
-  onTabAction?: (action: 'next-tab' | 'prev-tab' | 'zoom', value?: number) => void
+  onTabAction?: (action: 'next-tab' | 'prev-tab' | 'zoom' | 'open-url', value?: number | string) => void
   onEvent?: (event: GestureEvent | { type: 'dwellClick'; x: number; y: number }) => void
   showPill?: boolean
 }
-
-
 
 // Applies gesture frames to the current page: moves the visual cursor and dispatches real DOM events.
 export class Actuator {
@@ -37,13 +36,27 @@ export class Actuator {
   private candidates: Element[] = []
   private candidatesAt = 0
   private dwell = { x: 0, y: 0, since: 0, locked: false }
+  private keyboard: Keyboard
+  private editable: HTMLElement | null = null
+  private lastClick = { t: 0, x: 0, y: 0 }
 
   constructor(settings: Settings, hooks: ActuatorHooks = {}) {
     this.settings = settings
     this.hooks = hooks
     this.overlay = new Overlay(hooks.showPill ?? true)
     this.overlay.setSize(SIZES[settings.cursorSize])
+    this.keyboard = this.overlay.attachKeyboard((k) => this.typeKey(k))
+    document.addEventListener('focusin', this.onFocus, true)
     this.raf = requestAnimationFrame(this.tick)
+  }
+
+  // Remember the last text field so the on-screen keyboard keeps typing into it.
+  private onFocus = (e: FocusEvent) => {
+    const el = e.target as HTMLElement
+    if (isEditable(el)) {
+      this.editable = el
+      this.keyboard.setContext(textBeforeCaret(el))
+    }
   }
 
   setSettings(settings: Settings) {
@@ -67,13 +80,15 @@ export class Actuator {
       this.target.x = frame.cursor.x * window.innerWidth
       this.target.y = frame.cursor.y * window.innerHeight
     }
-    this.overlay.setStatus(frame.active, frame.pose)
+    const custom = frame.pose.startsWith('custom:') ? this.settings.customGestures.find((g) => `custom:${g.id}` === frame.pose)?.name : undefined
+    this.overlay.setStatus(frame.active, frame.pose, custom)
     for (const ev of frame.events) this.apply(ev)
     if (frame.dragging && this.dragEl) this.fireDragMove()
   }
 
   destroy() {
     cancelAnimationFrame(this.raf)
+    document.removeEventListener('focusin', this.onFocus, true)
     this.overlay.destroy()
   }
 
@@ -89,7 +104,10 @@ export class Actuator {
     let x = this.shown.x
     let y = this.shown.y
     this.snapEl = null
-    if (active && this.visible && !f?.dragging && this.settings.snap) {
+    const overKeyboard = this.keyboard.contains(x, y)
+    const key = overKeyboard ? this.keyboard.keyAt(x, y) : null
+    this.keyboard.hover(active && this.visible ? key : null)
+    if (active && this.visible && !f?.dragging && this.settings.snap && !overKeyboard) {
       const snapped = this.findSnap(x, y, now)
       if (snapped) {
         this.snapEl = snapped.el
@@ -97,7 +115,7 @@ export class Actuator {
         y += (snapped.cy - y) * snapped.pull
       }
     }
-    const highlightEl = this.snapEl ?? (active && this.visible ? this.clickableAt(x, y) : null)
+    const highlightEl = overKeyboard ? null : (this.snapEl ?? (active && this.visible ? this.clickableAt(x, y) : null))
     this.overlay.highlight(highlightEl && !f?.dragging ? highlightEl.getBoundingClientRect() : null)
 
     let progress = 0
@@ -106,24 +124,32 @@ export class Actuator {
       progress = f.hold.progress
       color = f.hold.kind === 'deactivate' ? '#e5484d' : f.hold.kind === 'activate' ? '#19b37d' : '#ff8a3d'
     } else if (active && this.settings.dwell && this.visible && !f?.dragging) {
-      progress = this.updateDwell(x, y, now, !!highlightEl)
+      progress = this.updateDwell(x, y, now, !!highlightEl || !!key)
       color = '#2f5bea'
     }
     this.overlay.setCursorState({ active, pinch: f?.pinch ?? 0, dragging: !!f?.dragging, progress, progressColor: color })
     this.overlay.moveCursor(x, y, this.visible)
-    if (active && this.visible) this.hover(x, y)
+    if (active && this.visible && !overKeyboard) this.hover(x, y)
   }
 
   private apply(ev: GestureEvent) {
     this.hooks.onEvent?.(ev)
     switch (ev.type) {
       case 'activate':
-        this.overlay.toast('GestureOS on · point to move, pinch to click')
+        this.overlay.toast(this.settings.inputMode === 'head' ? 'GestureOS on · move your head, open your mouth to click' : 'GestureOS on · point to move, pinch to click')
         break
       case 'deactivate':
-        this.overlay.toast('Paused · hold an open palm to resume')
+        this.overlay.toast(this.settings.inputMode === 'head' ? 'Paused · close your eyes for a moment to resume' : 'Paused · hold an open palm to resume')
         this.endDrag()
         break
+      case 'rightClick':
+        this.rightClick(this.resolvePoint(ev.x, ev.y))
+        break
+      case 'custom': {
+        const g = this.settings.customGestures.find((c) => c.id === ev.id)
+        if (g) this.runAction(g.action, g.param, g.name)
+        break
+      }
       case 'click':
         this.click(this.resolvePoint(ev.x, ev.y))
         break
@@ -136,14 +162,23 @@ export class Actuator {
       case 'scroll':
         this.scroll(ev.dy)
         break
-      case 'swipe':
+      case 'swipe': {
         if (this.hooks.onSwipe?.(ev.dir)) break
+        // Swiping over a video scrubs it instead of leaving the page.
+        const video = this.elementAt(this.shown.x, this.shown.y)?.closest('video, [class*="player"]')
+        const media = video instanceof HTMLVideoElement ? video : (video?.querySelector('video') ?? null)
+        if (media) {
+          media.currentTime = Math.max(0, media.currentTime + (ev.dir === 'left' ? 10 : -10))
+          this.overlay.toast(ev.dir === 'left' ? '+10 s' : '−10 s')
+          break
+        }
         if (this.settings.swipeNavigation) {
           this.overlay.toast(ev.dir === 'right' ? '← Back' : 'Forward →')
           if (ev.dir === 'right') history.back()
           else history.forward()
         }
         break
+      }
       case 'zoom':
         if (this.hooks.onZoom?.(ev.factor)) break
         this.hooks.onTabAction?.('zoom', ev.factor)
@@ -192,6 +227,12 @@ export class Actuator {
   }
 
   private click({ x, y }: { x: number; y: number }) {
+    const key = this.keyboard.keyAt(x, y)
+    if (key) {
+      this.keyboard.press(key)
+      this.dwell.locked = true
+      return
+    }
     const el = this.elementAt(x, y)
     if (!el) return
     this.fire(el, 'pointerdown', x, y, 1)
@@ -201,7 +242,64 @@ export class Actuator {
     this.fire(el, 'pointerup', x, y)
     this.fire(el, 'mouseup', x, y)
     this.fire(el, 'click', x, y)
+    // Two clicks close together in time and place are a double-click.
+    const now = performance.now()
+    if (now - this.lastClick.t < 450 && Math.hypot(x - this.lastClick.x, y - this.lastClick.y) < 24) {
+      el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true, cancelable: true, composed: true, clientX: x, clientY: y, detail: 2, view: window }))
+      this.lastClick.t = 0
+    } else this.lastClick = { t: now, x, y }
     this.dwell.locked = true
+  }
+
+  private rightClick({ x, y }: { x: number; y: number }) {
+    const el = this.elementAt(x, y)
+    if (!el) return
+    const init = { bubbles: true, cancelable: true, composed: true, clientX: x, clientY: y, button: 2, buttons: 2, view: window }
+    el.dispatchEvent(new PointerEvent('pointerdown', { ...init, pointerId: 1, pointerType: 'mouse', isPrimary: true }))
+    el.dispatchEvent(new MouseEvent('mousedown', init))
+    el.dispatchEvent(new PointerEvent('pointerup', { ...init, buttons: 0, pointerId: 1, pointerType: 'mouse', isPrimary: true }))
+    el.dispatchEvent(new MouseEvent('mouseup', { ...init, buttons: 0 }))
+    el.dispatchEvent(new MouseEvent('contextmenu', init))
+    this.overlay.toast('Right-click')
+  }
+
+  private typeKey(k: KeyAction) {
+    const el = this.editable && document.contains(this.editable) ? this.editable : null
+    if (!el) {
+      this.overlay.toast('Click a text field first, then type')
+      return
+    }
+    el.focus({ preventScroll: true })
+    switch (k.type) {
+      case 'char':
+        insertText(el, k.value)
+        break
+      case 'space':
+        insertText(el, ' ')
+        break
+      case 'suggest': {
+        const before = textBeforeCaret(el)
+        const m = /([a-zA-Z']+)$/.exec(before)
+        if (m) deleteBefore(el, m[1].length)
+        insertText(el, k.value + ' ')
+        break
+      }
+      case 'backspace':
+        deleteBefore(el, 1)
+        break
+      case 'enter':
+        if (el instanceof HTMLTextAreaElement || el.isContentEditable) insertText(el, '\n')
+        else {
+          el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true, cancelable: true }))
+          ;(el as HTMLInputElement).form?.requestSubmit()
+        }
+        break
+      case 'left':
+      case 'right':
+        moveCaret(el, k.type === 'left' ? -1 : 1)
+        break
+    }
+    this.keyboard.setContext(textBeforeCaret(el))
   }
 
   private startDrag({ x, y }: { x: number; y: number }) {
@@ -329,44 +427,133 @@ export class Actuator {
     const action = this.settings.macros[pose]
     if (action === 'none') return
     if (this.hooks.onMacro?.(pose, action)) return
+    this.runAction(action)
+  }
+
+  runAction(action: MacroAction, param?: string, label?: string) {
     const m = this.media()
-    const needMedia = action.startsWith('media-')
-    if (needMedia && !m) {
+    if (action.startsWith('media-') && !m) {
       this.overlay.toast('No video on this page')
       return
     }
+    const say = (text: string) => this.overlay.toast(label ? `${label} · ${text}` : text)
     switch (action) {
+      case 'none':
+        return
       case 'media-toggle':
         if (m!.paused) void m!.play()
         else m!.pause()
-        this.overlay.toast(m!.paused ? 'Paused video' : 'Playing video')
-        return
+        return say(m!.paused ? 'Paused video' : 'Playing video')
       case 'media-mute':
         m!.muted = !m!.muted
-        this.overlay.toast(m!.muted ? 'Muted' : 'Unmuted')
-        return
+        return say(m!.muted ? 'Muted' : 'Unmuted')
       case 'media-forward':
         m!.currentTime += 10
-        this.overlay.toast('+10 s')
-        return
+        return say('+10 s')
       case 'media-back':
         m!.currentTime = Math.max(0, m!.currentTime - 10)
-        this.overlay.toast('−10 s')
-        return
+        return say('−10 s')
       case 'scroll-top':
         window.scrollTo({ top: 0, behavior: 'smooth' })
-        this.overlay.toast('Back to top')
-        return
+        return say('Back to top')
       case 'reload':
         location.reload()
         return
+      case 'history-back':
+        say('← Back')
+        history.back()
+        return
+      case 'history-forward':
+        say('Forward →')
+        history.forward()
+        return
+      case 'keyboard':
+        this.keyboard.toggle()
+        return say(this.keyboard.visible ? 'Keyboard on' : 'Keyboard hidden')
+      case 'key': {
+        if (!param) return
+        const target = (document.activeElement as HTMLElement | null) ?? document.body
+        const init = { key: param, code: codeFor(param), bubbles: true, cancelable: true, composed: true }
+        target.dispatchEvent(new KeyboardEvent('keydown', init))
+        target.dispatchEvent(new KeyboardEvent('keyup', init))
+        return say(`Pressed ${param}`)
+      }
+      case 'url': {
+        const url = param ? safeUrl(param) : null
+        if (!url) return say('That address can’t be opened')
+        say('Opening…')
+        if (this.hooks.onTabAction) this.hooks.onTabAction('open-url', url)
+        else window.open(url, '_blank', 'noopener')
+        return
+      }
       case 'next-tab':
       case 'prev-tab':
         this.hooks.onTabAction?.(action)
-        this.overlay.toast(MACRO_LABELS[action])
-        return
+        return say(MACRO_LABELS[action])
     }
   }
 }
 
 
+
+function isEditable(el: Element | null): el is HTMLElement {
+  if (!el) return false
+  if (el instanceof HTMLTextAreaElement) return !el.readOnly && !el.disabled
+  if (el instanceof HTMLInputElement) return /^(text|search|email|url|tel|password|number|)$/.test(el.type) && !el.readOnly && !el.disabled
+  return (el as HTMLElement).isContentEditable
+}
+
+function textBeforeCaret(el: HTMLElement) {
+  if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) return el.value.slice(0, el.selectionStart ?? el.value.length)
+  const sel = getSelection()
+  if (!sel?.rangeCount) return el.textContent ?? ''
+  const r = sel.getRangeAt(0).cloneRange()
+  r.selectNodeContents(el)
+  r.setEnd(sel.getRangeAt(0).endContainer, sel.getRangeAt(0).endOffset)
+  return r.toString()
+}
+
+// Inserts text the way typing would, so frameworks listening for input events see the change.
+function insertText(el: HTMLElement, text: string) {
+  if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
+    const start = el.selectionStart ?? el.value.length
+    const end = el.selectionEnd ?? start
+    try {
+      el.setRangeText(text, start, end, 'end')
+    } catch {
+      el.value += text
+    }
+    el.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertText', data: text }))
+  } else document.execCommand('insertText', false, text)
+}
+
+function deleteBefore(el: HTMLElement, n: number) {
+  if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
+    const start = el.selectionStart ?? el.value.length
+    const end = el.selectionEnd ?? start
+    const from = start === end ? Math.max(0, start - n) : start
+    try {
+      el.setRangeText('', from, end, 'end')
+    } catch {
+      el.value = el.value.slice(0, -n)
+    }
+    el.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'deleteContentBackward' }))
+  } else for (let i = 0; i < n; i++) document.execCommand('delete')
+}
+
+function moveCaret(el: HTMLElement, dir: number) {
+  if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
+    try {
+      const p = Math.max(0, Math.min(el.value.length, (el.selectionStart ?? 0) + dir))
+      el.setSelectionRange(p, p)
+    } catch {
+      // Some input types (email, number) don't expose a caret.
+    }
+  } else getSelection()?.modify('move', dir < 0 ? 'backward' : 'forward', 'character')
+}
+
+function codeFor(key: string) {
+  if (/^[a-z]$/i.test(key)) return `Key${key.toUpperCase()}`
+  if (/^[0-9]$/.test(key)) return `Digit${key}`
+  return key === ' ' ? 'Space' : key
+}

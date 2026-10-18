@@ -8,6 +8,8 @@
   --accent-ink: #ffffff;
   --accent-soft: #e6ecff;
   --danger: #c4373b;
+  --ink-3: #7c8396;
+  --line-strong: #c7cdda;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -21,6 +23,8 @@
     --accent-ink: #0b0d14;
     --accent-soft: #1c2546;
     --danger: #ff6b6f;
+    --ink-3: #818aa0;
+    --line-strong: #3a4052;
     color-scheme: dark;
   }
 }
@@ -246,4 +250,26 @@ kbd {
     grid-template-columns: 1fr;
     gap: 4px;
   }
+}
+
+.w-modes {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+.w-modes label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.w-modes input {
+  margin-top: 4px;
+  accent-color: var(--accent);
+}
+.w-modes b {
+  display: block;
 }

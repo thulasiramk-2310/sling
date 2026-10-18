@@ -1,0 +1,162 @@
+/* Shared by the playground and the extension's welcome page. Colours come from each page's tokens. */
+.gx-cal,
+.gx-studio {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.gx-cal-canvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  transform: scaleX(1);
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+.gx-steps {
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  counter-reset: g;
+}
+.gx-steps li {
+  counter-increment: g;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.gx-steps li::before {
+  content: counter(g);
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--line);
+  font-size: 13px;
+}
+.gx-steps li.on {
+  color: var(--ink);
+}
+.gx-steps li.on::before {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.gx-steps li.done::before {
+  content: '✓';
+  background: #19b37d;
+  color: #fff;
+}
+.gx-cal-msg {
+  min-height: 3em;
+  margin: 0 0 12px;
+  color: var(--ink-2);
+}
+.gx-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.gx-small {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.gx-btn {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+.gx-btn.ghost {
+  background: transparent;
+  color: var(--accent);
+}
+.gx-btn.small {
+  min-height: 34px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+.gx-btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.gx-new {
+  display: grid;
+  gap: 12px;
+}
+.gx-field {
+  display: grid;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.gx-field input,
+.gx-field select {
+  min-height: 42px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong, var(--line));
+  border-radius: 9px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 400;
+}
+.gx-field[hidden] {
+  display: none;
+}
+.gx-live {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  font-size: 13px;
+}
+.gx-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.gx-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.gx-list li span {
+  display: grid;
+  min-width: 0;
+}
+.gx-list em {
+  font-style: normal;
+  font-size: 13px;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+.gx-list .gx-empty {
+  color: var(--ink-2);
+  font-size: 14px;
+}
+@media (max-width: 760px) {
+  .gx-cal,
+  .gx-studio {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,4 +1,5 @@
-import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision'
+import { FaceLandmarker, FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision'
+import type { FaceInput } from './faceEngine'
 import type { Point } from './types'
 
 export interface Tracker {
@@ -25,13 +26,7 @@ async function createLandmarker(assetBase: string) {
   }
 }
 
-// Opens the webcam and runs hand landmark detection on-device. Video frames never leave the browser.
-export async function startTracker(opts: {
-  assetBase: string
-  onFrame: (hands: Point[][], t: number) => void
-  // Hidden documents (the extension's offscreen page) get no animation frames and throttled timers, so a worker paces them.
-  useTimer?: boolean
-}): Promise<Tracker> {
+async function openCamera() {
   const stream = await navigator.mediaDevices.getUserMedia({
     video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' },
     audio: false,
@@ -41,7 +36,53 @@ export async function startTracker(opts: {
   video.muted = true
   video.playsInline = true
   await video.play()
+  return { stream, video }
+}
 
+// Paces detection: animation frames for visible pages, a worker for hidden ones (the extension's
+// offscreen page gets no animation frames and throttled timers). On slow machines it leaves the
+// thread idle at least as long as the last detection took, so the page stays responsive.
+function runLoop(video: HTMLVideoElement, detect: (t: number) => void, useTimer?: boolean) {
+  let stopped = false
+  let handle = 0
+  let lastVideoTime = -1
+  let cost = 0
+  let lastEnd = 0
+  let ticker: Worker | null = null
+  const step = () => {
+    if (stopped || video.readyState < 2 || video.currentTime === lastVideoTime) return
+    const t = performance.now()
+    if (t - lastEnd < cost) return
+    lastVideoTime = video.currentTime
+    detect(t)
+    lastEnd = performance.now()
+    cost = cost * 0.8 + (lastEnd - t) * 0.2
+  }
+  if (useTimer) {
+    ticker = new Worker(new URL('./ticker.worker.ts', import.meta.url), { type: 'module' })
+    ticker.onmessage = step
+  } else {
+    const loop = () => {
+      if (stopped) return
+      handle = requestAnimationFrame(loop)
+      step()
+    }
+    handle = requestAnimationFrame(loop)
+  }
+  return () => {
+    stopped = true
+    ticker?.terminate()
+    cancelAnimationFrame(handle)
+  }
+}
+
+// Opens the webcam and runs hand landmark detection on-device. Video frames never leave the browser.
+export async function startTracker(opts: {
+  assetBase: string
+  onFrame: (hands: Point[][], t: number) => void
+  useTimer?: boolean
+}): Promise<Tracker> {
+  const { stream, video } = await openCamera()
   let landmarker: HandLandmarker
   try {
     landmarker = await createLandmarker(opts.assetBase)
@@ -49,42 +90,55 @@ export async function startTracker(opts: {
     stream.getTracks().forEach((t) => t.stop())
     throw err
   }
-
-  let stopped = false
-  let handle = 0
-  let lastVideoTime = -1
-  let ticker: Worker | null = null
-  let cost = 0
-  let lastEnd = 0
-  const detect = () => {
-    if (stopped || video.readyState < 2 || video.currentTime === lastVideoTime) return
-    const t = performance.now()
-    // On slow machines, leave the thread idle at least as long as the last detection took so the page stays responsive.
-    if (t - lastEnd < cost) return
-    lastVideoTime = video.currentTime
-    const result = landmarker.detectForVideo(video, t)
-    lastEnd = performance.now()
-    cost = cost * 0.8 + (lastEnd - t) * 0.2
-    opts.onFrame(result.landmarks, t)
-  }
-  if (opts.useTimer) {
-    ticker = new Worker(new URL('./ticker.worker.ts', import.meta.url), { type: 'module' })
-    ticker.onmessage = detect
-  } else {
-    const loop = () => {
-      if (stopped) return
-      handle = requestAnimationFrame(loop)
-      detect()
-    }
-    handle = requestAnimationFrame(loop)
-  }
-
+  const stopLoop = runLoop(video, (t) => opts.onFrame(landmarker.detectForVideo(video, t).landmarks, t), opts.useTimer)
   return {
     video,
     stop: () => {
-      stopped = true
-      ticker?.terminate()
-      cancelAnimationFrame(handle)
+      stopLoop()
+      stream.getTracks().forEach((t) => t.stop())
+      landmarker.close()
+    },
+  }
+}
+
+// Same camera pipeline for head-pointer mode, with face landmarks and expression scores.
+export async function startFaceTracker(opts: {
+  assetBase: string
+  onFrame: (face: FaceInput | null, t: number) => void
+  useTimer?: boolean
+}): Promise<Tracker> {
+  const { stream, video } = await openCamera()
+  let landmarker: FaceLandmarker
+  try {
+    const fileset = await FilesetResolver.forVisionTasks(`${opts.assetBase}mediapipe`)
+    const make = (delegate: 'GPU' | 'CPU') =>
+      FaceLandmarker.createFromOptions(fileset, {
+        baseOptions: { modelAssetPath: `${opts.assetBase}models/face_landmarker.task`, delegate },
+        runningMode: 'VIDEO',
+        numFaces: 1,
+        outputFaceBlendshapes: true,
+      })
+    landmarker = await make('GPU').catch(() => make('CPU'))
+  } catch (err) {
+    stream.getTracks().forEach((t) => t.stop())
+    throw err
+  }
+  const stopLoop = runLoop(
+    video,
+    (t) => {
+      const r = landmarker.detectForVideo(video, t)
+      const lm = r.faceLandmarks[0]
+      if (!lm) return opts.onFrame(null, t)
+      const blend: Record<string, number> = {}
+      for (const c of r.faceBlendshapes[0]?.categories ?? []) blend[c.categoryName] = c.score
+      opts.onFrame({ landmarks: lm, blend }, t)
+    },
+    opts.useTimer,
+  )
+  return {
+    video,
+    stop: () => {
+      stopLoop()
       stream.getTracks().forEach((t) => t.stop())
       landmarker.close()
     },
@@ -112,4 +166,21 @@ export function drawHands(canvas: HTMLCanvasElement, hands: Point[][], color = '
       ctx.fill()
     }
   }
+}
+
+export function drawFace(canvas: HTMLCanvasElement, face: { landmarks: Point[] } | null, color = '#2f5bea') {
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  if (!face) return
+  ctx.fillStyle = color
+  for (let i = 0; i < face.landmarks.length; i += 2) {
+    const p = face.landmarks[i]
+    ctx.fillRect(p.x * canvas.width - 1, p.y * canvas.height - 1, 2, 2)
+  }
+  const nose = face.landmarks[1]
+  ctx.fillStyle = '#ffffff'
+  ctx.beginPath()
+  ctx.arc(nose.x * canvas.width, nose.y * canvas.height, Math.max(4, canvas.width / 90), 0, Math.PI * 2)
+  ctx.fill()
 }

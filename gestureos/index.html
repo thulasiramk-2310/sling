@@ -20,6 +20,7 @@
       <nav aria-label="Sections">
         <a href="#try">Try it</a>
         <a href="#gestures">Gestures</a>
+        <a href="#personalize">Personalize</a>
         <a href="#settings">Accessibility</a>
         <a href="#extension">Extension</a>
         <a href="#privacy">Privacy</a>
@@ -148,6 +149,40 @@
         <div class="glossary" id="glossary"></div>
       </section>
 
+      <section class="section" id="personalize" aria-labelledby="personalize-title">
+        <p class="eyebrow mono">Make it yours</p>
+        <h2 id="personalize-title">Fitted to your body, not the other way round</h2>
+        <p class="section-lede">Pick how you control the cursor, teach GestureOS your reach and your pinch, and record gestures of your own.</p>
+
+        <div class="mode-pick" role="radiogroup" aria-label="Input mode">
+          <label class="mode-card"><input type="radio" name="inputMode" value="hands" /><span><b>Hands</b>Point, pinch and gesture with one or two hands.</span></label>
+          <label class="mode-card"><input type="radio" name="inputMode" value="head" /><span><b>Head</b>For limited hand mobility: steer with your head and click with your face.</span></label>
+        </div>
+        <p class="note" id="mode-note" role="status" aria-live="polite"></p>
+
+        <div class="head-guide">
+          <h3>Head mode gestures</h3>
+          <ul>
+            <li><b>Move your head</b><span>Steer the cursor. It starts from wherever you're facing.</span></li>
+            <li><b>Open your mouth</b><span>Click. Keep it open to drag.</span></li>
+            <li><b>Smile and hold</b><span>Right-click.</span></li>
+            <li><b>Raise your eyebrows and tilt</b><span>Scroll up or down.</span></li>
+            <li><b>Close your eyes ~1 s</b><span>Pause or resume, so you can rest.</span></li>
+          </ul>
+        </div>
+
+        <div class="panel-block">
+          <h3>Calibrate</h3>
+          <p class="section-lede small">Hands mode. The cursor covers the screen within your comfortable reach, and clicks trigger at your natural pinch.</p>
+          <div id="calibration"></div>
+        </div>
+        <div class="panel-block">
+          <h3>Gesture studio</h3>
+          <p class="section-lede small">Record a hand pose, then hold it to press a key, open a site, toggle the keyboard or control video. Up to 15 gestures.</p>
+          <div id="studio"></div>
+        </div>
+      </section>
+
       <section class="section split" id="settings" aria-labelledby="settings-title">
         <div>
           <p class="eyebrow mono">Accessibility</p>
@@ -160,6 +195,8 @@
             <li><b>Snap to targets</b> pulls the cursor onto nearby buttons and links so small targets are easier to hit.</li>
             <li><b>Dwell to click</b> clicks after you hover still, so you can use it without pinching.</li>
             <li><b>Smart intent</b> steadies the cursor as your fingers close, so clicks land where you aimed.</li>
+            <li><b>On-screen keyboard</b> with word suggestions lets you type with gestures. Open it from the ⌨ button on the status pill or bind it to a gesture.</li>
+            <li><b>Right-click</b> by touching your thumb to your middle finger; two quick pinches double-click.</li>
           </ul>
         </div>
         <form class="panel" id="settings-form" aria-label="GestureOS settings">
@@ -178,6 +215,7 @@
           <label class="toggle"><input id="dwell" type="checkbox" /><span>Dwell to click</span></label>
           <label class="field"><span>Dwell time</span><input id="dwellMs" type="range" min="500" max="2000" step="100" /><output for="dwellMs"></output></label>
           <label class="toggle"><input id="swipeNavigation" type="checkbox" /><span>Swipe to go back / forward</span></label>
+          <label class="field"><span>Head speed</span><input id="headGain" type="range" min="0.5" max="2" step="0.1" /><output for="headGain"></output></label>
           <h3 class="panel-title">Macros</h3>
           <div class="macros" id="macros"></div>
           <button type="button" class="btn ghost small" id="reset-settings">Reset to defaults</button>

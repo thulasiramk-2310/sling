@@ -19,7 +19,26 @@ It ships as two things that share one engine:
 | Two fingers together, up/down | Scroll |
 | Fast sideways open-hand sweep | Back / forward |
 | Two-hand pinch, pull apart / together | Zoom in / out |
-| Thumbs up · peace · rock (held) | Macros: play/pause, mute, ±10 s, scroll to top, reload, next/previous tab |
+| Thumb to middle finger | Right-click |
+| Two quick pinches | Double-click |
+| Thumbs up · peace · rock (held) | Macros: play/pause, mute, ±10 s, scroll to top, reload, back/forward, next/previous tab, keyboard |
+| Your own recorded poses | Anything above, plus press a key or open a website |
+
+### Head mode (for limited hand mobility)
+
+| Face | Action |
+|---|---|
+| Move your head | Steer the cursor |
+| Open your mouth | Click (hold to drag) |
+| Smile and hold | Right-click |
+| Raise eyebrows + tilt | Scroll |
+| Close your eyes ~1 s | Pause / resume |
+
+## Personalization
+
+- **Calibration wizard**: a 15-second guided routine records your comfortable reach (that area becomes the whole screen) and your natural pinch (that sets the click threshold).
+- **Gesture studio**: record up to 15 static hand poses. They're stored as rotation/scale/position-invariant feature templates, recognized for either hand, checked for clashes with your other gestures and the built-in poses, and bound to actions.
+- **On-screen keyboard**: large keys, word suggestions, symbols and caret keys. It types into the focused field using real input events, so React and Vue forms update. Open it from the ⌨ button on the status pill or bind it to a gesture.
 
 ## What makes it reliable
 
@@ -27,12 +46,14 @@ It ships as two things that share one engine:
 - **Pose debouncing and hysteresis**: poses must hold for 3 frames, pinch uses separate on/off thresholds, and holds (wake, pause, macros) reset if the hand moves.
 - **Snap to targets**: the cursor is pulled onto nearby buttons and links, and a snapped click hits the element's center.
 - **Dwell to click**: optional. It clicks after hovering still over a clickable element, with no pinch needed.
-- **Tunable**: sensitivity, smoothing, scroll speed, cursor size and dwell time, plus per-pose macros.
+- **Tunable**: sensitivity, smoothing, scroll speed, cursor size, dwell time and head speed, plus per-pose macros.
+- **Video aware**: swiping over a video seeks ±10 s instead of navigating away.
+- **Safe actions**: gesture-opened links are restricted to http/https.
 
 ## Extension architecture
 
 ```
-offscreen.html  ── webcam + HandLandmarker + GestureEngine ──► frames (~30 fps)
+offscreen.html  ── webcam + Hand/FaceLandmarker + Gesture/FaceEngine ──► frames (~30 fps)
      │                                       (paced by a Worker; hidden pages throttle timers)
 background.js   ── relays frames to the active tab, tab zoom / switching, Alt+G shortcut
      │
@@ -47,7 +68,7 @@ The camera is granted once on the welcome page (a visible extension page). After
 ```bash
 npm install
 npm run dev               # playground at http://localhost:5173
-npm test                  # gesture engine unit tests (synthetic hands)
+npm test                  # engine tests: gestures, head mode, custom poses, calibration, URL safety
 npm run build             # site → dist/
 npm run build:extension   # extension → dist-extension/
 ```

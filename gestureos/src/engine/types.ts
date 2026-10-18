@@ -15,6 +15,8 @@ export type Pose =
   | 'rock'
   | 'thumbsUp'
   | 'unknown'
+  | 'smile'
+  | `custom:${string}`
 
 export type MacroPose = 'thumbsUp' | 'victory' | 'rock'
 
@@ -28,8 +30,10 @@ export type GestureEvent =
   | { type: 'swipe'; dir: 'left' | 'right' }
   | { type: 'zoom'; factor: number }
   | { type: 'macro'; pose: MacroPose }
+  | { type: 'custom'; id: string }
+  | { type: 'rightClick'; x: number; y: number }
 
-export type HoldKind = 'activate' | 'deactivate' | 'macro' | null
+export type HoldKind = 'activate' | 'deactivate' | 'macro' | 'scroll' | null
 
 // One processed camera frame. Cursor coordinates are normalized to the viewport (0..1).
 export interface Frame {

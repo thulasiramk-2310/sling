@@ -7,12 +7,12 @@ let actuator: Actuator | null = null
 let settings: Settings = mergeSettings(null)
 let hideTimer = 0
 
-chrome.storage.sync.get(SETTINGS_KEY).then((s) => {
+chrome.storage.local.get(SETTINGS_KEY).then((s) => {
   settings = mergeSettings(s[SETTINGS_KEY])
   actuator?.setSettings(settings)
 })
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === 'sync' && changes[SETTINGS_KEY]) {
+  if (area === 'local' && changes[SETTINGS_KEY]) {
     settings = mergeSettings(changes[SETTINGS_KEY].newValue)
     actuator?.setSettings(settings)
   }
