@@ -299,3 +299,31 @@ describe('calibration and safety helpers', () => {
     expect(safeUrl('data:text/html,hi')).toBeNull()
   })
 })
+
+describe('low-effort mode', () => {
+  const low = () => {
+    const e = makeEngine(true)
+    e.setSettings({ ...DEFAULT_SETTINGS, lowEffort: true })
+    return e
+  }
+  const travel = (frames: number, distance: number) => {
+    const e = low()
+    const start = run(e, 10, hold('point', 0.6, 0.5)).last.cursor!
+    // The flick, then the hand rests so smoothing settles.
+    const end = run(e, frames + 12, (i) => [fakeHand('point', 0.6 - (Math.min(i + 1, frames) / frames) * distance, 0.5)], 1000).last.cursor!
+    return end.x - start.x
+  }
+
+  it('a quick flick moves the cursor further than the same slow movement', () => {
+    expect(travel(4, 0.08)).toBeGreaterThan(travel(40, 0.08) * 1.5)
+  })
+
+  it('resumes from where the cursor was after the hand leaves the camera', () => {
+    const e = low()
+    run(e, 10, hold('point', 0.6, 0.5))
+    const moved = run(e, 10, (i) => [fakeHand('point', 0.6 - i * 0.01, 0.5)], 1000).last.cursor!
+    e.update([], 2000)
+    const back = run(e, 3, hold('point', 0.6, 0.5), 3000).last.cursor!
+    expect(back.x).toBeCloseTo(moved.x, 2)
+  })
+})

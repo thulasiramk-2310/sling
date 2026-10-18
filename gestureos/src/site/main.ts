@@ -61,6 +61,44 @@ function setCameraLabel(text: string, disabled = false) {
   })
 }
 
+// Explain what the camera is for before the browser's permission prompt; shown until accepted once.
+function primed(): Promise<boolean> {
+  try {
+    if (localStorage.getItem('gestureos.primed')) return Promise.resolve(true)
+  } catch {
+    // Storage blocked: just ask each time.
+  }
+  const d = $<HTMLDialogElement>('#prime')
+  return new Promise((resolve) => {
+    const done = (ok: boolean) => {
+      d.close()
+      if (ok)
+        try {
+          localStorage.setItem('gestureos.primed', '1')
+        } catch {
+          // Fine: we'll explain again next time.
+        }
+      resolve(ok)
+    }
+    $('#prime-ok').onclick = () => done(true)
+    $('#prime-cancel').onclick = () => done(false)
+    d.oncancel = () => resolve(false)
+    d.showModal()
+  })
+}
+
+function showProgress(loaded: number, total: number) {
+  $('#load').hidden = false
+  const pct = total ? Math.min(100, (loaded / total) * 100) : 0
+  $('#load-fill').style.width = `${pct}%`
+  const mb = (n: number) => (n / 1048576).toFixed(1)
+  $('#load-text').textContent = !total
+    ? `Downloading the tracking model · ${mb(loaded)} MB`
+    : pct >= 100
+      ? 'Starting tracking…'
+      : `Downloading the tracking model · ${mb(loaded)} of ${mb(total)} MB`
+}
+
 async function toggleCamera() {
   if (tracker) {
     tracker.stop()
@@ -74,15 +112,18 @@ async function toggleCamera() {
     status.textContent = 'Camera off. Your camera feed stays on this device.'
     return
   }
+  if (!(await primed())) return
   setCameraLabel('Starting…', true)
   const head = settings.inputMode === 'head'
   status.textContent = head ? 'Loading the face model (about 4 MB, once)…' : 'Loading the hand model (about 8 MB, once)…'
   try {
     if (head) {
       faceEngine.setActive(true)
-      tracker = await startFaceTracker({ assetBase: import.meta.env.BASE_URL, onFrame: onFaceFrame })
-    } else tracker = await startTracker({ assetBase: import.meta.env.BASE_URL, onFrame })
+      tracker = await startFaceTracker({ assetBase: import.meta.env.BASE_URL, onFrame: onFaceFrame, onProgress: showProgress })
+    } else tracker = await startTracker({ assetBase: import.meta.env.BASE_URL, onFrame, onProgress: showProgress })
+    $('#load').hidden = true
   } catch (err) {
+    $('#load').hidden = true
     setCameraLabel('Start camera')
     const name = err instanceof DOMException ? err.name : ''
     status.textContent =
@@ -450,7 +491,7 @@ $$<HTMLCanvasElement>('#glossary canvas').forEach((c) => {
 // ---------- Settings form ----------
 const form = $<HTMLFormElement>('#settings-form')
 const ranges = ['sensitivity', 'smoothing', 'scrollSpeed', 'dwellMs', 'headGain'] as const
-const toggles = ['snap', 'dwell', 'swipeNavigation'] as const
+const toggles = ['snap', 'dwell', 'swipeNavigation', 'lowEffort', 'breakReminder', 'showPerformance'] as const
 const fmt = (k: string, v: number) => (k === 'dwellMs' ? `${(v / 1000).toFixed(1)} s` : `${v.toFixed(2).replace(/\.?0+$/, '')}×`)
 
 $('#macros').innerHTML = (Object.keys(POSE_LABELS) as MacroPose[])

@@ -38,6 +38,8 @@ export type HoldKind = 'activate' | 'deactivate' | 'macro' | 'scroll' | null
 // One processed camera frame. Cursor coordinates are normalized to the viewport (0..1).
 export interface Frame {
   t: number
+  // Wall-clock time the camera frame was analysed; comparable across the extension's pages for latency.
+  capturedAt: number
   hands: number
   active: boolean
   pose: Pose

@@ -44,6 +44,7 @@
           <p class="note" id="camera-status" role="status" aria-live="polite">
             Your camera feed stays on this device. Nothing is uploaded.
           </p>
+          <div class="load" id="load" hidden><div class="load-bar"><span id="load-fill"></span></div><span class="mono" id="load-text"></span></div>
         </div>
         <figure class="stage" aria-label="Hand tracking preview">
           <div class="stage-frame">
@@ -74,7 +75,7 @@
         <div class="cards">
           <article class="card" data-step="wake">
             <header><span class="step mono">01</span><h3>Wake</h3><span class="check" aria-hidden="true"></span></header>
-            <p>Hold an <strong>open palm</strong> still for a moment. A green ring fills around the cursor and GestureOS switches on. Hold a <strong>fist</strong> to pause.</p>
+            <p>Hold an <strong>open palm</strong> still for a moment. A green ring fills around the cursor and GestureOS switches on. Hold a <strong>fist</strong> to pause. Tip: rest your elbow on the desk so your shoulder doesn’t tire.</p>
             <div class="demo wake-demo"><div class="wake-orb" id="wake-orb"><span>Paused</span></div></div>
           </article>
 
@@ -195,6 +196,7 @@
             <li><b>Snap to targets</b> pulls the cursor onto nearby buttons and links so small targets are easier to hit.</li>
             <li><b>Dwell to click</b> clicks after you hover still, so you can use it without pinching.</li>
             <li><b>Smart intent</b> steadies the cursor as your fingers close, so clicks land where you aimed.</li>
+            <li><b>Low-effort pointer</b> works like a trackpad with acceleration, so your hand can stay low and move a little. That's kinder to your shoulder over long sessions.</li>
             <li><b>On-screen keyboard</b> with word suggestions lets you type with gestures. Open it from the ⌨ button on the status pill or bind it to a gesture.</li>
             <li><b>Right-click</b> by touching your thumb to your middle finger; two quick pinches double-click.</li>
           </ul>
@@ -216,6 +218,9 @@
           <label class="field"><span>Dwell time</span><input id="dwellMs" type="range" min="500" max="2000" step="100" /><output for="dwellMs"></output></label>
           <label class="toggle"><input id="swipeNavigation" type="checkbox" /><span>Swipe to go back / forward</span></label>
           <label class="field"><span>Head speed</span><input id="headGain" type="range" min="0.5" max="2" step="0.1" /><output for="headGain"></output></label>
+          <label class="toggle"><input id="lowEffort" type="checkbox" /><span>Low-effort pointer (small, slow moves are precise; quick flicks travel far)</span></label>
+          <label class="toggle"><input id="breakReminder" type="checkbox" /><span>Remind me to rest my arm every 20 minutes</span></label>
+          <label class="toggle"><input id="showPerformance" type="checkbox" /><span>Show speed and delay on the status pill</span></label>
           <h3 class="panel-title">Macros</h3>
           <div class="macros" id="macros"></div>
           <button type="button" class="btn ghost small" id="reset-settings">Reset to defaults</button>
@@ -252,6 +257,20 @@
         </div>
       </section>
     </main>
+
+    <dialog class="prime" id="prime" aria-labelledby="prime-title">
+      <h2 id="prime-title">Before your browser asks for the camera</h2>
+      <ul>
+        <li><b>It stays on this device.</b> Hand tracking runs in your browser. No video, photos or hand data are sent anywhere.</li>
+        <li><b>You’re in control.</b> Hold a fist to pause, or press Stop camera to switch it off. Your camera light goes out right away.</li>
+        <li><b>About 20 MB downloads once</b> for the tracking model, then it’s cached.</li>
+        <li><b>Easiest setup:</b> rest your elbow on the desk and keep your hand about an arm’s length from the screen.</li>
+      </ul>
+      <div class="prime-actions">
+        <button class="btn ghost" value="cancel" formmethod="dialog" id="prime-cancel">Not now</button>
+        <button class="btn" id="prime-ok">Continue</button>
+      </div>
+    </dialog>
 
     <footer class="foot">
       <span class="logo small"><span class="logo-mark">G</span>GestureOS</span>

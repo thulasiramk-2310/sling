@@ -39,6 +39,8 @@ export class Actuator {
   private keyboard: Keyboard
   private editable: HTMLElement | null = null
   private lastClick = { t: 0, x: 0, y: 0 }
+  private perf = { last: 0, interval: 33, delay: 0, shownAt: 0 }
+  private effort = { activeMs: 0, restMs: 0, last: 0 }
 
   constructor(settings: Settings, hooks: ActuatorHooks = {}) {
     this.settings = settings
@@ -74,6 +76,8 @@ export class Actuator {
   }
 
   handle(frame: Frame) {
+    this.trackPerformance(frame)
+    this.trackEffort(frame)
     this.frame = frame
     this.visible = !!frame.cursor
     if (frame.cursor) {
@@ -84,6 +88,36 @@ export class Actuator {
     this.overlay.setStatus(frame.active, frame.pose, custom)
     for (const ev of frame.events) this.apply(ev)
     if (frame.dragging && this.dragEl) this.fireDragMove()
+  }
+
+  private trackPerformance(frame: Frame) {
+    const now = Date.now()
+    const p = this.perf
+    if (p.last) p.interval = p.interval * 0.9 + Math.min(1000, frame.capturedAt - p.last) * 0.1
+    p.last = frame.capturedAt
+    p.delay = p.delay * 0.9 + Math.max(0, now - frame.capturedAt) * 0.1
+    if (!this.settings.showPerformance) return this.overlay.setPerformance('', false)
+    if (now - p.shownAt < 500) return
+    p.shownAt = now
+    const fps = Math.round(1000 / Math.max(1, p.interval))
+    // Around 100 ms is where people start to feel a pointer lag behind them.
+    this.overlay.setPerformance(`${fps} fps · ${Math.round(p.delay + p.interval / 2)} ms`, fps < 15 || p.delay > 100)
+  }
+
+  // Mid-air input tires the shoulder; nudge a rest after a long unbroken stretch.
+  private trackEffort(frame: Frame) {
+    const now = Date.now()
+    const e = this.effort
+    const dt = e.last ? Math.min(500, now - e.last) : 0
+    e.last = now
+    if (frame.active && frame.hands > 0) {
+      e.activeMs += dt
+      e.restMs = 0
+    } else if ((e.restMs += dt) > 60_000) e.activeMs = 0
+    if (this.settings.breakReminder && e.activeMs > 20 * 60_000) {
+      e.activeMs = 0
+      this.overlay.toast('20 minutes of gesturing. Rest your arm for a minute, GestureOS will wait.', 6000)
+    }
   }
 
   destroy() {

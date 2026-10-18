@@ -144,6 +144,7 @@ export class FaceEngine {
   private frame(t: number, hands: number, pose: Pose, events: GestureEvent[], hold: { kind: HoldKind; progress: number } | null, pinch: number): Frame {
     return {
       t,
+      capturedAt: Date.now(),
       hands,
       active: this.active,
       pose,

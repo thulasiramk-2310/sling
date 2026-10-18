@@ -30,6 +30,10 @@ export interface Settings {
   calibration: Calibration
   inputMode: 'hands' | 'head'
   headGain: number
+  // Pointer acceleration: small slow movements stay precise, quick flicks cross the screen. Less arm travel.
+  lowEffort: boolean
+  showPerformance: boolean
+  breakReminder: boolean
 }
 
 // A user-recorded static hand pose, stored as a mean feature vector plus how much it may vary.
@@ -68,6 +72,9 @@ export const DEFAULT_SETTINGS: Settings = {
   calibration: { box: null, pinchOn: 0.3, pinchOff: 0.45 },
   inputMode: 'hands',
   headGain: 1,
+  lowEffort: false,
+  showPerformance: true,
+  breakReminder: true,
 }
 
 export const MACRO_LABELS: Record<MacroAction, string> = {

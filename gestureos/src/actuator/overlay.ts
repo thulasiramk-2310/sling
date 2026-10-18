@@ -28,6 +28,8 @@ const CSS = `
 .toast { position: fixed; left: 50%; bottom: 32px; transform: translate(-50%, 12px); padding: 12px 18px; border-radius: 12px; background: rgba(14, 17, 28, .92); color: #fff; font-size: 15px; opacity: 0; transition: opacity .25s, transform .25s; max-width: min(520px, calc(100vw - 32px)); text-align: center; }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
 @media (prefers-reduced-motion: reduce) { .cursor, .target, .toast { transition: none; } }
+.pill .perf { font-size: 11px; color: #9aa3b8; font-variant-numeric: tabular-nums; }
+.pill .perf.slow { color: #ffb36b; }
 .pill .kbtn { pointer-events: auto; border: 0; border-radius: 999px; padding: 4px 9px; background: rgba(255,255,255,.12); color: #fff; font: 600 11px system-ui, sans-serif; cursor: pointer; }
 ${KEYBOARD_CSS}
 `
@@ -55,6 +57,7 @@ export class Overlay {
   private pill: HTMLElement
   private pillState: HTMLElement
   private pillPose: HTMLElement
+  private perf: HTMLElement
   private toastEl: HTMLElement
   private toastTimer = 0
   private root: ShadowRoot
@@ -80,7 +83,7 @@ export class Overlay {
           </svg>
         </div>
         <div class="pill" ${showPill ? '' : 'hidden'} role="status" aria-live="polite">
-          <span class="mark">G</span><span class="led"></span><span class="state">Paused</span><span class="pose">No hand</span><button class="kbtn" type="button" aria-label="Show or hide the on-screen keyboard">⌨</button>
+          <span class="mark">G</span><span class="led"></span><span class="state">Paused</span><span class="pose">No hand</span><span class="perf" title="Camera frames per second and delay from camera to cursor"></span><button class="kbtn" type="button" aria-label="Show or hide the on-screen keyboard">⌨</button>
         </div>
         <div class="toast" role="status" aria-live="polite"></div>
       </div>`
@@ -92,6 +95,7 @@ export class Overlay {
     this.pill = q('.pill')
     this.pillState = q('.state')
     this.pillPose = q('.pose')
+    this.perf = q('.perf')
     this.toastEl = q('.toast')
     this.layer = q('.layer')
     document.documentElement.appendChild(this.host)
@@ -141,6 +145,11 @@ export class Overlay {
     this.pill.classList.toggle('on', active)
     this.pillState.textContent = active ? 'Active' : 'Paused'
     this.pillPose.textContent = customName ?? POSE_NAMES[pose] ?? pose
+  }
+
+  setPerformance(text: string, slow: boolean) {
+    this.perf.textContent = text
+    this.perf.classList.toggle('slow', slow)
   }
 
   toast(text: string, ms = 1800) {

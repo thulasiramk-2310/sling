@@ -43,6 +43,10 @@ export class GestureEngine {
   private swipeTrail: { t: number; x: number; y: number }[] = []
   private lastSwipeAt = -Infinity
   private rightPinched = false
+  private prevAnchor: { x: number; y: number; t: number } | null = null
+  private lastCursor: Point | null = null
+  private flickSpeed = 0
+  private rawPrev: { x: number; y: number; t: number } | null = null
 
   setSettings(settings: Settings) {
     this.settings = settings
@@ -224,13 +228,38 @@ export class GestureEngine {
   }
 
   private trackCursor(h: HandInfo, pose: Pose, t: number) {
-    const s = this.settings.sensitivity
-    // A calibrated comfort zone maps the user's own reach to the full screen.
-    const box = this.settings.calibration.box ?? { x0: 0.5 - 0.35 / s, x1: 0.5 + 0.35 / s, y0: 0.42 - 0.3 / s, y1: 0.42 + 0.3 / s }
-    const tx = clamp01((h.anchor.x - box.x0) / (box.x1 - box.x0))
-    const ty = clamp01((h.anchor.y - box.y0) / (box.y1 - box.y0))
-    let x = this.fx.filter(tx, t)
-    let y = this.fy.filter(ty, t)
+    let x: number
+    let y: number
+    if (this.settings.lowEffort) {
+      // Relative pointer with acceleration, like a laptop trackpad: the hand can stay low and still.
+      const ax = this.fx.filter(h.anchor.x, t)
+      const ay = this.fy.filter(h.anchor.y, t)
+      const base = this.cursor ?? this.lastCursor ?? { x: 0.5, y: 0.5 }
+      x = base.x
+      y = base.y
+      // Acceleration follows the raw hand speed (briefly held), not the smoothed position, so the
+      // filter's catch-up after a flick still travels at flick speed.
+      if (this.rawPrev) {
+        const rdt = Math.max((t - this.rawPrev.t) / 1000, 1e-3)
+        const raw = Math.hypot(h.anchor.x - this.rawPrev.x, h.anchor.y - this.rawPrev.y) / rdt
+        this.flickSpeed = Math.max(raw, this.flickSpeed * Math.exp(-rdt / 0.12))
+      }
+      this.rawPrev = { x: h.anchor.x, y: h.anchor.y, t }
+      if (this.prevAnchor) {
+        const dx = ax - this.prevAnchor.x
+        const dy = ay - this.prevAnchor.y
+        const gain = (1.6 + Math.min(this.flickSpeed / 0.6, 1) * 5) * this.settings.sensitivity
+        x = clamp01(base.x + dx * gain)
+        y = clamp01(base.y + dy * gain * 1.15)
+      }
+      this.prevAnchor = { x: ax, y: ay, t }
+    } else {
+      const s = this.settings.sensitivity
+      // A calibrated comfort zone maps the user's own reach to the full screen.
+      const box = this.settings.calibration.box ?? { x0: 0.5 - 0.35 / s, x1: 0.5 + 0.35 / s, y0: 0.42 - 0.3 / s, y1: 0.42 + 0.3 / s }
+      x = this.fx.filter(clamp01((h.anchor.x - box.x0) / (box.x1 - box.x0)), t)
+      y = this.fy.filter(clamp01((h.anchor.y - box.y0) / (box.y1 - box.y0)), t)
+    }
     // Smart intent: as the fingers close in for a click, damp motion so the click lands where you aimed.
     if (this.cursor && pose !== 'pinch' && h.pinchRatio < PINCH_APPROACH) {
       x = this.cursor.x + (x - this.cursor.x) * 0.3
@@ -288,6 +317,7 @@ export class GestureEngine {
   private reset() {
     this.fx.reset()
     this.fy.reset()
+    if (this.cursor) this.lastCursor = this.cursor
     this.cursor = null
     this.pinched = []
     this.prevSpread = null
@@ -299,6 +329,9 @@ export class GestureEngine {
     this.candidate = 'none'
     this.candidateFrames = 0
     this.rightPinched = false
+    this.prevAnchor = null
+    this.rawPrev = null
+    this.flickSpeed = 0
   }
 
   private frame(
@@ -310,6 +343,7 @@ export class GestureEngine {
   ): Frame {
     return {
       t,
+      capturedAt: Date.now(),
       hands,
       active: this.active,
       pose: hands ? (this.zooming ? 'pinch' : this.pose) : 'none',

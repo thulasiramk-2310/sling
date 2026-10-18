@@ -1082,3 +1082,68 @@ select {
     grid-template-columns: 1fr;
   }
 }
+
+/* Camera priming + download progress */
+.load {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  max-width: 420px;
+}
+.load[hidden] {
+  display: none;
+}
+.load-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+.load-bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.2s;
+}
+.load .mono {
+  color: var(--ink-3);
+}
+.prime {
+  width: min(560px, calc(100vw - 32px));
+  padding: 28px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 30px 80px rgba(15, 18, 32, 0.35);
+}
+.prime::backdrop {
+  background: rgba(10, 12, 20, 0.55);
+  backdrop-filter: blur(3px);
+}
+.prime h2 {
+  font-size: 26px;
+  margin-bottom: 16px;
+}
+.prime ul {
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  color: var(--ink-2);
+  font-size: 16px;
+}
+.prime b {
+  display: block;
+  color: var(--ink);
+}
+.prime-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+}

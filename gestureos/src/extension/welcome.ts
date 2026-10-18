@@ -57,10 +57,13 @@ const RANGES: { key: RangeKey; label: string; min: number; max: number; step: nu
   { key: 'scrollSpeed', label: 'Scroll speed', min: 0.4, max: 2.5, step: 0.1 },
   { key: 'dwellMs', label: 'Dwell time', min: 500, max: 2000, step: 100 },
 ]
-const TOGGLES: { key: 'snap' | 'dwell' | 'swipeNavigation'; label: string }[] = [
+const TOGGLES: { key: 'snap' | 'dwell' | 'swipeNavigation' | 'lowEffort' | 'breakReminder' | 'showPerformance'; label: string }[] = [
   { key: 'snap', label: 'Snap to targets' },
   { key: 'dwell', label: 'Dwell to click' },
   { key: 'swipeNavigation', label: 'Swipe to go back / forward' },
+  { key: 'lowEffort', label: 'Low-effort pointer (trackpad-style acceleration)' },
+  { key: 'breakReminder', label: 'Remind me to rest my arm every 20 minutes' },
+  { key: 'showPerformance', label: 'Show speed and delay on the status pill' },
 ]
 const fmt = (k: RangeKey, v: number) => (k === 'dwellMs' ? `${(v / 1000).toFixed(1)} s` : `${v.toFixed(2).replace(/\.?0+$/, '')}×`)
 

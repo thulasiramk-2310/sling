@@ -1,5 +1,6 @@
 import { FaceLandmarker, FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision'
 import type { FaceInput } from './faceEngine'
+import { loadModel, type Progress } from './assets'
 import type { Point } from './types'
 
 export interface Tracker {
@@ -9,10 +10,11 @@ export interface Tracker {
 
 export const HAND_CONNECTIONS = HandLandmarker.HAND_CONNECTIONS
 
-async function createLandmarker(assetBase: string) {
+async function createLandmarker(assetBase: string, onProgress?: Progress) {
+  const modelAssetBuffer = await loadModel(assetBase, 'hand_landmarker.task', onProgress)
   const fileset = await FilesetResolver.forVisionTasks(`${assetBase}mediapipe`)
   const options = (delegate: 'GPU' | 'CPU') => ({
-    baseOptions: { modelAssetPath: `${assetBase}models/hand_landmarker.task`, delegate },
+    baseOptions: { modelAssetBuffer, delegate },
     runningMode: 'VIDEO' as const,
     numHands: 2,
     minHandDetectionConfidence: 0.6,
@@ -81,11 +83,12 @@ export async function startTracker(opts: {
   assetBase: string
   onFrame: (hands: Point[][], t: number) => void
   useTimer?: boolean
+  onProgress?: Progress
 }): Promise<Tracker> {
   const { stream, video } = await openCamera()
   let landmarker: HandLandmarker
   try {
-    landmarker = await createLandmarker(opts.assetBase)
+    landmarker = await createLandmarker(opts.assetBase, opts.onProgress)
   } catch (err) {
     stream.getTracks().forEach((t) => t.stop())
     throw err
@@ -106,14 +109,16 @@ export async function startFaceTracker(opts: {
   assetBase: string
   onFrame: (face: FaceInput | null, t: number) => void
   useTimer?: boolean
+  onProgress?: Progress
 }): Promise<Tracker> {
   const { stream, video } = await openCamera()
   let landmarker: FaceLandmarker
   try {
+    const modelAssetBuffer = await loadModel(opts.assetBase, 'face_landmarker.task', opts.onProgress)
     const fileset = await FilesetResolver.forVisionTasks(`${opts.assetBase}mediapipe`)
     const make = (delegate: 'GPU' | 'CPU') =>
       FaceLandmarker.createFromOptions(fileset, {
-        baseOptions: { modelAssetPath: `${opts.assetBase}models/face_landmarker.task`, delegate },
+        baseOptions: { modelAssetBuffer, delegate },
         runningMode: 'VIDEO',
         numFaces: 1,
         outputFaceBlendshapes: true,
