@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="MotionFit: try on clothes with your laptop camera. Swipe through outfits, compare looks and get pairing ideas. Runs on your device." />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>MotionFit · Virtual fitting room</title>
+  </head>
+  <body>
+    <div class="app">
+      <header class="top">
+        <div class="brand"><span class="brand-name">MotionFit</span><span class="mono brand-sub">Fitting room 01</span></div>
+        <div class="top-actions">
+          <button class="btn ghost" id="saved-btn" aria-haspopup="dialog">Saved <span class="count" id="saved-count">0</span></button>
+          <button class="btn" id="camera-btn">Start camera</button>
+        </div>
+      </header>
+
+      <aside class="rail" aria-label="Catalog">
+        <h2 class="mono rail-title">The edit · 8 pieces</h2>
+        <div class="rail-list" id="rail" role="listbox" aria-label="Choose a garment"></div>
+      </aside>
+
+      <section class="stage" id="stage" aria-label="Mirror">
+        <div class="mirror" id="mirror"></div>
+        <div class="overlay">
+          <div class="chip mono" id="status">Demo mannequin · start the camera to try it on</div>
+          <button class="air left a1" id="air-prev" data-air="prev" aria-label="Previous outfit"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg><span>Prev</span></button>
+          <button class="air left a2" id="air-save" data-air="save" aria-label="Save outfit"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /></svg><span>Save</span></button>
+          <button class="air right a1" id="air-next" data-air="next" aria-label="Next outfit"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg><span>Next</span></button>
+          <button class="air right a2" id="air-snap" data-air="snap" aria-label="Take snapshot"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg><span>Snap</span></button>
+          <span class="hand" id="hand-0" aria-hidden="true"></span>
+          <span class="hand" id="hand-1" aria-hidden="true"></span>
+          <div class="guide" id="guide" hidden>
+            <svg viewBox="0 0 120 160" aria-hidden="true"><circle cx="60" cy="28" r="16" /><path d="M24 70c0-14 16-22 36-22s36 8 36 22v70H24z" /></svg>
+            <p>Step back until your shoulders and arms are in view</p>
+          </div>
+          <div class="caption" id="caption"></div>
+          <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <aside class="panel" id="panel" aria-label="Product details"></aside>
+
+      <footer class="tray" aria-label="Snapshots">
+        <div class="tray-head">
+          <span class="mono">Snapshots</span>
+          <button class="btn small" id="compare-btn" disabled>Compare 2</button>
+        </div>
+        <div class="tray-list" id="tray"><p class="tray-empty">Hover a hand over <b>Snap</b>, or click it, to capture a look. Pick two to compare side by side.</p></div>
+      </footer>
+    </div>
+
+    <dialog id="compare-dialog" aria-labelledby="compare-title">
+      <div class="dialog-head"><h2 id="compare-title">Side by side</h2><button class="close" data-close aria-label="Close">×</button></div>
+      <div class="compare" id="compare"></div>
+    </dialog>
+
+    <dialog id="saved-dialog" aria-labelledby="saved-title">
+      <div class="dialog-head"><h2 id="saved-title">Saved looks</h2><button class="close" data-close aria-label="Close">×</button></div>
+      <div class="saved" id="saved"></div>
+    </dialog>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
