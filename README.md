@@ -6,6 +6,7 @@ A collection of interactive 3D and motion-controlled web experiences. Each proje
 |---|---|
 | [`orbit/`](orbit) | **ORBIT**: explore the solar system with bare-hand gestures through your webcam (MediaPipe hand tracking + React Three Fiber), with a mouse fallback. |
 | [`calibre/`](calibre) | **CALIBRE**: a working mechanical watch movement in 3D, with real gear ratios, an exploded view and a guided tour of the power flow. |
+| [`gestureos/`](gestureos) | **GestureOS**: a touch-free mouse for any website. A Chrome extension and a playground site that share one on-device gesture engine (pinch to click, two fingers to scroll, macros, dwell clicking). |
 
 Run any project:
 

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to GestureOS</title>
+  </head>
+  <body class="welcome">
+    <main>
+      <header class="w-head"><span class="mark">G</span><b>GestureOS</b></header>
+      <h1>Use any website with your hands.</h1>
+      <p class="lede">Two quick steps: allow the camera once, then start GestureOS from the toolbar or with <kbd>Alt</kbd> + <kbd>G</kbd>.</p>
+
+      <section class="w-card" id="camera">
+        <h2><span class="num">1</span>Allow the camera</h2>
+        <p>Chrome asks once. Video is processed on this computer and never uploaded.</p>
+        <button class="primary" id="grant">Allow camera &amp; test tracking</button>
+        <p class="note" id="grant-status" role="status" aria-live="polite"></p>
+        <div class="preview" id="preview" hidden><div id="preview-video"></div><canvas id="preview-canvas" width="640" height="480"></canvas></div>
+      </section>
+
+      <section class="w-card">
+        <h2><span class="num">2</span>Start on any site</h2>
+        <p>Open a website, click the GestureOS button in the toolbar (pin it from the puzzle-piece menu) or press <kbd>Alt</kbd> + <kbd>G</kbd>. Hold a fist to pause and an open palm to resume.</p>
+      </section>
+
+      <section class="w-card">
+        <h2><span class="num">3</span>Settings</h2>
+        <form id="form" class="w-form"></form>
+      </section>
+    </main>
+    <script type="module" src="../src/extension/welcome.ts"></script>
+  </body>
+</html>

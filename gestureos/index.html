@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="GestureOS turns your webcam into a touch-free mouse for any website. Point to move, pinch to click, two fingers to scroll. Runs on your device." />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>GestureOS · Use the web with your hands</title>
+  </head>
+  <body>
+    <a class="skip" href="#try">Skip to the training ground</a>
+    <header class="nav">
+      <a class="logo" href="#top" aria-label="GestureOS home"><span class="logo-mark">G</span>GestureOS</a>
+      <nav aria-label="Sections">
+        <a href="#try">Try it</a>
+        <a href="#gestures">Gestures</a>
+        <a href="#settings">Accessibility</a>
+        <a href="#extension">Extension</a>
+        <a href="#privacy">Privacy</a>
+      </nav>
+      <button class="btn small" data-action="camera">Start camera</button>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow mono">Touch-free browsing · on-device</p>
+          <h1>Use the web<br />with your hands.</h1>
+          <p class="lede">
+            GestureOS turns your webcam into a mouse for any website. Point to move, pinch to click, two fingers to
+            scroll. It's built for anyone whose hands are busy, tired or not suited to a mouse.
+          </p>
+          <div class="cta">
+            <button class="btn" data-action="camera">Start camera</button>
+            <a class="btn ghost" href="#extension">Get the extension</a>
+          </div>
+          <p class="note" id="camera-status" role="status" aria-live="polite">
+            Your camera feed stays on this device. Nothing is uploaded.
+          </p>
+        </div>
+        <figure class="stage" aria-label="Hand tracking preview">
+          <div class="stage-frame">
+            <canvas id="hero-art" width="640" height="480"></canvas>
+            <div class="live" id="live" hidden>
+              <div class="live-video" id="live-video"></div>
+              <canvas id="live-canvas" width="640" height="480"></canvas>
+            </div>
+            <div class="stage-chip mono" id="stage-chip">Point · move the cursor</div>
+          </div>
+          <figcaption class="mono">21 landmarks per hand · up to 2 hands · ~30 fps</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="try" aria-labelledby="try-title">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow mono">Training ground</p>
+            <h2 id="try-title">Learn the seven gestures</h2>
+            <p class="section-lede">Start the camera, then work through each card. The mouse works too, so you can explore first.</p>
+          </div>
+          <div class="progress" aria-label="Gestures mastered">
+            <span class="progress-count"><b id="done-count">0</b> of 7</span>
+            <div class="progress-bar"><span id="progress-fill"></span></div>
+          </div>
+        </div>
+
+        <div class="cards">
+          <article class="card" data-step="wake">
+            <header><span class="step mono">01</span><h3>Wake</h3><span class="check" aria-hidden="true"></span></header>
+            <p>Hold an <strong>open palm</strong> still for a moment. A green ring fills around the cursor and GestureOS switches on. Hold a <strong>fist</strong> to pause.</p>
+            <div class="demo wake-demo"><div class="wake-orb" id="wake-orb"><span>Paused</span></div></div>
+          </article>
+
+          <article class="card" data-step="click">
+            <header><span class="step mono">02</span><h3>Point &amp; click</h3><span class="check" aria-hidden="true"></span></header>
+            <p>Move your hand to steer the cursor, then <strong>pinch</strong> thumb and index finger to click the glowing target. Three hits to pass.</p>
+            <div class="demo targets" id="targets">
+              <button class="target-btn" data-i="0">A</button>
+              <button class="target-btn" data-i="1">B</button>
+              <button class="target-btn" data-i="2">C</button>
+              <button class="target-btn" data-i="3">D</button>
+            </div>
+            <p class="hits mono"><span id="hits">0</span> / 3 hits</p>
+          </article>
+
+          <article class="card" data-step="drag">
+            <header><span class="step mono">03</span><h3>Drag</h3><span class="check" aria-hidden="true"></span></header>
+            <p><strong>Pinch and hold</strong> on the chip, move it into the tray, then let go.</p>
+            <div class="demo drag-demo" id="drag-demo">
+              <div class="chip" id="chip">Recipe.pdf</div>
+              <div class="tray" id="tray">Drop here</div>
+            </div>
+          </article>
+
+          <article class="card" data-step="scroll">
+            <header><span class="step mono">04</span><h3>Scroll</h3><span class="check" aria-hidden="true"></span></header>
+            <p>Raise <strong>two fingers together</strong> over the list and move them up to scroll down. Reach the last step.</p>
+            <div class="demo scroll-box" id="scroll-box" tabindex="0" aria-label="Recipe steps"><ol id="recipe"></ol></div>
+          </article>
+
+          <article class="card" data-step="swipe">
+            <header><span class="step mono">05</span><h3>Swipe</h3><span class="check" aria-hidden="true"></span></header>
+            <p>Sweep an <strong>open hand</strong> sideways, quickly, to flip the slides. On other sites this goes back or forward.</p>
+            <div class="demo carousel" id="carousel">
+              <div class="slides" id="slides"></div>
+              <div class="dots" id="dots"></div>
+              <button class="arrow prev" aria-label="Previous slide">‹</button>
+              <button class="arrow next" aria-label="Next slide">›</button>
+            </div>
+          </article>
+
+          <article class="card" data-step="zoom">
+            <header><span class="step mono">06</span><h3>Zoom</h3><span class="check" aria-hidden="true"></span></header>
+            <p><strong>Pinch with both hands</strong> and pull them apart to zoom in to 150%.</p>
+            <div class="demo zoom-demo">
+              <canvas id="zoom-canvas" width="560" height="300" aria-label="Zoomable map"></canvas>
+              <div class="zoom-ui">
+                <button class="mini" data-zoom="-1" aria-label="Zoom out">−</button>
+                <span class="mono" id="zoom-level">100%</span>
+                <button class="mini" data-zoom="1" aria-label="Zoom in">+</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card wide" data-step="macro">
+            <header><span class="step mono">07</span><h3>Gesture macros</h3><span class="check" aria-hidden="true"></span></header>
+            <p>Hold a <strong>thumbs up</strong> to play or pause, the way you would with flour on your hands during a cooking video. Peace and rock signs can trigger other actions you choose below.</p>
+            <div class="demo player" id="player">
+              <button class="play" id="play" aria-label="Play">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path id="play-icon" d="M8 5v14l11-7z" /></svg>
+              </button>
+              <canvas id="wave" width="900" height="90"></canvas>
+              <span class="mono" id="player-time">0:00 / 4:12</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="gestures" aria-labelledby="gestures-title">
+        <p class="eyebrow mono">Reference</p>
+        <h2 id="gestures-title">Every gesture at a glance</h2>
+        <div class="glossary" id="glossary"></div>
+      </section>
+
+      <section class="section split" id="settings" aria-labelledby="settings-title">
+        <div>
+          <p class="eyebrow mono">Accessibility</p>
+          <h2 id="settings-title">Tune it to your hands</h2>
+          <p class="section-lede">
+            Tremor, limited reach or fatigue all change what feels comfortable. Every setting applies instantly and is
+            saved on this device.
+          </p>
+          <ul class="facts">
+            <li><b>Snap to targets</b> pulls the cursor onto nearby buttons and links so small targets are easier to hit.</li>
+            <li><b>Dwell to click</b> clicks after you hover still, so you can use it without pinching.</li>
+            <li><b>Smart intent</b> steadies the cursor as your fingers close, so clicks land where you aimed.</li>
+          </ul>
+        </div>
+        <form class="panel" id="settings-form" aria-label="GestureOS settings">
+          <label class="field"><span>Sensitivity</span><input id="sensitivity" type="range" min="0.6" max="1.6" step="0.05" /><output for="sensitivity"></output></label>
+          <label class="field"><span>Smoothing</span><input id="smoothing" type="range" min="0.5" max="2" step="0.1" /><output for="smoothing"></output></label>
+          <label class="field"><span>Scroll speed</span><input id="scrollSpeed" type="range" min="0.4" max="2.5" step="0.1" /><output for="scrollSpeed"></output></label>
+          <fieldset class="field">
+            <legend>Cursor size</legend>
+            <div class="seg">
+              <label><input type="radio" name="cursorSize" value="s" /><span>Small</span></label>
+              <label><input type="radio" name="cursorSize" value="m" /><span>Medium</span></label>
+              <label><input type="radio" name="cursorSize" value="l" /><span>Large</span></label>
+            </div>
+          </fieldset>
+          <label class="toggle"><input id="snap" type="checkbox" /><span>Snap to targets</span></label>
+          <label class="toggle"><input id="dwell" type="checkbox" /><span>Dwell to click</span></label>
+          <label class="field"><span>Dwell time</span><input id="dwellMs" type="range" min="500" max="2000" step="100" /><output for="dwellMs"></output></label>
+          <label class="toggle"><input id="swipeNavigation" type="checkbox" /><span>Swipe to go back / forward</span></label>
+          <h3 class="panel-title">Macros</h3>
+          <div class="macros" id="macros"></div>
+          <button type="button" class="btn ghost small" id="reset-settings">Reset to defaults</button>
+        </form>
+      </section>
+
+      <section class="section" id="extension" aria-labelledby="ext-title">
+        <p class="eyebrow mono">Browser extension</p>
+        <h2 id="ext-title">Bring it to every website</h2>
+        <p class="section-lede">
+          The extension runs the same engine in the background and drives whichever tab you're looking at: YouTube,
+          recipes, docs, slides.
+        </p>
+        <ol class="steps">
+          <li><b>Build it.</b> In <code>gestureos/</code> run <code>npm install</code> then <code>npm run build:extension</code>.</li>
+          <li><b>Open</b> <code>chrome://extensions</code> and switch on <em>Developer mode</em>.</li>
+          <li><b>Load unpacked</b> and pick the <code>gestureos/dist-extension</code> folder.</li>
+          <li><b>Allow the camera once</b> on the welcome page, then press <kbd>Alt</kbd> + <kbd>G</kbd> or use the toolbar button on any site.</li>
+        </ol>
+        <p class="limit">
+          <b>What it can't do:</b> browsers keep extensions inside web pages, so GestureOS can't move your system cursor,
+          use other apps or run on protected pages like <code>chrome://</code> settings and the Web Store. Controlling the
+          whole computer would need a separate native desktop helper.
+        </p>
+      </section>
+
+      <section class="section" id="privacy" aria-labelledby="privacy-title">
+        <p class="eyebrow mono">Privacy</p>
+        <h2 id="privacy-title">Your camera never leaves your device</h2>
+        <div class="privacy-grid">
+          <p><b>On-device tracking.</b> Hand landmarks are computed locally with MediaPipe running in WebAssembly. No video, image or landmark data is sent anywhere.</p>
+          <p><b>No account, no analytics.</b> Settings are saved in your browser's local storage, or in Chrome sync storage for the extension.</p>
+          <p><b>Off means off.</b> Stopping GestureOS releases the camera immediately, and your camera's light goes out.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <span class="logo small"><span class="logo-mark">G</span>GestureOS</span>
+      <span class="mono">Built with MediaPipe Hand Landmarker · runs offline after load</span>
+    </footer>
+
+    <script type="module" src="/src/site/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "gestureos",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/copy-mediapipe.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/copy-mediapipe.mjs",
+    "build": "tsc -b && vite build",
+    "build:extension": "node scripts/copy-mediapipe.mjs && tsc -b && vite build --config vite.ext.config.ts && vite build --config vite.content.config.ts && node scripts/finish-extension.mjs",
+    "test": "vitest run",
+    "lint": "oxlint",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mediapipe/tasks-vision": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.3.5",
+    "@types/node": "^26.6.5",
+    "oxlint": "^1.88.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  }
+}
