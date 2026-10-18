@@ -38,6 +38,10 @@ export class GarmentRenderer {
   private sleeveMat = new THREE.MeshBasicMaterial({ transparent: true, depthTest: false, side: THREE.DoubleSide })
   private innerMat = new THREE.MeshBasicMaterial({ transparent: true, depthTest: false, side: THREE.DoubleSide })
   private innerMesh: THREE.Mesh
+  // A faint offset copy of the torso in black: reads as the shadow the garment casts on the body.
+  private shadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.22, depthTest: false })
+  private shadow: THREE.Mesh
+  private lightColor = new THREE.Color(1, 1, 1)
   private meshes: THREE.Mesh[] = []
   private textures: THREE.Texture[] = []
 
@@ -53,6 +57,10 @@ export class GarmentRenderer {
       this.scene.add(m)
       this.meshes.push(m)
     }
+    this.shadow = new THREE.Mesh(this.torso.g, this.shadowMat)
+    this.shadow.renderOrder = 3
+    this.shadow.frustumCulled = false
+    this.scene.add(this.shadow)
     this.innerMesh = new THREE.Mesh(this.inner.g, this.innerMat)
     this.innerMesh.renderOrder = 4
     this.innerMesh.frustumCulled = false
@@ -84,13 +92,20 @@ export class GarmentRenderer {
     }
     this.textures = [make(torso), make(sleeve)]
     this.torsoMat.map = this.textures[0]
+    this.shadowMat.map = this.textures[0]
     this.sleeveMat.map = this.textures[1]
     if (inner) {
       this.textures.push(make(inner))
       this.innerMat.map = this.textures[2]
     }
     this.hasInner = !!inner
-    this.torsoMat.needsUpdate = this.sleeveMat.needsUpdate = this.innerMat.needsUpdate = true
+    this.torsoMat.needsUpdate = this.sleeveMat.needsUpdate = this.innerMat.needsUpdate = this.shadowMat.needsUpdate = true
+  }
+
+  // Tints the garment towards the room's light so it doesn't look pasted on (brightness 0..~1.2, rgb tint near 1).
+  setLighting(brightness: number, tint: [number, number, number]) {
+    this.lightColor.setRGB(brightness * tint[0], brightness * tint[1], brightness * tint[2])
+    for (const m of [this.torsoMat, this.sleeveMat, this.innerMat]) m.color.copy(this.lightColor)
   }
 
   private hasInner = false
@@ -98,7 +113,10 @@ export class GarmentRenderer {
   update(body: Body | null) {
     this.meshes.forEach((m) => (m.visible = !!body))
     this.innerMesh.visible = !!body && this.hasInner
+    this.shadow.visible = !!body
     if (!body) return
+    const sw = Math.hypot(body.shoulderL.x - body.shoulderR.x, body.shoulderL.y - body.shoulderR.y)
+    this.shadow.position.set(0, sw * 0.025, 0)
     this.layoutTorso(body, this.torso, 1)
     if (this.hasInner) this.layoutTorso(body, this.inner, 0.94)
     this.layoutSleeve(this.sleeves[0], body.shoulderR, body.elbowR, body.wristR, body, -1)

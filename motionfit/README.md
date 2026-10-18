@@ -16,6 +16,13 @@ A virtual fitting room in the browser. Stand in front of your laptop camera and 
 - **Share card**: a 1080×1350 image of the look with names and prices, downloadable or shared through the system share sheet.
 - **Add your own garment (retailers)**: upload a front-facing product photo, optionally remove a plain background, and drag six markers (shoulders, hem, cuffs). The photo is warped into the same torso and sleeve texture layout as the built-in pieces, so it follows the body, and it's stored in IndexedDB. Printed text is pre-flipped so it reads correctly in the mirror.
 
+## Built around what shoppers expect
+
+- **Trust before the camera opens**: a short explainer (stays on device, where to stand, download size, how to stop) appears before the browser's permission prompt, and the model download shows real progress.
+- **Looks worn, not pasted**: garments are tinted to the room's brightness and colour cast from the camera, and cast a soft shadow on the body.
+- **Sizing is never hidden**: the size guide link sits on every product next to the size buttons. Delivery date, free-delivery threshold, returns and care sit right by the buy buttons.
+- **Larger photos**: the front flat-lay plus collar and fabric close-ups.
+
 ## Honest limits
 
 This is a 2D approximation for style and colour. Real drape, fabric physics and accurate sizing can't be inferred from pose landmarks alone, and the app says so next to every product.

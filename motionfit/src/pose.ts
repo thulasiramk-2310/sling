@@ -1,5 +1,6 @@
 import { FilesetResolver, PoseLandmarker } from '@mediapipe/tasks-vision'
 import type { Landmark } from './body'
+import { loadModel, type Progress } from './assets'
 
 export interface PersonMask {
   data: Float32Array
@@ -16,7 +17,7 @@ export interface PoseCamera {
 }
 
 // Webcam + on-device pose estimation. Frames are processed locally and never uploaded.
-export async function startPoseCamera(assetBase: string): Promise<PoseCamera> {
+export async function startPoseCamera(assetBase: string, onProgress?: Progress): Promise<PoseCamera> {
   const stream = await navigator.mediaDevices.getUserMedia({
     video: { width: { ideal: 960 }, height: { ideal: 720 }, facingMode: 'user' },
     audio: false,
@@ -29,10 +30,11 @@ export async function startPoseCamera(assetBase: string): Promise<PoseCamera> {
 
   let landmarker: PoseLandmarker
   try {
+    const modelAssetBuffer = await loadModel(assetBase, 'pose_landmarker_lite.task', onProgress)
     const fileset = await FilesetResolver.forVisionTasks(`${assetBase}mediapipe`)
     const make = (delegate: 'GPU' | 'CPU') =>
       PoseLandmarker.createFromOptions(fileset, {
-        baseOptions: { modelAssetPath: `${assetBase}models/pose_landmarker_lite.task`, delegate },
+        baseOptions: { modelAssetBuffer, delegate },
         runningMode: 'VIDEO',
         numPoses: 1,
         minPoseDetectionConfidence: 0.5,

@@ -1250,3 +1250,143 @@ a.btn {
     padding: 0 10px;
   }
 }
+
+/* Trust details, photos, loading */
+.panel-photo {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.panel-photo img {
+  display: block;
+  width: 60%;
+  height: auto;
+  margin: 0 auto;
+  transition: transform 0.4s;
+}
+.panel-photo:hover img {
+  transform: scale(1.04);
+}
+.panel-photo span {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink-2);
+  font-size: 10px;
+}
+.assure {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  list-style: none;
+  border-radius: 12px;
+  background: var(--bg);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.assure b {
+  color: var(--ink);
+}
+.photos {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+}
+.photos figure {
+  margin: 0;
+  min-width: 0;
+  border-radius: 14px;
+  background: var(--bg);
+  overflow: hidden;
+  position: relative;
+}
+.photos figure.main {
+  grid-row: span 2;
+}
+.photos img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.photos figcaption {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  color: var(--ink-2);
+}
+.stage-load {
+  position: absolute;
+  left: 50%;
+  bottom: 70px;
+  translate: -50% 0;
+  display: grid;
+  gap: 8px;
+  width: min(360px, calc(100% - 40px));
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(20, 19, 24, 0.78);
+  color: #f1efe9;
+  backdrop-filter: blur(8px);
+}
+.stage-load[hidden] {
+  display: none;
+}
+.load-bar {
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+.load-bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.2s;
+}
+.prime-list {
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.prime-list b {
+  display: block;
+  color: var(--ink);
+}
+.prime-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.btn:active:not(:disabled),
+.sizes button:active,
+.rail-item:active {
+  transform: translateY(1px) scale(0.98);
+}
+@media (max-width: 860px) {
+  .photos {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+  .photos figure.main {
+    grid-column: span 2;
+    grid-row: auto;
+  }
+}

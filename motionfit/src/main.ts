@@ -125,6 +125,40 @@ function trackBuild(body: Body) {
   state.bodyRatio = state.bodyRatio === null ? ratio : state.bodyRatio * 0.95 + ratio * 0.05
 }
 
+// Estimates the room's brightness and colour cast from a tiny copy of the camera image.
+const probe = document.createElement('canvas')
+probe.width = 24
+probe.height = 18
+const probeCtx = probe.getContext('2d', { willReadFrequently: true })!
+const light = { b: 1, tint: [1, 1, 1] as [number, number, number], frame: 0 }
+function updateLighting() {
+  const v = state.camera?.video
+  if (!v || !v.videoWidth) {
+    light.b = 1
+    light.tint = [1, 1, 1]
+  } else if (light.frame++ % 10 === 0) {
+    probeCtx.drawImage(v, 0, 0, probe.width, probe.height)
+    const d = probeCtx.getImageData(0, 0, probe.width, probe.height).data
+    let r = 0
+    let g = 0
+    let b = 0
+    for (let i = 0; i < d.length; i += 4) {
+      r += d[i]
+      g += d[i + 1]
+      b += d[i + 2]
+    }
+    const n = (d.length / 4) * 255
+    ;[r, g, b] = [r / n, g / n, b / n]
+    const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    const mean = (r + g + b) / 3 || 1
+    const target = Math.min(1.12, Math.max(0.62, 0.6 + lum * 0.9))
+    const tint: [number, number, number] = [r, g, b].map((c) => 1 + (c / mean - 1) * 0.3) as [number, number, number]
+    light.b += (target - light.b) * 0.3
+    light.tint = light.tint.map((c, i) => c + (tint[i] - c) * 0.3) as [number, number, number]
+  }
+  renderer.setLighting(light.b, light.tint)
+}
+
 function loop(t: number) {
   requestAnimationFrame(loop)
   if (!W) return
@@ -132,6 +166,7 @@ function loop(t: number) {
   const lm = state.camera ? state.camera.latest() : mannequinPose(t)
   const body = tracker.update(lm, map, t)
   renderer.update(body)
+  updateLighting()
   if (state.camera) {
     sctx.clearRect(0, 0, W, H)
     backdrop.draw(sctx, state.camera.video, state.camera.mask(), state.backdrop, W, H, { a: css('--studio-1'), b: css('--studio-2') })
@@ -284,11 +319,12 @@ cameraBtn.addEventListener('click', async () => {
     status.textContent = 'Demo mannequin · start the camera to try it on'
     return
   }
+  if (!(await primed())) return
   cameraBtn.disabled = true
   cameraBtn.textContent = 'Starting…'
-  status.textContent = 'Loading the pose model (about 6 MB, once)…'
+  status.textContent = 'Getting the fitting room ready…'
   try {
-    state.camera = await startPoseCamera(import.meta.env.BASE_URL)
+    state.camera = await startPoseCamera(import.meta.env.BASE_URL, showProgress)
     tracker.reset()
     state.bodyRatio = null
     $('#backdrop-pick').hidden = false
@@ -305,8 +341,33 @@ cameraBtn.addEventListener('click', async () => {
     cameraBtn.textContent = 'Start camera'
   } finally {
     cameraBtn.disabled = false
+    $('#stage-load').hidden = true
   }
 })
+
+function primed(): Promise<boolean> {
+  if (load('motionfit.primed', false, (v) => v === true)) return Promise.resolve(true)
+  const d = dialog('#prime-dialog')
+  return new Promise((resolve) => {
+    const done = (ok: boolean) => {
+      d.close()
+      if (ok) store('motionfit.primed', true)
+      resolve(ok)
+    }
+    $('#prime-ok').onclick = () => done(true)
+    $('#prime-cancel').onclick = () => done(false)
+    d.oncancel = () => resolve(false)
+    d.showModal()
+  })
+}
+
+function showProgress(loaded: number, total: number) {
+  $('#stage-load').hidden = false
+  const mb = (n: number) => (n / 1048576).toFixed(1)
+  const pct = total ? Math.min(100, (loaded / total) * 100) : 0
+  $('#load-fill').style.width = `${pct}%`
+  $('#load-text').textContent = !total ? `Downloading · ${mb(loaded)} MB` : pct >= 100 ? 'Starting the camera…' : `Downloading the pose model · ${mb(loaded)} of ${mb(total)} MB`
+}
 
 $$('[data-bg]').forEach((b) =>
   b.addEventListener('click', () => {
@@ -349,6 +410,7 @@ function renderPanel() {
   const inners = canLayer(item) ? catalog.filter(canBeInner) : []
   const innerId = state.inner[item.id] ?? ''
   $('#panel').innerHTML = `
+    <button class="panel-photo" data-act="photos" aria-label="View photos of ${escapeHtml(item.name)}"><img src="${thumb(item, variant, 360)}" alt="" width="180" height="180" /><span class="mono">View photos</span></button>
     <p class="mono cat">${item.upload ? 'Added by you' : item.category}</p>
     <h1>${escapeHtml(item.name)}</h1>
     <p class="price">${formatPrice(item.price)}</p>
@@ -364,7 +426,7 @@ function renderPanel() {
         : ''
     }
     <div class="size-row">
-      <div class="size-head"><span class="mono">Size${chosen ? ` · ${chosen}` : ''}</span><button class="link" data-act="find-size">${state.profile ? 'Edit my details' : 'Find my size'}</button></div>
+      <div class="size-head"><span class="mono">Size${chosen ? ` · ${chosen}` : ''}</span><button class="link" data-act="find-size">${state.profile ? 'Size guide · edit my details' : 'Size guide · find my size'}</button></div>
       <div class="sizes" role="radiogroup" aria-label="Size">
         ${SIZES.map((s) => `<button role="radio" aria-checked="${s === chosen}" data-size="${s}" class="${rec?.size === s ? 'rec' : ''}">${s}</button>`).join('')}
       </div>
@@ -387,6 +449,11 @@ function renderPanel() {
       <button class="btn" data-act="bag">Add to bag</button>
       <button class="btn ghost" data-act="save" aria-pressed="${isSaved}">${isSaved ? 'Saved ✓' : 'Save'}</button>
     </div>
+    <ul class="assure">
+      <li><b>${item.price >= FREE_DELIVERY_FROM ? 'Free delivery' : `Free delivery over ${formatPrice(FREE_DELIVERY_FROM)}`}</b> · arrives by ${deliveryDate()}</li>
+      <li><b>Free returns</b> within 30 days</li>
+      <li><b>Care</b> · ${careFor(item)}</li>
+    </ul>
     <div class="actions secondary">
       <button class="btn ghost small" data-act="snap">Snapshot</button>
       <button class="btn ghost small" data-act="share">Share look</button>
@@ -408,6 +475,7 @@ function renderPanel() {
     }),
   )
   $('#panel [data-act="find-size"]').addEventListener('click', openSizeDialog)
+  $('#panel [data-act="photos"]').addEventListener('click', () => openPhotos(item, variant))
   $('#panel [data-act="bag"]').addEventListener('click', addToBag)
   $('#panel [data-act="save"]').addEventListener('click', () => toggleSave())
   $('#panel [data-act="snap"]').addEventListener('click', snapshot)
@@ -433,6 +501,44 @@ function betweenText(size: Size, alt: Size) {
   const bigger = SIZES.indexOf(alt) > SIZES.indexOf(size)
   const [close, room] = bigger ? [size, alt] : [alt, size]
   return `Between sizes: <b>${close}</b> for a closer fit, <b>${room}</b> for more room. We'd pick <b>${size}</b>.`
+}
+
+function deliveryDate() {
+  const d = new Date()
+  let added = 0
+  while (added < 4) {
+    d.setDate(d.getDate() + 1)
+    if (d.getDay() !== 0) added++
+  }
+  return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })
+}
+
+function careFor(item: Item) {
+  if (item.upload) return 'See the label'
+  if (item.pattern === 'denim') return 'Wash inside out, cold; line dry'
+  if (item.front === 'zip' && item.category === 'Jackets') return 'Wipe clean; reproof yearly'
+  if (item.pattern === 'rib' || item.category === 'Knitwear') return 'Gentle wash 30°C; dry flat'
+  return 'Machine wash 30°C; line dry'
+}
+
+// Larger product views: the full flat-lay plus close-ups of the fabric and collar painted at higher scale.
+function openPhotos(item: Item, variant: Variant) {
+  const shots: { src: string; label: string }[] = [{ src: thumb(item, variant, 720), label: 'Front' }]
+  const t = textures(item, variant)
+  const crop = (x: number, y: number, w: number, h: number) => {
+    const c = document.createElement('canvas')
+    c.width = 480
+    c.height = 480
+    c.getContext('2d')!.drawImage(t.torso, x, y, w, h, 0, 0, 480, 480)
+    return c.toDataURL()
+  }
+  if (!item.upload) {
+    shots.push({ src: crop(176, 30, 160, 160), label: 'Collar' })
+    shots.push({ src: crop(150, 300, 120, 120), label: 'Fabric' })
+  }
+  $('#photos-title').textContent = item.name
+  $('#photos').innerHTML = shots.map((s, i) => `<figure class="${i === 0 ? 'main' : ''}"><img src="${s.src}" alt="${escapeHtml(item.name)}, ${s.label.toLowerCase()}" /><figcaption class="mono">${s.label}</figcaption></figure>`).join('')
+  dialog('#photos-dialog').showModal()
 }
 
 // ---------- Size dialog ----------

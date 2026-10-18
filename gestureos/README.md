@@ -50,6 +50,12 @@ It ships as two things that share one engine:
 - **Video aware**: swiping over a video seeks ±10 s instead of navigating away.
 - **Safe actions**: gesture-opened links are restricted to http/https.
 
+## Comfort and trust
+
+- **Low-effort pointer**: trackpad-style acceleration driven by raw hand speed, so the arm can stay low and still ("gorilla arm" is the top complaint with mid-air input). Posture tips and a 20-minute rest reminder are included.
+- **Visible responsiveness**: the status pill shows live fps and camera-to-cursor delay, turning amber past ~100 ms, where pointer lag becomes noticeable.
+- **Camera explainer** before the browser prompt and a byte-accurate model download progress bar.
+
 ## Extension architecture
 
 ```

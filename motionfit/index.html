@@ -49,6 +49,7 @@
             <svg viewBox="0 0 120 160" aria-hidden="true"><circle cx="60" cy="28" r="16" /><path d="M24 70c0-14 16-22 36-22s36 8 36 22v70H24z" /></svg>
             <p>Step back until your shoulders and arms are in view</p>
           </div>
+          <div class="stage-load" id="stage-load" hidden><div class="load-bar"><span id="load-fill"></span></div><span class="mono" id="load-text"></span></div>
           <div class="caption" id="caption"></div>
           <div class="toast" id="toast" role="status" aria-live="polite"></div>
         </div>
@@ -106,6 +107,22 @@
     <dialog id="upload-dialog" aria-labelledby="upload-title" class="wide">
       <div class="dialog-head"><h2 id="upload-title">Add your own garment</h2><button class="close" data-close aria-label="Close">×</button></div>
       <div id="upload"></div>
+    </dialog>
+
+    <dialog id="prime-dialog" aria-labelledby="prime-title">
+      <div class="dialog-head"><h2 id="prime-title">Try clothes on with your camera</h2></div>
+      <ul class="prime-list">
+        <li><b>Your camera stays private.</b> Body tracking runs in this browser. No video, photos or body measurements are uploaded or stored.</li>
+        <li><b>Stand about 1.5–2 m back</b> so your shoulders and arms are in view. Good, even light in front of you works best.</li>
+        <li><b>About 6 MB downloads once</b> for the pose model.</li>
+        <li><b>Stop any time.</b> Press Stop camera and the camera switches off immediately.</li>
+      </ul>
+      <div class="prime-actions"><button class="btn ghost" id="prime-cancel">Not now</button><button class="btn" id="prime-ok">Continue</button></div>
+    </dialog>
+
+    <dialog id="photos-dialog" aria-labelledby="photos-title" class="wide">
+      <div class="dialog-head"><h2 id="photos-title">Photos</h2><button class="close" data-close aria-label="Close">×</button></div>
+      <div class="photos" id="photos"></div>
     </dialog>
 
     <script type="module" src="/src/main.ts"></script>
