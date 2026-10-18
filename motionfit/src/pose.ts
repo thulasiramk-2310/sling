@@ -1,9 +1,17 @@
 import { FilesetResolver, PoseLandmarker } from '@mediapipe/tasks-vision'
 import type { Landmark } from './body'
 
+export interface PersonMask {
+  data: Float32Array
+  width: number
+  height: number
+}
+
 export interface PoseCamera {
   video: HTMLVideoElement
   latest: () => Landmark[] | null
+  // Per-pixel "this is the person" confidence, used to replace the background.
+  mask: () => PersonMask | null
   stop: () => void
 }
 
@@ -30,6 +38,7 @@ export async function startPoseCamera(assetBase: string): Promise<PoseCamera> {
         minPoseDetectionConfidence: 0.5,
         minPosePresenceConfidence: 0.5,
         minTrackingConfidence: 0.5,
+        outputSegmentationMasks: true,
       })
     landmarker = await make('GPU').catch(() => make('CPU'))
   } catch (err) {
@@ -38,6 +47,7 @@ export async function startPoseCamera(assetBase: string): Promise<PoseCamera> {
   }
 
   let latest: Landmark[] | null = null
+  let mask: PersonMask | null = null
   let lastTime = -1
   let raf = 0
   let stopped = false
@@ -48,12 +58,18 @@ export async function startPoseCamera(assetBase: string): Promise<PoseCamera> {
     lastTime = video.currentTime
     const result = landmarker.detectForVideo(video, performance.now())
     latest = result.landmarks[0] ?? null
+    const m = result.segmentationMasks?.[0]
+    if (m) {
+      mask = { data: m.getAsFloat32Array().slice(), width: m.width, height: m.height }
+      m.close()
+    } else mask = null
   }
   raf = requestAnimationFrame(loop)
 
   return {
     video,
     latest: () => latest,
+    mask: () => mask,
     stop: () => {
       stopped = true
       cancelAnimationFrame(raf)

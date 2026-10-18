@@ -18,13 +18,15 @@
       <header class="top">
         <div class="brand"><span class="brand-name">MotionFit</span><span class="mono brand-sub">Fitting room 01</span></div>
         <div class="top-actions">
+          <button class="btn ghost hide-sm" id="upload-btn" aria-haspopup="dialog">Add garment</button>
           <button class="btn ghost" id="saved-btn" aria-haspopup="dialog">Saved <span class="count" id="saved-count">0</span></button>
+          <button class="btn ghost" id="bag-btn" aria-haspopup="dialog">Bag <span class="count" id="bag-count">0</span></button>
           <button class="btn" id="camera-btn">Start camera</button>
         </div>
       </header>
 
       <aside class="rail" aria-label="Catalog">
-        <h2 class="mono rail-title">The edit · 8 pieces</h2>
+        <h2 class="mono rail-title" id="rail-title">The edit · 8 pieces</h2>
         <div class="rail-list" id="rail" role="listbox" aria-label="Choose a garment"></div>
       </aside>
 
@@ -32,6 +34,11 @@
         <div class="mirror" id="mirror"></div>
         <div class="overlay">
           <div class="chip mono" id="status">Demo mannequin · start the camera to try it on</div>
+          <div class="backdrop-pick" id="backdrop-pick" role="radiogroup" aria-label="Background" hidden>
+            <button role="radio" data-bg="off" aria-checked="true">Room</button>
+            <button role="radio" data-bg="blur" aria-checked="false">Blur</button>
+            <button role="radio" data-bg="studio" aria-checked="false">Studio</button>
+          </div>
           <button class="air left a1" id="air-prev" data-air="prev" aria-label="Previous outfit"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg><span>Prev</span></button>
           <button class="air left a2" id="air-save" data-air="save" aria-label="Save outfit"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /></svg><span>Save</span></button>
           <button class="air right a1" id="air-next" data-air="next" aria-label="Next outfit"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg><span>Next</span></button>
@@ -66,6 +73,39 @@
     <dialog id="saved-dialog" aria-labelledby="saved-title">
       <div class="dialog-head"><h2 id="saved-title">Saved looks</h2><button class="close" data-close aria-label="Close">×</button></div>
       <div class="saved" id="saved"></div>
+    </dialog>
+
+    <dialog id="size-dialog" aria-labelledby="size-title">
+      <div class="dialog-head"><h2 id="size-title">Find my size</h2><button class="close" data-close aria-label="Close">×</button></div>
+      <form class="size-form" id="size-form" novalidate>
+        <label class="up-field"><span>Height (cm)</span><input id="p-height" type="number" min="120" max="220" step="1" required /></label>
+        <label class="up-field"><span>Weight (kg)</span><input id="p-weight" type="number" min="30" max="200" step="1" required /></label>
+        <fieldset class="fit-pick">
+          <legend>How do you like your tops to fit?</legend>
+          <label><input type="radio" name="p-fit" value="snug" /> <span>Close to the body</span></label>
+          <label><input type="radio" name="p-fit" value="regular" checked /> <span>Regular</span></label>
+          <label><input type="radio" name="p-fit" value="roomy" /> <span>Roomy</span></label>
+        </fieldset>
+        <div class="size-result" id="size-result" aria-live="polite"></div>
+        <table class="size-chart" id="size-chart"></table>
+        <p class="fit-note">Your answers stay on this device. The estimate uses height and weight and, if the camera can see your shoulders and hips, your build. It's a guide, not a tape measure.</p>
+        <button class="btn" type="submit">Save my details</button>
+      </form>
+    </dialog>
+
+    <dialog id="bag-dialog" aria-labelledby="bag-title">
+      <div class="dialog-head"><h2 id="bag-title">Your bag</h2><button class="close" data-close aria-label="Close">×</button></div>
+      <div id="bag"></div>
+    </dialog>
+
+    <dialog id="share-dialog" aria-labelledby="share-title">
+      <div class="dialog-head"><h2 id="share-title">Share this look</h2><button class="close" data-close aria-label="Close">×</button></div>
+      <div class="share" id="share"></div>
+    </dialog>
+
+    <dialog id="upload-dialog" aria-labelledby="upload-title" class="wide">
+      <div class="dialog-head"><h2 id="upload-title">Add your own garment</h2><button class="close" data-close aria-label="Close">×</button></div>
+      <div id="upload"></div>
     </dialog>
 
     <script type="module" src="/src/main.ts"></script>

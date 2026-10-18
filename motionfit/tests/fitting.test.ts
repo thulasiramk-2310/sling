@@ -3,6 +3,8 @@ import { AirControls } from '../src/airControls'
 import { BodyTracker, coverMap } from '../src/body'
 import { catalog, completeTheLook } from '../src/catalog'
 import { mannequinPose } from '../src/mannequin'
+import { SIZES, buildAdjustment, recommendSize } from '../src/size'
+import { addLine, setQty, totals } from '../src/bag'
 
 const map = coverMap(1000, 750, 960, 720)
 
@@ -75,5 +77,53 @@ describe('catalog', () => {
   it('pairs light tops with dark bottoms and dark tops with light bottoms', () => {
     expect(completeTheLook({ id: 'w', name: 'White', base: '#f5f5f5', accent: '#000000' })[0].name).toMatch(/Indigo|Charcoal/)
     expect(completeTheLook({ id: 'b', name: 'Black', base: '#151515', accent: '#000000' })[0].name).toMatch(/Stone|Light/)
+  })
+})
+
+describe('size advisor', () => {
+  const regular = catalog.find((i) => i.id === 'breton')!
+  const slim = catalog.find((i) => i.id === 'polo')!
+
+  it('recommends larger sizes for larger bodies', () => {
+    const small = recommendSize(regular, { heightCm: 165, weightKg: 55, fit: 'regular' })
+    const large = recommendSize(regular, { heightCm: 185, weightKg: 95, fit: 'regular' })
+    expect(SIZES.indexOf(large.size)).toBeGreaterThan(SIZES.indexOf(small.size))
+  })
+
+  it('a typical 175 cm / 72 kg person gets an M in a regular fit', () => {
+    expect(recommendSize(regular, { heightCm: 175, weightKg: 72, fit: 'regular' }).size).toBe('M')
+  })
+
+  it('slim pieces and a roomy preference push the size up', () => {
+    const p = { heightCm: 175, weightKg: 80, fit: 'regular' as const }
+    const base = SIZES.indexOf(recommendSize(regular, p).size)
+    expect(SIZES.indexOf(recommendSize(regular, { ...p, fit: 'roomy' }).size)).toBeGreaterThanOrEqual(base)
+    expect(SIZES.indexOf(recommendSize(slim, p).size)).toBeGreaterThanOrEqual(base)
+  })
+
+  it('flags between-size results with an alternative', () => {
+    // Pick a weight that lands right at a size boundary.
+    const advice = recommendSize(regular, { heightCm: 170, weightKg: (94 - 52) / 0.62, fit: 'regular' })
+    expect(advice.confidence).toBe('between')
+    expect(advice.alternative).not.toBeNull()
+  })
+
+  it('camera build adjustment is bounded', () => {
+    expect(buildAdjustment(2)).toBe(4)
+    expect(buildAdjustment(0.1)).toBe(-4)
+    expect(buildAdjustment(null)).toBe(0)
+  })
+})
+
+describe('bag', () => {
+  it('merges identical lines and totals with delivery', () => {
+    let bag = addLine([], { item: 'breton', variant: 'navy', size: 'M' })
+    bag = addLine(bag, { item: 'breton', variant: 'navy', size: 'M' })
+    expect(bag).toHaveLength(1)
+    expect(bag[0].qty).toBe(2)
+    expect(totals(bag).delivery).toBe(0)
+    const one = setQty(bag, 0, 1)
+    expect(totals(one)).toMatchObject({ subtotal: 1299, delivery: 99, total: 1398, count: 1 })
+    expect(setQty(one, 0, 0)).toHaveLength(0)
   })
 })

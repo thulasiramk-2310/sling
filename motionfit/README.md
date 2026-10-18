@@ -9,6 +9,12 @@ A virtual fitting room in the browser. Stand in front of your laptop camera and 
 - **Style comparison**: capture snapshots, pick two and view them side by side, then save the winner.
 - **Complete the look**: explainable pairing suggestions (bottoms and shoes) based on the top's lightness, plus "you might also like".
 - **8 pieces × 3 colourways** with fabric, fit and ₹ prices. Saved looks persist in local storage.
+- **Size advisor**: height, weight and fit preference give a recommended size per garment (slim cuts lean a size up, boxy ones down). It flags between-size cases with both options, explains its reasoning, and refines the estimate with your shoulder-to-torso ratio when the camera can see your hips. A size chart highlights your size.
+- **Layering**: jackets and overshirts can be worn open over a tee, polo or shirt. The outer garment is repainted with an open front, and the inner layer renders underneath.
+- **Background**: Room, Blur or Studio, using Pose Landmarker's person segmentation mask (no extra model).
+- **Bag and checkout**: sizes, quantities, free delivery over ₹1,999, a validated delivery form (6-digit PIN, phone, email) and an order confirmation. It's clearly labelled as a demo: no payment is taken.
+- **Share card**: a 1080×1350 image of the look with names and prices, downloadable or shared through the system share sheet.
+- **Add your own garment (retailers)**: upload a front-facing product photo, optionally remove a plain background, and drag six markers (shoulders, hem, cuffs). The photo is warped into the same torso and sleeve texture layout as the built-in pieces, so it follows the body, and it's stored in IndexedDB. Printed text is pre-flipped so it reads correctly in the mirror.
 
 ## Honest limits
 
@@ -19,7 +25,7 @@ This is a 2D approximation for style and colour. Real drape, fabric physics and 
 ```bash
 npm install
 npm run dev     # http://localhost:5173
-npm test        # body mapping, air controls and pairing rules
+npm test        # body mapping, air controls, pairing rules, size advisor, bag totals
 npm run build
 ```
 

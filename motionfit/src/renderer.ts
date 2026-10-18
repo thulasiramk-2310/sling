@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import type { Body, Pt } from './body'
-import type { Item, Variant } from './catalog'
-import { SLEEVE, TORSO, paintSleeve, paintTorso } from './garmentArt'
+import { SLEEVE, TORSO } from './garmentArt'
 
 // A deformable grid: positions are rewritten every frame from body key points, UVs stay fixed.
 function grid(cols: number, rows: number) {
@@ -32,10 +31,13 @@ export class GarmentRenderer {
   private scene = new THREE.Scene()
   private camera = new THREE.OrthographicCamera(0, 1, 0, 1, -10, 10)
   private torso = grid(12, 16)
+  private inner = grid(12, 16)
   private sleeves = [grid(2, 24), grid(2, 24)]
   private torsoMat = new THREE.MeshBasicMaterial({ transparent: true, depthTest: false, side: THREE.DoubleSide })
   // The two sleeves are mirror images, so one of them always faces away from the camera.
   private sleeveMat = new THREE.MeshBasicMaterial({ transparent: true, depthTest: false, side: THREE.DoubleSide })
+  private innerMat = new THREE.MeshBasicMaterial({ transparent: true, depthTest: false, side: THREE.DoubleSide })
+  private innerMesh: THREE.Mesh
   private meshes: THREE.Mesh[] = []
   private textures: THREE.Texture[] = []
 
@@ -51,6 +53,10 @@ export class GarmentRenderer {
       this.scene.add(m)
       this.meshes.push(m)
     }
+    this.innerMesh = new THREE.Mesh(this.inner.g, this.innerMat)
+    this.innerMesh.renderOrder = 4
+    this.innerMesh.frustumCulled = false
+    this.scene.add(this.innerMesh)
     const t = new THREE.Mesh(this.torso.g, this.torsoMat)
     t.renderOrder = 5
     t.frustumCulled = false
@@ -67,24 +73,34 @@ export class GarmentRenderer {
     this.camera.updateProjectionMatrix()
   }
 
-  setGarment(item: Item, variant: Variant) {
+  // Accepts any painted or uploaded textures; inner is an optional layer worn under an open jacket.
+  setTextures(torso: HTMLCanvasElement, sleeve: HTMLCanvasElement, inner: HTMLCanvasElement | null = null) {
     this.textures.forEach((t) => t.dispose())
-    const torso = new THREE.CanvasTexture(paintTorso(item, variant))
-    const sleeve = new THREE.CanvasTexture(paintSleeve(item, variant))
-    for (const t of [torso, sleeve]) {
+    const make = (c: HTMLCanvasElement) => {
+      const t = new THREE.CanvasTexture(c)
       t.colorSpace = THREE.SRGBColorSpace
       t.anisotropy = 4
+      return t
     }
-    this.textures = [torso, sleeve]
-    this.torsoMat.map = torso
-    this.sleeveMat.map = sleeve
-    this.torsoMat.needsUpdate = this.sleeveMat.needsUpdate = true
+    this.textures = [make(torso), make(sleeve)]
+    this.torsoMat.map = this.textures[0]
+    this.sleeveMat.map = this.textures[1]
+    if (inner) {
+      this.textures.push(make(inner))
+      this.innerMat.map = this.textures[2]
+    }
+    this.hasInner = !!inner
+    this.torsoMat.needsUpdate = this.sleeveMat.needsUpdate = this.innerMat.needsUpdate = true
   }
+
+  private hasInner = false
 
   update(body: Body | null) {
     this.meshes.forEach((m) => (m.visible = !!body))
+    this.innerMesh.visible = !!body && this.hasInner
     if (!body) return
-    this.layoutTorso(body)
+    this.layoutTorso(body, this.torso, 1)
+    if (this.hasInner) this.layoutTorso(body, this.inner, 0.94)
     this.layoutSleeve(this.sleeves[0], body.shoulderR, body.elbowR, body.wristR, body, -1)
     this.layoutSleeve(this.sleeves[1], body.shoulderL, body.elbowL, body.wristL, body, 1)
   }
@@ -93,8 +109,8 @@ export class GarmentRenderer {
     this.renderer.render(this.scene, this.camera)
   }
 
-  private layoutTorso(b: Body) {
-    const { g, cols, rows } = this.torso
+  private layoutTorso(b: Body, target: ReturnType<typeof grid>, widthK: number) {
+    const { g, cols, rows } = target
     const pos = g.getAttribute('position') as THREE.BufferAttribute
     const midS = lerp(b.shoulderR, b.shoulderL, 0.5)
     const midH = lerp(b.hipR, b.hipL, 0.5)
@@ -112,8 +128,8 @@ export class GarmentRenderer {
     const botLen = Math.max(len(acrossBot), sw * 0.94)
     const botDir = { x: acrossBot.x / (len(acrossBot) || 1), y: acrossBot.y / (len(acrossBot) || 1) }
     // Cloth hangs fairly straight from the chest instead of hugging the waist.
-    const topW = sw * widthScale
-    const botW = botLen * widthScale * 0.98
+    const topW = sw * widthScale * widthK
+    const botW = botLen * widthScale * 0.98 * widthK
     for (let r = 0; r <= rows; r++) {
       const v = r / rows
       for (let c = 0; c <= cols; c++) {

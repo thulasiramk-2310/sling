@@ -1,42 +1,76 @@
 import './style.css'
 import { AirControls, type AirButton } from './airControls'
-import { BodyTracker, coverMap, type Pt, type StageMap } from './body'
-import { catalog, completeTheLook, formatPrice, itemById, similar, type Item, type Variant } from './catalog'
-import { paintFlatLay } from './garmentArt'
+import { Backdrop, type BackdropMode } from './backdrop'
+import { addLine, setQty, totals, FREE_DELIVERY_FROM, type BagLine } from './bag'
+import { BodyTracker, coverMap, type Body, type Pt, type StageMap } from './body'
+import { canBeInner, canLayer, catalog, completeTheLook, formatPrice, itemById, registerItem, similar, unregisterItem, type Item, type Variant } from './catalog'
+import { paintFlatLay, paintSleeve, paintTorso } from './garmentArt'
+import { deleteGarment, listGarments, saveGarment, type StoredGarment } from './garmentStore'
 import { MANNEQUIN_SOURCE, drawMannequin, mannequinPose } from './mannequin'
 import { startPoseCamera, type PoseCamera } from './pose'
 import { GarmentRenderer } from './renderer'
+import { SIZES, SIZE_CHART, recommendSize, type Profile, type Size } from './size'
+import { buildTextures, uploadThumb, type UploadSpec } from './upload'
+import { mountUploadEditor, type NewGarment } from './uploadEditor'
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector(sel) as T
 const $$ = <T extends HTMLElement = HTMLElement>(sel: string) => Array.from(document.querySelectorAll(sel)) as T[]
-const escapeHtml = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
+const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
+const dialog = (id: string) => $<HTMLDialogElement>(id)
+
+// ---------- Persistence ----------
+function load<T>(key: string, fallback: T, valid: (v: unknown) => boolean): T {
+  try {
+    const v = JSON.parse(localStorage.getItem(key) ?? 'null')
+    return valid(v) ? (v as T) : fallback
+  } catch {
+    return fallback
+  }
+}
+function store(key: string, value: unknown) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch {
+    // Private mode or full storage: the state still lasts for this visit.
+  }
+}
 
 // ---------- State ----------
 interface Snap {
   url: string
   item: string
   variant: string
-}
-const SAVED_KEY = 'motionfit.saved'
-const loadSaved = (): string[] => {
-  try {
-    const v = JSON.parse(localStorage.getItem(SAVED_KEY) ?? '[]')
-    return Array.isArray(v) ? v.filter((x) => typeof x === 'string') : []
-  } catch {
-    return []
-  }
+  inner: string | null
 }
 const state = {
   item: 0,
   variant: 0,
+  inner: {} as Record<string, string | null>,
+  size: {} as Record<string, Size>,
   camera: null as PoseCamera | null,
-  saved: loadSaved(),
+  saved: load<string[]>('motionfit.saved', [], Array.isArray),
+  bag: load<BagLine[]>('motionfit.bag', [], Array.isArray),
+  profile: load<Profile | null>('motionfit.profile', null, (v) => !!v && typeof v === 'object'),
+  backdrop: 'off' as BackdropMode,
   snaps: [] as Snap[],
   picked: [] as number[],
+  bodyRatio: null as number | null,
 }
 const current = () => {
   const item = catalog[state.item]
-  return { item, variant: item.variants[state.variant] }
+  return { item, variant: item.variants[Math.min(state.variant, item.variants.length - 1)] }
+}
+
+// ---------- Textures ----------
+const textureCache = new Map<string, { torso: HTMLCanvasElement; sleeve: HTMLCanvasElement }>()
+function textures(item: Item, variant: Variant, open = false) {
+  const key = `${item.id}:${variant.id}:${open}`
+  let t = textureCache.get(key)
+  if (!t) {
+    t = item.upload ? buildTextures(item.upload) : { torso: paintTorso(item, variant, open), sleeve: paintSleeve(item, variant) }
+    textureCache.set(key, t)
+  }
+  return t
 }
 
 // ---------- Stage ----------
@@ -50,6 +84,7 @@ renderer.canvas.className = 'garment'
 mirror.append(source, renderer.canvas)
 const tracker = new BodyTracker()
 const air = new AirControls()
+const backdrop = new Backdrop()
 let W = 0
 let H = 0
 let airButtons: AirButton[] = []
@@ -80,6 +115,16 @@ const css = (name: string) => getComputedStyle(document.documentElement).getProp
 const hands = [$('#hand-0'), $('#hand-1')]
 const guide = $('#guide')
 
+// Shoulder width over torso length, smoothed, for the size advisor. Only measured when hips are really visible.
+function trackBuild(body: Body) {
+  if (body.hipsEstimated) return
+  const sw = Math.hypot(body.shoulderL.x - body.shoulderR.x, body.shoulderL.y - body.shoulderR.y)
+  const ms = { x: (body.shoulderL.x + body.shoulderR.x) / 2, y: (body.shoulderL.y + body.shoulderR.y) / 2 }
+  const mh = { x: (body.hipL.x + body.hipR.x) / 2, y: (body.hipL.y + body.hipR.y) / 2 }
+  const ratio = sw / (Math.hypot(mh.x - ms.x, mh.y - ms.y) || 1)
+  state.bodyRatio = state.bodyRatio === null ? ratio : state.bodyRatio * 0.95 + ratio * 0.05
+}
+
 function loop(t: number) {
   requestAnimationFrame(loop)
   if (!W) return
@@ -87,11 +132,15 @@ function loop(t: number) {
   const lm = state.camera ? state.camera.latest() : mannequinPose(t)
   const body = tracker.update(lm, map, t)
   renderer.update(body)
-  if (!state.camera) drawMannequin(sctx, body, map, { backdrop: css('--studio-1'), floor: css('--studio-2'), skin: css('--mannequin') })
+  if (state.camera) {
+    sctx.clearRect(0, 0, W, H)
+    backdrop.draw(sctx, state.camera.video, state.camera.mask(), state.backdrop, W, H, { a: css('--studio-1'), b: css('--studio-2') })
+  } else drawMannequin(sctx, body, map, { backdrop: css('--studio-1'), floor: css('--studio-2'), skin: css('--mannequin') })
   renderer.render()
 
   guide.hidden = !state.camera || !!body
   if (state.camera && body) {
+    trackBuild(body)
     // The mirror is flipped for display, so screen x is the mirror image of camera x.
     const pts: (Pt | null)[] = [
       body.wristVis.r > 0.5 ? { x: W - body.wristR.x, y: body.wristR.y } : null,
@@ -119,21 +168,31 @@ function toast(text: string) {
   el.textContent = text
   el.classList.add('on')
   clearTimeout(toastTimer)
-  toastTimer = window.setTimeout(() => el.classList.remove('on'), 1600)
+  toastTimer = window.setTimeout(() => el.classList.remove('on'), 1700)
+}
+
+function applyGarment() {
+  const { item, variant } = current()
+  const innerId = canLayer(item) ? state.inner[item.id] : null
+  const innerItem = innerId ? itemById.get(innerId) : undefined
+  const outer = textures(item, variant, !!innerItem)
+  const inner = innerItem ? textures(innerItem, innerItem.variants[0]).torso : null
+  renderer.setTextures(outer.torso, outer.sleeve, inner)
 }
 
 function select(itemIndex: number, variantIndex = 0) {
   state.item = (itemIndex + catalog.length) % catalog.length
   state.variant = variantIndex
-  const { item, variant } = current()
-  renderer.setGarment(item, variant)
+  applyGarment()
   renderPanel()
-  $$('.rail-item').forEach((el, i) => {
-    el.classList.toggle('active', i === state.item)
-    el.setAttribute('aria-selected', String(i === state.item))
+  const { item, variant } = current()
+  $$('.rail-item').forEach((el) => {
+    const on = el.dataset.id === item.id
+    el.classList.toggle('active', on)
+    el.setAttribute('aria-selected', String(on))
   })
-  $(`.rail-item[data-i="${state.item}"]`)?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' })
-  $('#caption').innerHTML = `<span>${escapeHtml(item.name)}</span><span class="mono">${variant.name} · ${formatPrice(item.price)}</span>`
+  $(`.rail-item[data-id="${item.id}"]`)?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' })
+  $('#caption').innerHTML = `<span>${escapeHtml(item.name)}</span><span class="mono">${escapeHtml(variant.name)} · ${formatPrice(item.price)}</span>`
 }
 
 function step(dir: number, fromGesture = false) {
@@ -150,41 +209,59 @@ function runAir(id: string) {
 $$('[data-air]').forEach((b) => b.addEventListener('click', () => runAir(b.dataset.air!)))
 
 const savedKey = () => `${current().item.id}:${current().variant.id}`
-function persistSaved() {
-  try {
-    localStorage.setItem(SAVED_KEY, JSON.stringify(state.saved))
-  } catch {
-    // Private mode: saved looks still last for this visit.
-  }
+function persist() {
+  store('motionfit.saved', state.saved)
+  store('motionfit.bag', state.bag)
   $('#saved-count').textContent = String(state.saved.length)
+  $('#bag-count').textContent = String(totals(state.bag).count)
 }
 function toggleSave(key = savedKey()) {
   const i = state.saved.indexOf(key)
   if (i >= 0) state.saved.splice(i, 1)
   else state.saved.unshift(key)
-  persistSaved()
+  persist()
   toast(i >= 0 ? 'Removed from saved' : 'Saved')
   renderPanel()
 }
 
-function snapshot() {
+// Recommended size for an item, if the shopper has told us their measurements.
+function advice(item: Item) {
+  return state.profile ? recommendSize(item, state.profile, state.bodyRatio) : null
+}
+function chosenSize(item: Item): Size | null {
+  return state.size[item.id] ?? advice(item)?.size ?? null
+}
+
+function addToBag() {
   const { item, variant } = current()
+  const size = chosenSize(item)
+  if (!size) {
+    toast('Choose a size first')
+    $('.sizes')?.classList.add('nudge')
+    setTimeout(() => $('.sizes')?.classList.remove('nudge'), 600)
+    return
+  }
+  state.bag = addLine(state.bag, { item: item.id, variant: variant.id, size })
+  persist()
+  toast(`Added ${size} to your bag`)
+}
+
+function captureStage(maxSide = 360) {
   const c = document.createElement('canvas')
-  const scale = 360 / Math.max(W, H)
+  const scale = maxSide / Math.max(W, H)
   c.width = Math.round(W * scale)
   c.height = Math.round(H * scale)
   const ctx = c.getContext('2d')!
   ctx.translate(c.width, 0)
   ctx.scale(-1, 1)
-  const v = state.camera?.video
-  if (v) {
-    const map = coverMap(c.width, c.height, v.videoWidth, v.videoHeight)
-    const o = map.toStage(0, 0)
-    const e = map.toStage(1, 1)
-    ctx.drawImage(v, o.x, o.y, e.x - o.x, e.y - o.y)
-  } else ctx.drawImage(source, 0, 0, c.width, c.height)
+  ctx.drawImage(source, 0, 0, c.width, c.height)
   ctx.drawImage(renderer.canvas, 0, 0, c.width, c.height)
-  state.snaps.unshift({ url: c.toDataURL('image/jpeg', 0.86), item: item.id, variant: variant.id })
+  return c
+}
+
+function snapshot() {
+  const { item, variant } = current()
+  state.snaps.unshift({ url: captureStage().toDataURL('image/jpeg', 0.86), item: item.id, variant: variant.id, inner: canLayer(item) ? (state.inner[item.id] ?? null) : null })
   state.snaps = state.snaps.slice(0, 8)
   state.picked = []
   stage.classList.remove('flash')
@@ -200,10 +277,9 @@ const status = $('#status')
 cameraBtn.addEventListener('click', async () => {
   if (state.camera) {
     state.camera.stop()
-    state.camera.video.remove()
     state.camera = null
     tracker.reset()
-    source.hidden = false
+    $('#backdrop-pick').hidden = true
     cameraBtn.textContent = 'Start camera'
     status.textContent = 'Demo mannequin · start the camera to try it on'
     return
@@ -212,12 +288,10 @@ cameraBtn.addEventListener('click', async () => {
   cameraBtn.textContent = 'Starting…'
   status.textContent = 'Loading the pose model (about 6 MB, once)…'
   try {
-    const cam = await startPoseCamera(import.meta.env.BASE_URL)
-    cam.video.className = 'source'
-    mirror.prepend(cam.video)
-    source.hidden = true
+    state.camera = await startPoseCamera(import.meta.env.BASE_URL)
     tracker.reset()
-    state.camera = cam
+    state.bodyRatio = null
+    $('#backdrop-pick').hidden = false
     cameraBtn.textContent = 'Stop camera'
     status.textContent = 'Live · sweep a hand sideways to change looks'
   } catch (err) {
@@ -234,20 +308,29 @@ cameraBtn.addEventListener('click', async () => {
   }
 })
 
-// ---------- Rendering UI ----------
+$$('[data-bg]').forEach((b) =>
+  b.addEventListener('click', () => {
+    state.backdrop = b.dataset.bg as BackdropMode
+    $$('[data-bg]').forEach((x) => x.setAttribute('aria-checked', String(x === b)))
+  }),
+)
+
+// ---------- Rail ----------
 const thumbs = new Map<string, string>()
 function thumb(item: Item, variant: Variant, size = 220) {
   const key = `${item.id}:${variant.id}:${size}`
-  if (!thumbs.has(key)) thumbs.set(key, paintFlatLay(item, variant, size).toDataURL())
+  if (!thumbs.has(key)) thumbs.set(key, (item.upload ? uploadThumb(item.upload, size) : paintFlatLay(item, variant, size)).toDataURL())
   return thumbs.get(key)!
 }
 
 function renderRail() {
+  $('#rail-title').textContent = `The edit · ${catalog.length} pieces`
   $('#rail').innerHTML = catalog
     .map(
       (item, i) => `
-      <button class="rail-item" role="option" data-i="${i}" aria-selected="false">
+      <button class="rail-item" role="option" data-i="${i}" data-id="${item.id}" aria-selected="false">
         <img src="${thumb(item, item.variants[0])}" alt="" width="110" height="110" />
+        ${item.upload ? '<span class="badge mono">Yours</span>' : ''}
         <span class="rail-name">${escapeHtml(item.name)}</span>
         <span class="rail-meta mono">${formatPrice(item.price)}<span class="dots">${item.variants.map((v) => `<i style="background:${v.base}"></i>`).join('')}</span></span>
       </button>`,
@@ -256,48 +339,274 @@ function renderRail() {
   $$('.rail-item').forEach((el) => el.addEventListener('click', () => select(Number(el.dataset.i))))
 }
 
+// ---------- Product panel ----------
 function renderPanel() {
   const { item, variant } = current()
   const isSaved = state.saved.includes(savedKey())
   const look = completeTheLook(variant)
+  const rec = advice(item)
+  const chosen = chosenSize(item)
+  const inners = canLayer(item) ? catalog.filter(canBeInner) : []
+  const innerId = state.inner[item.id] ?? ''
   $('#panel').innerHTML = `
-    <p class="mono cat">${item.category}</p>
+    <p class="mono cat">${item.upload ? 'Added by you' : item.category}</p>
     <h1>${escapeHtml(item.name)}</h1>
     <p class="price">${formatPrice(item.price)}</p>
     <p class="blurb">${escapeHtml(item.blurb)}</p>
-    <div class="swatch-row">
+    ${
+      item.variants.length > 1
+        ? `<div class="swatch-row">
       <span class="mono">Colour · ${escapeHtml(variant.name)}</span>
       <div class="swatches" role="radiogroup" aria-label="Colour">
-        ${item.variants
-          .map(
-            (v, i) =>
-              `<button role="radio" aria-checked="${i === state.variant}" aria-label="${escapeHtml(v.name)}" data-v="${i}" style="--a:${v.base};--b:${v.accent}"></button>`,
-          )
-          .join('')}
+        ${item.variants.map((v, i) => `<button role="radio" aria-checked="${v.id === variant.id}" aria-label="${escapeHtml(v.name)}" data-v="${i}" style="--a:${v.base};--b:${v.accent}"></button>`).join('')}
       </div>
+    </div>`
+        : ''
+    }
+    <div class="size-row">
+      <div class="size-head"><span class="mono">Size${chosen ? ` · ${chosen}` : ''}</span><button class="link" data-act="find-size">${state.profile ? 'Edit my details' : 'Find my size'}</button></div>
+      <div class="sizes" role="radiogroup" aria-label="Size">
+        ${SIZES.map((s) => `<button role="radio" aria-checked="${s === chosen}" data-size="${s}" class="${rec?.size === s ? 'rec' : ''}">${s}</button>`).join('')}
+      </div>
+      ${
+        rec
+          ? `<p class="size-advice ${rec.confidence}">${rec.confidence === 'good' ? `We recommend <b>${rec.size}</b>.` : betweenText(rec.size, rec.alternative!)}</p>`
+          : `<p class="size-advice">Tell us your height and weight and we'll suggest a size.</p>`
+      }
+    </div>
+    ${
+      inners.length
+        ? `<label class="layer-row"><span class="mono">Wear it</span>
+            <select data-act="inner">
+              <option value="">Closed</option>
+              ${inners.map((i) => `<option value="${i.id}" ${i.id === innerId ? 'selected' : ''}>Open over ${escapeHtml(i.name)}</option>`).join('')}
+            </select></label>`
+        : ''
+    }
+    <div class="actions">
+      <button class="btn" data-act="bag">Add to bag</button>
+      <button class="btn ghost" data-act="save" aria-pressed="${isSaved}">${isSaved ? 'Saved ✓' : 'Save'}</button>
+    </div>
+    <div class="actions secondary">
+      <button class="btn ghost small" data-act="snap">Snapshot</button>
+      <button class="btn ghost small" data-act="share">Share look</button>
     </div>
     <dl class="facts"><div><dt class="mono">Fabric</dt><dd>${escapeHtml(item.fabric)}</dd></div><div><dt class="mono">Fit</dt><dd>${escapeHtml(item.fit)}</dd></div></dl>
-    <div class="actions">
-      <button class="btn" data-act="save">${isSaved ? 'Saved ✓' : 'Save look'}</button>
-      <button class="btn ghost" data-act="snap">Snapshot</button>
-    </div>
     <h2 class="mono sub">Complete the look</h2>
     <ul class="look">${look.map((l) => `<li><i style="background:${l.color}"></i><span><b>${l.name}</b>${l.why}</span></li>`).join('')}</ul>
     <h2 class="mono sub">You might also like</h2>
     <div class="similar">${similar(item)
       .map((s) => `<button data-item="${s.id}"><img src="${thumb(s, s.variants[0], 120)}" alt="" width="60" height="60" /><span>${escapeHtml(s.name)}<em class="mono">${formatPrice(s.price)}</em></span></button>`)
       .join('')}</div>
+    ${item.upload ? `<button class="btn ghost small danger" data-act="remove">Remove this garment</button>` : ''}
     <p class="fit-note">This preview is a 2D approximation for style and colour. Drape and exact fit depend on your measurements, so check the size guide before you buy.</p>`
   $$('#panel [data-v]').forEach((b) => b.addEventListener('click', () => select(state.item, Number(b.dataset.v))))
+  $$('#panel [data-size]').forEach((b) =>
+    b.addEventListener('click', () => {
+      state.size[item.id] = b.dataset.size as Size
+      renderPanel()
+    }),
+  )
+  $('#panel [data-act="find-size"]').addEventListener('click', openSizeDialog)
+  $('#panel [data-act="bag"]').addEventListener('click', addToBag)
   $('#panel [data-act="save"]').addEventListener('click', () => toggleSave())
   $('#panel [data-act="snap"]').addEventListener('click', snapshot)
+  $('#panel [data-act="share"]').addEventListener('click', () => openShare(captureStage(900), [{ item, variant, inner: canLayer(item) ? (state.inner[item.id] ?? null) : null }]))
+  $('#panel [data-act="inner"]')?.addEventListener('change', (e) => {
+    state.inner[item.id] = (e.target as HTMLSelectElement).value || null
+    applyGarment()
+  })
+  $('#panel [data-act="remove"]')?.addEventListener('click', async () => {
+    await deleteGarment(item.id.slice(2))
+    unregisterItem(item.id)
+    state.saved = state.saved.filter((k) => !k.startsWith(item.id + ':'))
+    state.bag = state.bag.filter((l) => l.item !== item.id)
+    persist()
+    renderRail()
+    select(0)
+    toast('Garment removed')
+  })
   $$('#panel [data-item]').forEach((b) => b.addEventListener('click', () => select(catalog.findIndex((c) => c.id === b.dataset.item))))
 }
 
+function betweenText(size: Size, alt: Size) {
+  const bigger = SIZES.indexOf(alt) > SIZES.indexOf(size)
+  const [close, room] = bigger ? [size, alt] : [alt, size]
+  return `Between sizes: <b>${close}</b> for a closer fit, <b>${room}</b> for more room. We'd pick <b>${size}</b>.`
+}
+
+// ---------- Size dialog ----------
+function renderSizeResult() {
+  const h = Number($<HTMLInputElement>('#p-height').value)
+  const w = Number($<HTMLInputElement>('#p-weight').value)
+  const fit = ($<HTMLInputElement>('input[name="p-fit"]:checked')?.value ?? 'regular') as Profile['fit']
+  const valid = h >= 120 && h <= 220 && w >= 30 && w <= 200
+  const { item } = current()
+  const rec = valid ? recommendSize(item, { heightCm: h, weightKg: w, fit }, state.bodyRatio) : null
+  $('#size-result').innerHTML = rec
+    ? `<p class="size-big">${rec.size}${rec.alternative ? ` <span>or ${rec.alternative}</span>` : ''}</p><p class="mono">For ${escapeHtml(item.name)}</p><ul>${rec.reasons.map((r) => `<li>${escapeHtml(r)}</li>`).join('')}</ul>`
+    : '<p class="mono">Enter your height and weight to see your size.</p>'
+  $('#size-chart').innerHTML =
+    `<thead><tr><th>Size</th>${SIZES.map((s) => `<th class="${rec?.size === s ? 'on' : ''}">${s}</th>`).join('')}</tr></thead>` +
+    `<tbody><tr><td>Chest (cm)</td>${SIZES.map((s) => `<td class="${rec?.size === s ? 'on' : ''}">${SIZE_CHART[s][0]}–${SIZE_CHART[s][1]}</td>`).join('')}</tr></tbody>`
+}
+function openSizeDialog() {
+  const p = state.profile
+  $<HTMLInputElement>('#p-height').value = String(p?.heightCm ?? '')
+  $<HTMLInputElement>('#p-weight').value = String(p?.weightKg ?? '')
+  $$<HTMLInputElement>('input[name="p-fit"]').forEach((r) => (r.checked = r.value === (p?.fit ?? 'regular')))
+  renderSizeResult()
+  dialog('#size-dialog').showModal()
+}
+$('#size-form').addEventListener('input', renderSizeResult)
+$('#size-form').addEventListener('submit', (e) => {
+  e.preventDefault()
+  const h = Number($<HTMLInputElement>('#p-height').value)
+  const w = Number($<HTMLInputElement>('#p-weight').value)
+  if (!(h >= 120 && h <= 220 && w >= 30 && w <= 200)) {
+    $('#size-result').innerHTML = '<p class="err">Height should be 120–220 cm and weight 30–200 kg.</p>'
+    return
+  }
+  state.profile = { heightCm: h, weightKg: w, fit: ($<HTMLInputElement>('input[name="p-fit"]:checked')?.value ?? 'regular') as Profile['fit'] }
+  state.size = {}
+  store('motionfit.profile', state.profile)
+  dialog('#size-dialog').close()
+  renderPanel()
+  toast('Sizes updated for you')
+})
+
+// ---------- Bag & checkout ----------
+function priceOf(id: string) {
+  return itemById.get(id)?.price ?? 0
+}
+function renderBag(view: 'bag' | 'checkout' | 'done' = 'bag', order?: string) {
+  const root = $('#bag')
+  const t = totals(state.bag, priceOf)
+  if (view === 'done') {
+    root.innerHTML = `<div class="done-state"><p class="size-big">Thank you</p><p>Order <b class="mono">${order}</b> is confirmed. This is a demo store, so no payment was taken and nothing will ship.</p><button class="btn" data-close-bag>Keep browsing</button></div>`
+    root.querySelector('[data-close-bag]')!.addEventListener('click', () => dialog('#bag-dialog').close())
+    return
+  }
+  if (!state.bag.length) {
+    root.innerHTML = '<p class="tray-empty">Your bag is empty. Pick a size and use Add to bag.</p>'
+    return
+  }
+  const lines = state.bag
+    .map((l, i) => {
+      const item = itemById.get(l.item)
+      const variant = item?.variants.find((v) => v.id === l.variant)
+      if (!item || !variant) return ''
+      return `<li><img src="${thumb(item, variant, 120)}" alt="" width="64" height="64" />
+        <span class="bag-info"><b>${escapeHtml(item.name)}</b><em class="mono">${escapeHtml(variant.name)} · ${l.size}</em><em class="mono">${formatPrice(item.price)}</em></span>
+        ${view === 'bag' ? `<span class="qty"><button data-q="${i}" data-d="-1" aria-label="One fewer">−</button><span aria-live="polite">${l.qty}</span><button data-q="${i}" data-d="1" aria-label="One more">+</button></span>` : `<span class="mono">× ${l.qty}</span>`}</li>`
+    })
+    .join('')
+  const summary = `<dl class="sum"><div><dt>Subtotal</dt><dd>${formatPrice(t.subtotal)}</dd></div><div><dt>Delivery</dt><dd>${t.delivery ? formatPrice(t.delivery) : 'Free'}</dd></div><div class="tot"><dt>Total</dt><dd>${formatPrice(t.total)}</dd></div></dl>
+    ${t.delivery ? `<p class="mono hint">Add ${formatPrice(FREE_DELIVERY_FROM - t.subtotal)} more for free delivery</p>` : ''}`
+  if (view === 'bag') {
+    root.innerHTML = `<ul class="bag-lines">${lines}</ul>${summary}<button class="btn wide" data-checkout>Checkout</button>`
+    root.querySelectorAll<HTMLButtonElement>('[data-q]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const i = Number(b.dataset.q)
+        state.bag = setQty(state.bag, i, state.bag[i].qty + Number(b.dataset.d))
+        persist()
+        renderBag()
+      }),
+    )
+    root.querySelector('[data-checkout]')!.addEventListener('click', () => renderBag('checkout'))
+    return
+  }
+  root.innerHTML = `<ul class="bag-lines">${lines}</ul>${summary}
+    <form class="checkout" novalidate>
+      <p class="fit-note">Demo checkout: nothing is charged or shipped.</p>
+      <label class="up-field"><span>Full name</span><input name="name" autocomplete="name" required /></label>
+      <label class="up-field"><span>Email</span><input name="email" type="email" autocomplete="email" required /></label>
+      <label class="up-field"><span>Delivery address</span><textarea name="address" rows="2" autocomplete="street-address" required></textarea></label>
+      <div class="up-row"><label class="up-field"><span>PIN code</span><input name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required /></label>
+      <label class="up-field"><span>Phone</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required /></label></div>
+      <p class="err" data-err role="alert"></p>
+      <div class="up-row"><button type="button" class="btn ghost" data-back>Back to bag</button><button class="btn" type="submit">Place order · ${formatPrice(t.total)}</button></div>
+    </form>`
+  root.querySelector('[data-back]')!.addEventListener('click', () => renderBag('bag'))
+  root.querySelector('form')!.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const f = e.target as HTMLFormElement
+    const data = new FormData(f)
+    const problems: string[] = []
+    if (!String(data.get('name') ?? '').trim()) problems.push('your name')
+    if (!/^\S+@\S+\.\S+$/.test(String(data.get('email') ?? ''))) problems.push('a valid email')
+    if (String(data.get('address') ?? '').trim().length < 8) problems.push('a delivery address')
+    if (!/^[1-9][0-9]{5}$/.test(String(data.get('pin') ?? ''))) problems.push('a 6-digit PIN code')
+    if (String(data.get('phone') ?? '').replace(/\D/g, '').length < 10) problems.push('a 10-digit phone number')
+    if (problems.length) {
+      f.querySelector('[data-err]')!.textContent = `Please add ${problems.join(', ')}.`
+      return
+    }
+    const order = `MF-${Date.now().toString(36).toUpperCase().slice(-6)}`
+    state.bag = []
+    persist()
+    renderBag('done', order)
+  })
+}
+$('#bag-btn').addEventListener('click', () => {
+  renderBag()
+  dialog('#bag-dialog').showModal()
+})
+
+// ---------- Share card ----------
+function openShare(image: HTMLCanvasElement, looks: { item: Item; variant: Variant; inner: string | null }[]) {
+  const card = document.createElement('canvas')
+  card.width = 1080
+  card.height = 1350
+  const ctx = card.getContext('2d')!
+  ctx.fillStyle = '#f4f2ec'
+  ctx.fillRect(0, 0, 1080, 1350)
+  const k = Math.min(1000 / image.width, 960 / image.height)
+  const iw = image.width * k
+  const ih = image.height * k
+  ctx.save()
+  ctx.beginPath()
+  ctx.roundRect((1080 - iw) / 2, 40, iw, ih, 28)
+  ctx.clip()
+  ctx.drawImage(image, (1080 - iw) / 2, 40, iw, ih)
+  ctx.restore()
+  ctx.fillStyle = '#17161a'
+  ctx.font = '800 54px Syne, "Avenir Next", sans-serif'
+  let y = 40 + ih + 90
+  for (const l of looks) {
+    ctx.fillText(l.item.name, 60, y)
+    ctx.font = '500 32px "DM Mono", monospace'
+    ctx.fillStyle = '#57545c'
+    const inner = l.inner ? itemById.get(l.inner)?.name : null
+    ctx.fillText(`${l.variant.name} · ${formatPrice(l.item.price)}${inner ? ` · over ${inner}` : ''}`, 60, y + 48)
+    y += 120
+  }
+  ctx.fillStyle = '#e39a12'
+  ctx.fillRect(60, 1290, 70, 8)
+  ctx.fillStyle = '#17161a'
+  ctx.font = '800 36px Syne, sans-serif'
+  ctx.fillText('MotionFit', 150, 1306)
+
+  const url = card.toDataURL('image/png')
+  $('#share').innerHTML = `<img src="${url}" alt="Look card for ${escapeHtml(looks[0].item.name)}" />
+    <div class="share-actions"><a class="btn" download="motionfit-look.png" href="${url}">Download image</a><button class="btn ghost" data-native-share hidden>Share…</button></div>`
+  const shareBtn = $('[data-native-share]')
+  card.toBlob((blob) => {
+    if (!blob) return
+    const file = new File([blob], 'motionfit-look.png', { type: 'image/png' })
+    if (navigator.canShare?.({ files: [file] })) {
+      shareBtn.hidden = false
+      shareBtn.addEventListener('click', () => navigator.share({ files: [file], title: 'My MotionFit look' }).catch(() => {}))
+    }
+  })
+  dialog('#share-dialog').showModal()
+}
+
+// ---------- Snapshots & compare ----------
 function snapLabel(s: Snap) {
-  const item = itemById.get(s.item)!
-  const variant = item.variants.find((v) => v.id === s.variant)!
-  return { item, variant }
+  const item = itemById.get(s.item)
+  const variant = item?.variants.find((v) => v.id === s.variant)
+  return item && variant ? { item, variant } : null
 }
 
 function renderTray() {
@@ -305,10 +614,11 @@ function renderTray() {
   if (!state.snaps.length) return
   tray.innerHTML = state.snaps
     .map((s, i) => {
-      const { item, variant } = snapLabel(s)
+      const l = snapLabel(s)
+      if (!l) return ''
       const picked = state.picked.includes(i)
-      return `<button class="snap ${picked ? 'picked' : ''}" data-s="${i}" aria-pressed="${picked}" aria-label="${escapeHtml(item.name)}, ${escapeHtml(variant.name)}">
-        <img src="${s.url}" alt="" /><span class="mono">${escapeHtml(item.name)}</span></button>`
+      return `<button class="snap ${picked ? 'picked' : ''}" data-s="${i}" aria-pressed="${picked}" aria-label="${escapeHtml(l.item.name)}, ${escapeHtml(l.variant.name)}">
+        <img src="${s.url}" alt="" /><span class="mono">${escapeHtml(l.item.name)}</span></button>`
     })
     .join('')
   $$('.snap').forEach((b) =>
@@ -325,10 +635,11 @@ $('#compare-btn').addEventListener('click', () => {
   $('#compare').innerHTML = state.picked
     .map((i) => {
       const s = state.snaps[i]
-      const { item, variant } = snapLabel(s)
-      const key = `${item.id}:${variant.id}`
-      return `<figure><img src="${s.url}" alt="${escapeHtml(item.name)} in ${escapeHtml(variant.name)}" />
-        <figcaption><b>${escapeHtml(item.name)}</b><span class="mono">${escapeHtml(variant.name)} · ${formatPrice(item.price)}</span>
+      const l = snapLabel(s)
+      if (!l) return ''
+      const key = `${l.item.id}:${l.variant.id}`
+      return `<figure><img src="${s.url}" alt="${escapeHtml(l.item.name)} in ${escapeHtml(l.variant.name)}" />
+        <figcaption><b>${escapeHtml(l.item.name)}</b><span class="mono">${escapeHtml(l.variant.name)} · ${formatPrice(l.item.price)}</span>
         <button class="btn small" data-keep="${key}">${state.saved.includes(key) ? 'Saved ✓' : 'Save this one'}</button></figcaption></figure>`
     })
     .join('')
@@ -338,7 +649,7 @@ $('#compare-btn').addEventListener('click', () => {
       b.textContent = 'Saved ✓'
     }),
   )
-  $<HTMLDialogElement>('#compare-dialog').showModal()
+  dialog('#compare-dialog').showModal()
 })
 
 $('#saved-btn').addEventListener('click', () => {
@@ -349,21 +660,101 @@ $('#saved-btn').addEventListener('click', () => {
           const item = itemById.get(id)
           const variant = item?.variants.find((v) => v.id === vid)
           if (!item || !variant) return ''
-          return `<button class="saved-item" data-open="${key}"><img src="${thumb(item, variant, 120)}" alt="" width="64" height="64" /><span><b>${escapeHtml(item.name)}</b><em class="mono">${escapeHtml(variant.name)} · ${formatPrice(item.price)}</em></span></button>`
+          return `<button class="saved-item" data-open="${escapeHtml(key)}"><img src="${thumb(item, variant, 120)}" alt="" width="64" height="64" /><span><b>${escapeHtml(item.name)}</b><em class="mono">${escapeHtml(variant.name)} · ${formatPrice(item.price)}</em></span></button>`
         })
         .join('')
-    : '<p class="tray-empty">Nothing saved yet. Hover a hand over <b>Save</b> or use the Save look button.</p>'
+    : '<p class="tray-empty">Nothing saved yet. Hover a hand over <b>Save</b> or use the Save button.</p>'
   $$('#saved [data-open]').forEach((b) =>
     b.addEventListener('click', () => {
       const [id, vid] = b.dataset.open!.split(':')
       const i = catalog.findIndex((c) => c.id === id)
-      select(i, catalog[i].variants.findIndex((v) => v.id === vid))
-      $<HTMLDialogElement>('#saved-dialog').close()
+      select(i, Math.max(0, catalog[i].variants.findIndex((v) => v.id === vid)))
+      dialog('#saved-dialog').close()
     }),
   )
-  $<HTMLDialogElement>('#saved-dialog').showModal()
+  dialog('#saved-dialog').showModal()
 })
 $$('[data-close]').forEach((b) => b.addEventListener('click', () => (b.closest('dialog') as HTMLDialogElement).close()))
+
+// ---------- Retailer uploads ----------
+function averageColor(c: HTMLCanvasElement) {
+  const s = document.createElement('canvas')
+  s.width = s.height = 16
+  const x = s.getContext('2d', { willReadFrequently: true })!
+  x.drawImage(c, 0, 0, 16, 16)
+  const d = x.getImageData(0, 0, 16, 16).data
+  let r = 0
+  let g = 0
+  let b = 0
+  let n = 0
+  for (let i = 0; i < d.length; i += 4)
+    if (d[i + 3] > 128) {
+      r += d[i]
+      g += d[i + 1]
+      b += d[i + 2]
+      n++
+    }
+  const hex = (v: number) => Math.round(v / Math.max(1, n)).toString(16).padStart(2, '0')
+  return `#${hex(r)}${hex(g)}${hex(b)}`
+}
+
+function itemFromUpload(g: Omit<StoredGarment, 'image'>, spec: UploadSpec): Item {
+  const base = averageColor(spec.image)
+  return {
+    id: `u-${g.id}`,
+    name: g.name,
+    category: g.category,
+    price: g.price,
+    blurb: 'Added from your own product photo.',
+    fabric: 'As listed by the retailer',
+    fit: 'Regular fit',
+    neck: 'crew',
+    sleeves: g.sleeves,
+    hem: 0.6,
+    pattern: 'solid',
+    front: 'plain',
+    pockets: 'none',
+    variants: [{ id: 'photo', name: 'As photographed', base, accent: base }],
+    upload: spec,
+  }
+}
+
+async function createFromUpload(g: NewGarment) {
+  const id = Math.random().toString(36).slice(2, 10)
+  const meta = { id, name: g.name, price: g.price, category: g.category, sleeves: g.sleeves, markers: g.markers, createdAt: Date.now() }
+  const blob = await new Promise<Blob | null>((r) => g.image.toBlob(r, 'image/png'))
+  let stored = false
+  if (blob) stored = await saveGarment({ ...meta, image: blob }).then(() => true, () => false)
+  const item = itemFromUpload(meta, { image: g.image, markers: g.markers, sleeves: g.sleeves })
+  registerItem(item)
+  renderRail()
+  select(catalog.indexOf(item))
+  dialog('#upload-dialog').close()
+  toast(stored ? `Added ${g.name} to the edit` : `Added ${g.name} for this visit (storage unavailable)`)
+}
+$('#upload-btn').addEventListener('click', () => {
+  // A fresh editor each time, so a new photo never inherits old markers.
+  mountUploadEditor($('#upload'), createFromUpload)
+  dialog('#upload-dialog').showModal()
+})
+
+async function restoreUploads() {
+  for (const g of await listGarments()) {
+    try {
+      const bmp = await createImageBitmap(g.image)
+      const c = document.createElement('canvas')
+      c.width = bmp.width
+      c.height = bmp.height
+      c.getContext('2d')!.drawImage(bmp, 0, 0)
+      bmp.close()
+      registerItem(itemFromUpload(g, { image: c, markers: g.markers, sleeves: g.sleeves }))
+    } catch {
+      // A damaged entry shouldn't block the rest of the catalog.
+    }
+  }
+  renderRail()
+  select(state.item)
+}
 
 window.addEventListener('keydown', (e) => {
   if ((e.target as HTMLElement).closest('input, select, textarea, dialog')) return
@@ -373,4 +764,5 @@ window.addEventListener('keydown', (e) => {
 
 renderRail()
 select(0)
-persistSaved()
+persist()
+void restoreUploads()

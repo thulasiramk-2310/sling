@@ -1,3 +1,5 @@
+import type { UploadSpec } from './upload'
+
 export type Neck = 'crew' | 'collar' | 'camp' | 'polo' | 'hood' | 'stand'
 export type Pattern = 'solid' | 'stripes' | 'check' | 'denim' | 'rib' | 'oxford'
 export type Front = 'plain' | 'buttons' | 'zip' | 'placket'
@@ -25,6 +27,8 @@ export interface Item {
   front: Front
   pockets: Pockets
   variants: Variant[]
+  // Retailer-uploaded pieces carry their photo and markers instead of procedural art.
+  upload?: UploadSpec
 }
 
 export const catalog: Item[] = [
@@ -191,6 +195,23 @@ export const catalog: Item[] = [
 ]
 
 export const itemById = new Map(catalog.map((i) => [i.id, i]))
+
+export function registerItem(item: Item) {
+  const i = catalog.findIndex((c) => c.id === item.id)
+  if (i >= 0) catalog[i] = item
+  else catalog.push(item)
+  itemById.set(item.id, item)
+}
+
+export function unregisterItem(id: string) {
+  const i = catalog.findIndex((c) => c.id === id)
+  if (i >= 0) catalog.splice(i, 1)
+  itemById.delete(id)
+}
+
+// Jackets and overshirts can be worn open over another top.
+export const canLayer = (item: Item) => !item.upload && (item.category === 'Jackets' || item.id === 'flannel')
+export const canBeInner = (item: Item) => !item.upload && (item.category === 'Tees' || item.category === 'Knitwear' || item.id === 'oxford') && item.neck !== 'hood'
 
 export const formatPrice = (n: number) => `₹${n.toLocaleString('en-IN')}`
 

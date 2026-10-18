@@ -139,7 +139,8 @@ function torsoPath(ctx: Ctx, item: Item) {
   return hemY
 }
 
-export function paintTorso(item: Item, v: Variant) {
+// open = worn unbuttoned over another top: the front centre is cut away so the inner layer shows.
+export function paintTorso(item: Item, v: Variant, open = false) {
   const c = canvas(TORSO.w, TORSO.h)
   const ctx = c.getContext('2d')!
   ctx.save()
@@ -162,7 +163,7 @@ export function paintTorso(item: Item, v: Variant) {
     for (let x = 0; x < TORSO.w; x += 6) ctx.fillRect(x, hemY - 26, 2, 30)
   }
 
-  if (item.front === 'buttons' || item.front === 'placket') {
+  if (!open && (item.front === 'buttons' || item.front === 'placket')) {
     const end = item.front === 'placket' ? 210 : hemY - 6
     ctx.fillStyle = 'rgba(0,0,0,0.12)'
     ctx.fillRect(244, 110, 2, end - 110)
@@ -180,7 +181,7 @@ export function paintTorso(item: Item, v: Variant) {
       ctx.fill()
     }
   }
-  if (item.front === 'zip') {
+  if (!open && item.front === 'zip') {
     ctx.fillStyle = shade(v.base, -0.18)
     ctx.fillRect(250, 60, 12, hemY - 60)
     ctx.fillStyle = '#9ea2a8'
@@ -242,6 +243,31 @@ export function paintTorso(item: Item, v: Variant) {
     ctx.setLineDash([])
   }
   ctx.restore()
+
+  if (open) {
+    ctx.save()
+    ctx.globalCompositeOperation = 'destination-out'
+    ctx.beginPath()
+    ctx.moveTo(240, 60)
+    ctx.lineTo(272, 60)
+    ctx.lineTo(296, hemY + 20)
+    ctx.lineTo(216, hemY + 20)
+    ctx.closePath()
+    ctx.fill()
+    ctx.restore()
+    // A soft shadow along the open edges where the outer layer sits on the inner one.
+    ctx.save()
+    ctx.strokeStyle = 'rgba(0,0,0,0.35)'
+    ctx.lineWidth = 6
+    ctx.filter = 'blur(3px)'
+    ctx.beginPath()
+    ctx.moveTo(240, 64)
+    ctx.lineTo(216, hemY)
+    ctx.moveTo(272, 64)
+    ctx.lineTo(296, hemY)
+    ctx.stroke()
+    ctx.restore()
+  }
 
   // Necklines and collars sit on top of the body piece.
   ctx.save()
