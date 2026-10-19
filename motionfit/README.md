@@ -17,6 +17,7 @@ A virtual fitting room in the browser. Stand in front of your laptop camera and 
 - **Try on anything from a link**: paste an Amazon, Flipkart, Myntra or AJIO product link (app share links like `amzn.in/d/…` and `fkrt.it/…` work, even with the share text around them), or a link from most other stores. The local server reads the page's photos, name and price (the Amazon gallery, Flipkart images, schema.org Product data, then Open Graph tags) and requests full-size images. You pick a photo from the product gallery and it's on you.
 - **Or a photo, a paste, a drop**: choose a saved image, press Ctrl+V after **Copy image** on any store, or drag a photo or link onto the page.
 - **Automatic fit points**: if a model is wearing the garment, Pose Landmarker finds their shoulders, elbows, wrists and hips. It places the six fit points from those, cuts the model out with the person mask, and keeps only the collar above the shoulder line (not the model's neck or hair). Flat-lay photos are fitted from the garment's outline instead. Sleeve length and category come from the product title, and you can nudge any point.
+- **See it on me in HD**: a photo-real AI render of you wearing the selected piece, with folds, drape and lighting, shown beside your photo with a before/after slider, then Add to bag or Save image. It uses your own photo, or a still from the live camera. Providers: [FASHN](https://fashn.ai) `tryon-v1.6` (set `FASHN_API_KEY`, licensed for commercial use) or IDM-VTON on Hugging Face Spaces (set `HF_TOKEN`; free GPU quota, non-commercial licence, fine for a hackathon demo). Keys stay on the server; one render runs at a time.
 - **Your photo as the mirror**: no camera, or want the sharpest result? Use a full-length photo of yourself and try every look on it.
 - **Stays on the body**: the camera frame is copied at the moment it's measured and drawn with its own landmarks, so the garment never trails a frame behind you. Frames are processed once each via `requestVideoFrameCallback`.
 - Uploaded garments are warped into the same torso and sleeve texture layout as the built-in pieces and get soft side shading so they read as cloth, not a sticker. The backdrop is removed by an edge-in flood fill, so white prints and white shirts survive. Printed text is pre-flipped so it reads correctly in the mirror. Everything is stored in IndexedDB.
@@ -38,7 +39,9 @@ Product links need the bundled server (`npm run dev` or `npm run preview`). Brow
 
 ```bash
 npm install
-npm run dev     # http://localhost:5173
+HF_TOKEN=hf_... npm run dev        # free HD try-on via Hugging Face (huggingface.co/settings/tokens)
+# or FASHN_API_KEY=... npm run dev  # FASHN try-on API
+npm run dev     # http://localhost:5173 (everything except HD try-on)
 npm test        # body mapping, air controls, pairing, size advisor, bag, link parsing, pose fit points, address guard
 npm run build
 ```

@@ -4,6 +4,7 @@ import { lookup } from 'node:dns/promises'
 import { isIP } from 'node:net'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { Plugin } from 'vite'
+import { handleTryOn } from './tryOn.ts'
 import { extractProduct, fromShopifyJson, parseProductLink, shopifyJsonUrl } from '../src/productLink.ts'
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36'
@@ -137,6 +138,7 @@ async function image(target: string, res: ServerResponse) {
 async function handle(req: IncomingMessage, res: ServerResponse, next: () => void) {
   const u = new URL(req.url ?? '/', 'http://local')
   const route = u.pathname.replace(/^.*\/api\//, '/api/')
+  if (route === '/api/tryon') return handleTryOn(req, res)
   if (route !== '/api/product' && route !== '/api/image') return next()
   if (req.method !== 'GET') return send(res, 405, { error: 'method' })
   const target = u.searchParams.get('url') ?? ''

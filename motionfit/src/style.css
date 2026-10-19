@@ -1626,3 +1626,225 @@ a.btn {
     display: inline;
   }
 }
+
+/* HD try-on */
+.hd-btn {
+  width: 100%;
+  margin: 4px 0 10px;
+  gap: 8px;
+  background: linear-gradient(110deg, var(--ink) 0%, color-mix(in srgb, var(--ink) 70%, var(--accent)) 50%, var(--ink) 100%);
+  background-size: 200% 100%;
+  animation: hd-sheen 4s ease-in-out infinite;
+}
+.hd-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--accent);
+}
+@keyframes hd-sheen {
+  50% {
+    background-position: 100% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hd-btn {
+    animation: none;
+  }
+}
+.hd {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 22px;
+}
+.hd-stage {
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.hd-compare {
+  position: relative;
+  max-height: 64vh;
+  line-height: 0;
+}
+.hd-compare img {
+  display: block;
+  max-width: 100%;
+  max-height: 64vh;
+  object-fit: contain;
+}
+.hd-after {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: inset(0 0 0 var(--cut));
+}
+.hd-after[hidden],
+.hd-range[hidden],
+.hd-tag[hidden],
+.hd-shimmer[hidden],
+.hd-actions[hidden],
+.hd-steps[hidden] {
+  display: none;
+}
+.hd-compare:has(.hd-after:not([hidden]))::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--cut);
+  width: 2px;
+  background: #fff;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+.hd-compare.reveal .hd-after {
+  animation: hd-reveal 1.4s ease-in-out;
+}
+@keyframes hd-reveal {
+  0% {
+    clip-path: inset(0 0 0 100%);
+  }
+  60% {
+    clip-path: inset(0 0 0 20%);
+  }
+  100% {
+    clip-path: inset(0 0 0 var(--cut));
+  }
+}
+.hd-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+.hd-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  background-size: 250% 100%;
+  animation: hd-scan 1.6s linear infinite;
+  backdrop-filter: saturate(0.6);
+}
+@keyframes hd-scan {
+  from {
+    background-position: 120% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+.hd-tag {
+  position: absolute;
+  top: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(20, 19, 24, 0.66);
+  color: #f1efe9;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.hd-tag-l {
+  left: 12px;
+}
+.hd-tag-r {
+  right: 12px;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.hd-side {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+.hd-kicker {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.hd-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 26px;
+  line-height: 1.1;
+}
+.hd-price {
+  margin: 0;
+  font-weight: 700;
+}
+.hd-steps {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.hd-steps li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 14px;
+  color: var(--ink-2);
+  transition: color 0.3s;
+}
+.hd-steps li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+}
+.hd-steps li.now {
+  color: var(--ink);
+  font-weight: 700;
+}
+.hd-steps li.now::before {
+  border-color: var(--line);
+  border-top-color: var(--accent);
+  animation: up-spin 0.8s linear infinite;
+}
+.hd-steps li.done::before {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.hd-time {
+  margin: 0;
+  min-height: 1.3em;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.hd-msg {
+  margin: 0;
+  font-size: 14px;
+}
+.hd-msg.err {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, #d04a3a 10%, transparent);
+}
+.hd-actions {
+  display: flex;
+  gap: 10px;
+}
+.hd-note {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+@media (max-width: 860px) {
+  .hd {
+    grid-template-columns: 1fr;
+  }
+}

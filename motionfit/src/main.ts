@@ -13,6 +13,7 @@ import { SIZES, SIZE_CHART, recommendSize, type Profile, type Size } from './siz
 import { buildTextures, uploadThumb, type UploadSpec } from './upload'
 import { mountUploadEditor, type NewGarment, type UploadEditor } from './uploadEditor'
 import { parseProductLink } from './productLink'
+import { openHd } from './hd'
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector(sel) as T
 const $$ = <T extends HTMLElement = HTMLElement>(sel: string) => Array.from(document.querySelectorAll(sel)) as T[]
@@ -308,6 +309,64 @@ function snapshot() {
   toast('Snapshot added')
 }
 
+// ---------- HD try-on ----------
+// The photo to dress: the shopper's own photo if they used one, else the current camera frame.
+let hdPhoto: HTMLCanvasElement | null = null
+const hdFile = document.createElement('input')
+hdFile.type = 'file'
+hdFile.accept = 'image/png,image/jpeg,image/webp'
+
+function garmentImage(item: Item, variant: Variant) {
+  if (!item.upload) return paintFlatLay(item, variant, 768)
+  return item.upload.image
+}
+
+async function startHd() {
+  const { item, variant } = current()
+  const person = state.camera?.still ? state.camera.frame : (hdPhoto ?? (state.camera ? snapshotFrame(state.camera.frame) : null))
+  if (!person) {
+    toast('Choose a full-length photo of yourself')
+    hdFile.onchange = async () => {
+      const f = hdFile.files?.[0]
+      hdFile.value = ''
+      if (!f) return
+      try {
+        const bmp = await createImageBitmap(f)
+        const c = document.createElement('canvas')
+        const k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height))
+        c.width = Math.round(bmp.width * k)
+        c.height = Math.round(bmp.height * k)
+        c.getContext('2d')!.drawImage(bmp, 0, 0, c.width, c.height)
+        bmp.close()
+        hdPhoto = c
+        void startHd()
+      } catch {
+        toast('That photo couldn’t be read')
+      }
+    }
+    hdFile.click()
+    return
+  }
+  openHd(dialog('#hd-dialog'), {
+    person,
+    garment: garmentImage(item, variant),
+    description: `${variant.name} ${item.name}, ${item.sleeves} sleeves`,
+    title: item.name,
+    price: formatPrice(item.price),
+    onBag: addToBag,
+  })
+}
+
+// A still copy of a live frame, so the render matches the moment the button was pressed.
+function snapshotFrame(src: HTMLCanvasElement) {
+  const c = document.createElement('canvas')
+  c.width = src.width
+  c.height = src.height
+  c.getContext('2d')!.drawImage(src, 0, 0)
+  return c
+}
+
+
 // ---------- Camera and photo ----------
 const cameraBtn = $<HTMLButtonElement>('#camera-btn')
 const status = $('#status')
@@ -488,6 +547,7 @@ function renderPanel() {
             </select></label>`
         : ''
     }
+    <button class="btn hd-btn" data-act="hd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4z" /><path d="M18.5 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" /></svg>See it on me in HD</button>
     <div class="actions">
       <button class="btn" data-act="bag">Add to bag</button>
       <button class="btn ghost" data-act="save" aria-pressed="${isSaved}">${isSaved ? 'Saved ✓' : 'Save'}</button>
@@ -520,6 +580,7 @@ function renderPanel() {
   $('#panel [data-act="find-size"]').addEventListener('click', openSizeDialog)
   $('#panel [data-act="photos"]').addEventListener('click', () => openPhotos(item, variant))
   $('#panel [data-act="bag"]').addEventListener('click', addToBag)
+  $('#panel [data-act="hd"]').addEventListener('click', () => void startHd())
   $('#panel [data-act="save"]').addEventListener('click', () => toggleSave())
   $('#panel [data-act="snap"]').addEventListener('click', snapshot)
   $('#panel [data-act="share"]').addEventListener('click', () => openShare(captureStage(900), [{ item, variant, inner: canLayer(item) ? (state.inner[item.id] ?? null) : null }]))
