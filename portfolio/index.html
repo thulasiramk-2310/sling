@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#2c0710" />
+    <meta name="description" content="Thulasiram K. (Ram): CS (AI & ML) student and systems and AI builder from Chennai. A 3D road trip across Tamil Nadu." />
+    <title>Ram · Thulasiram K. · A road trip across Tamil Nadu</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235a0f1e'/%3E%3Cpath d='M32 10 Q36 28 54 32 Q36 36 32 54 Q28 36 10 32 Q28 28 32 10Z' fill='none' stroke='%23e0b23a' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23f7f2e6'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <!-- Loading screen -->
+    <div id="loader" role="dialog" aria-modal="true" aria-labelledby="loader-count">
+      <div class="loader-inner">
+        <div class="loader-row">
+          <span class="loader-count" id="loader-count" aria-live="polite">000</span>
+          <svg class="loader-auto" viewBox="0 0 120 80" aria-hidden="true">
+            <path d="M18 54 L18 34 Q20 20 40 18 L86 18 Q96 18 98 28 L102 54 Z" fill="#17171a" />
+            <path d="M14 56 L14 40 Q16 32 26 32 L70 32 L70 56 Z" fill="#f2b705" />
+            <path d="M70 34 L94 34 Q104 40 106 56 L70 56 Z" fill="#f2b705" />
+            <rect x="12" y="54" width="96" height="6" rx="3" fill="#17171a" />
+            <path d="M74 22 L88 22 L92 32 L74 32 Z" fill="#9fd0e6" opacity=".7" />
+            <circle cx="30" cy="62" r="9" fill="#17171a" /><circle cx="30" cy="62" r="3.5" fill="#f2b705" />
+            <circle cx="94" cy="62" r="9" fill="#17171a" /><circle cx="94" cy="62" r="3.5" fill="#f2b705" />
+            <circle cx="105" cy="46" r="3" fill="#fff6c8" />
+          </svg>
+        </div>
+        <div class="loader-kolam" data-kolam="12"></div>
+        <p class="loader-label mono" data-i18n="loader.loading">Loading</p>
+        <button class="btn btn-gold loader-start" hidden data-i18n="loader.start">Start</button>
+        <p class="loader-note" data-i18n="loader.note">Turn your sound on / Switch to desktop</p>
+      </div>
+    </div>
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <a class="brand" href="#chennai" data-nav="0" aria-label="Ram, back to the start"><span class="brand-ta">ராம்</span><span class="brand-en">RAM</span></a>
+      <div class="top-actions">
+        <button class="ctl" id="lang-btn" data-i18n-attr="aria-label:lang.aria"><span class="ctl-icon ctl-lang" data-i18n="lang.switch">தமிழ்</span><span class="ctl-label" data-i18n="ctl.lang">language</span></button>
+        <button class="ctl" id="sound-btn" aria-pressed="true" data-i18n-attr="aria-label:sound.off">
+          <svg class="ctl-icon" viewBox="0 0 24 24" aria-hidden="true"><path class="bar b1" d="M5 10v4" /><path class="bar b2" d="M9 7v10" /><path class="bar b3" d="M13 4v16" /><path class="bar b4" d="M17 8v8" /><path class="bar b5" d="M21 11v2" /></svg>
+          <span class="ctl-label" data-i18n="ctl.sound">sound</span>
+        </button>
+        <button class="ctl" id="play-btn" data-i18n-attr="aria-label:game.play">
+          <svg class="ctl-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="2.2" /><path d="M12 3.5v6.3M4.6 15.5l5.4-2.4M19.4 15.5L14 13.1" /></svg>
+          <span class="ctl-label" data-i18n="ctl.play">play</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Trip progress: one dot per stop -->
+    <nav class="rail" data-i18n-attr="aria-label:nav.label">
+      <span class="rail-line"><span class="rail-fill"></span></span>
+      <button class="nav-dot" data-nav="0"><span data-i18n="nav.chennai">Chennai</span></button>
+      <button class="nav-dot" data-nav="1"><span data-i18n="nav.mamallapuram">Mamallapuram</span></button>
+      <button class="nav-dot" data-nav="2"><span data-i18n="nav.kanchipuram">Kanchipuram</span></button>
+      <button class="nav-dot" data-nav="3"><span data-i18n="nav.madurai">Madurai</span></button>
+      <button class="nav-dot" data-nav="4"><span data-i18n="nav.rameswaram">Rameswaram</span></button>
+    </nav>
+    <div class="hud mono" aria-live="polite"><span class="hud-stop"></span><span class="hud-phase"></span></div>
+
+    <div class="no-webgl" hidden role="alert">
+      <strong data-i18n="webgl.title">Your browser cannot show the 3D trip</strong>
+      <p data-i18n="webgl.body"></p>
+    </div>
+
+    <main>
+      <!-- 1. Chennai: hero -->
+      <section class="stop stop-hero" id="chennai">
+        <div class="panel panel-hero">
+          <p class="hero-hi" data-intro data-i18n="hero.hi">Vanakkam, I am</p>
+          <h1 class="hero-name" data-intro><span data-i18n="hero.name">Thulasiram K.</span> <span class="hero-nick" data-i18n="hero.nick">(Ram)</span></h1>
+          <p class="hero-role" data-intro><span class="typed" id="role"></span><span class="caret" aria-hidden="true"></span></p>
+          <p class="hero-place mono" data-intro><span data-i18n="hero.place">Chennai, Tamil Nadu, India</span> · 13.05°N 80.28°E</p>
+          <div class="scroll-hint" data-intro><span class="mouse" aria-hidden="true"></span><span data-i18n="hero.scroll">Scroll to start the trip</span></div>
+        </div>
+      </section>
+
+      <!-- 2. Mamallapuram: about -->
+      <section class="stop" id="mamallapuram">
+        <div class="panel">
+          <div class="divider" data-kolam="6"></div>
+          <p class="kicker" data-reveal data-i18n="about.kicker"></p>
+          <h2 data-reveal data-i18n="about.title">About</h2>
+          <p class="lead" data-reveal data-i18n="about.body"></p>
+          <p data-reveal data-i18n="about.body2"></p>
+        </div>
+      </section>
+
+      <!-- 3. Kanchipuram: projects -->
+      <section class="stop stop-tall" id="kanchipuram">
+        <div class="panel panel-wide">
+          <div class="divider" data-kolam="8"></div>
+          <p class="kicker" data-reveal data-i18n="projects.kicker"></p>
+          <h2 data-reveal data-i18n="projects.title">Projects</h2>
+          <p data-reveal data-i18n="projects.intro"></p>
+          <div class="cards" id="projects" data-reveal></div>
+        </div>
+      </section>
+
+      <!-- 4. Madurai: experience -->
+      <section class="stop" id="madurai">
+        <div class="panel">
+          <div class="divider" data-kolam="6"></div>
+          <p class="kicker" data-reveal data-i18n="exp.kicker"></p>
+          <h2 data-reveal data-i18n="exp.title">Experience</h2>
+          <article class="job" data-reveal>
+            <p class="job-dates mono" data-i18n="exp.dates"></p>
+            <h3 data-i18n="exp.role"></h3>
+            <p class="job-company" data-i18n="exp.company"></p>
+            <p data-i18n="exp.body"></p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 5. Rameswaram: contact -->
+      <section class="stop stop-end" id="rameswaram">
+        <div class="panel">
+          <div class="divider" data-kolam="6"></div>
+          <p class="kicker" data-reveal data-i18n="contact.kicker"></p>
+          <h2 data-reveal data-i18n="contact.title">Contact</h2>
+          <p class="lead" data-reveal data-i18n="contact.body"></p>
+          <ul class="contact" data-reveal>
+            <li><a class="btn btn-line" id="email-link" data-cursor="Mail"><span data-i18n="contact.email">Email</span><span class="contact-val" id="email-text"></span></a></li>
+            <li><a class="btn btn-line" id="github-link" target="_blank" rel="noopener" data-cursor="Open"><span data-i18n="contact.github">GitHub</span><span class="contact-val">thulasiramk-2310</span></a></li>
+            <li><a class="btn btn-line" id="linkedin-link" target="_blank" rel="noopener" data-cursor="Open"><span data-i18n="contact.linkedin">LinkedIn</span><span class="contact-val">thulasiram-k</span></a></li>
+          </ul>
+          <button class="btn btn-gold" id="play-btn-2" data-reveal data-i18n="contact.play">Play: Auto Dash</button>
+          <footer class="foot">
+            <span data-i18n="footer.made"></span>
+            <button class="link" data-cookie-settings data-i18n="cookie.settings">Cookie settings</button>
+          </footer>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mini game -->
+    <div id="game" hidden role="dialog" aria-modal="true" aria-labelledby="game-title">
+      <div class="game-box">
+        <div class="game-top">
+          <h2 id="game-title" data-i18n="game.title">Auto Dash</h2>
+          <div class="game-stats mono">
+            <span><span data-i18n="game.score">Score</span> <b data-game="score">0</b></span>
+            <span>☕ <b data-game="coffee">0</b></span>
+            <span><span data-i18n="game.best">Best</span> <b data-game="best">0</b></span>
+          </div>
+          <button class="icon-btn" data-game="close" data-i18n-attr="aria-label:game.close">✕</button>
+        </div>
+        <div class="game-stage">
+          <canvas tabindex="0" aria-label="Auto Dash game"></canvas>
+          <div class="game-menu game-card">
+            <p data-i18n="game.help"></p>
+            <p class="kicker" data-i18n="game.vehicle"></p>
+            <div class="game-vehicles">
+              <button class="pill game-vehicle" data-vehicle="auto" aria-pressed="true" data-i18n="game.auto">Auto</button>
+              <button class="pill game-vehicle" data-vehicle="bike" aria-pressed="false" data-i18n="game.bike">Bike</button>
+            </div>
+            <button class="btn btn-gold" data-game="start" data-i18n="game.start">Start</button>
+          </div>
+          <div class="game-over game-card" hidden>
+            <h3 data-i18n="game.over">Crash!</h3>
+            <p class="mono" data-game="final"></p>
+            <button class="btn btn-gold" data-game="start" data-i18n="game.restart">Restart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cookie banner -->
+    <div class="cookie" hidden role="region" aria-label="Cookies">
+      <p data-i18n="cookie.text"></p>
+      <div class="cookie-actions">
+        <button class="btn btn-line" data-cookie="reject" data-i18n="cookie.reject">Reject</button>
+        <button class="btn btn-gold" data-cookie="accept" data-i18n="cookie.accept">Accept</button>
+      </div>
+    </div>
+
+    <div class="curtain" aria-hidden="true"><div data-kolam="8"></div></div>
+    <div class="cursor-ring" aria-hidden="true"><span class="cursor-label"></span></div>
+    <div class="cursor-dot" aria-hidden="true"></div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
