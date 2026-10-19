@@ -24,3 +24,14 @@ dist-ssr
 *.sw?
 dist-extension
 public/mediapipe/
+
+# Secrets: API keys belong in these files, never in git
+.env
+.env.*
+!.env.example
+
+# Build and test output
+*.tsbuildinfo
+coverage
+.vite
+.cache

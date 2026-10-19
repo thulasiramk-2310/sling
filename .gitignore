@@ -1,0 +1,26 @@
+# Dependencies and build output for every project
+node_modules
+dist
+dist-extension
+dist-ssr
+coverage
+*.tsbuildinfo
+
+# Secrets: API keys belong in these files, never in git
+.env
+.env.*
+!.env.example
+
+# Logs and editor/OS junk
+logs
+*.log
+.DS_Store
+Thumbs.db
+.idea
+.vscode/*
+!.vscode/extensions.json
+*.sw?
+
+# Local scratch and downloaded runtime copies
+scratchpad/
+*.zip
