@@ -4,7 +4,7 @@ import { lookup } from 'node:dns/promises'
 import { isIP } from 'node:net'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { Plugin } from 'vite'
-import { extractProduct, parseProductLink } from '../src/productLink.ts'
+import { extractProduct, fromShopifyJson, parseProductLink, shopifyJsonUrl } from '../src/productLink.ts'
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36'
 const PAGE_MAX = 8 * 1024 * 1024
@@ -95,6 +95,14 @@ function send(res: ServerResponse, status: number, body: unknown) {
 async function product(target: string, res: ServerResponse) {
   const link = parseProductLink(target)
   if (!link) throw new ApiError(400, 'bad-link')
+  // Shopify's product JSON is exact and never a robot check, so try it before scraping the page.
+  const json = shopifyJsonUrl(link.url)
+  if (json) {
+    const info = await safeFetch(json, 'application/json')
+      .then(async ({ res: r }) => (r.ok && (r.headers.get('content-type') ?? '').includes('json') ? fromShopifyJson(JSON.parse((await readCapped(r, PAGE_MAX)).toString('utf8'))) : null))
+      .catch(() => null)
+    if (info) return send(res, 200, info)
+  }
   const { res: page, url } = await safeFetch(link.url, 'text/html,application/xhtml+xml')
   const type = page.headers.get('content-type') ?? ''
   if (type.startsWith('image/')) return send(res, 200, { title: '', price: null, images: [url.href], store: link.store })

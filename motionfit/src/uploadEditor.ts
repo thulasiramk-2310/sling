@@ -316,7 +316,7 @@ export function mountUploadEditor(root: HTMLElement, onCreate: (g: NewGarment) =
       busy(null)
       $('up-start').hidden = false
       const code = (err as Error).message
-      msg(code === 'no-server' || code === 'Failed to fetch' ? `Links need the MotionFit server (npm run dev). For now: ${COPY_TIP}` : `${LINK_ERRORS[code] ?? 'That page couldn’t be read.'} ${COPY_TIP}`)
+      msg(code === 'no-server' || code === 'Failed to fetch' ? `This preview can’t open other websites, so links work only in the full app (npm run dev). Here: ${COPY_TIP}` : `${LINK_ERRORS[code] ?? 'That page couldn’t be read.'} ${COPY_TIP}`)
       return
     }
     if (my !== token) return

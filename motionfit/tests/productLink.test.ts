@@ -127,3 +127,18 @@ describe('isPrivateAddress', () => {
     for (const ip of ['8.8.8.8', '13.32.1.1', '172.32.0.1', '2606:4700::1111']) expect(isPrivateAddress(ip), ip).toBe(false)
   })
 })
+
+describe('Shopify stores', () => {
+  it('finds the product JSON for a product page, with or without a collection or tracking query', async () => {
+    const { shopifyJsonUrl } = await import('../src/productLink')
+    expect(shopifyJsonUrl('https://essa.in/products/polo-printed-t-shirt-for-men-ball-blue?srsltid=AU7gw4UD')).toBe('https://essa.in/products/polo-printed-t-shirt-for-men-ball-blue.json')
+    expect(shopifyJsonUrl('https://www.snitch.co.in/collections/shirts/products/linen-shirt')).toBe('https://www.snitch.co.in/products/linen-shirt.json')
+    expect(shopifyJsonUrl('https://www.amazon.in/dp/B0TEST')).toBeNull()
+  })
+  it('reads title, price and photos from product JSON', async () => {
+    const { fromShopifyJson } = await import('../src/productLink')
+    const p = fromShopifyJson({ product: { title: 'Polo Printed T-Shirt for Men – Ball Blue', variants: [{ price: '799.00' }], images: [{ src: 'https://essa.in/cdn/shop/files/a.jpg' }, { src: 'javascript:x' }] } })
+    expect(p).toEqual({ title: 'Polo Printed T-Shirt for Men – Ball Blue', price: 799, images: ['https://essa.in/cdn/shop/files/a.jpg'], store: 'other' })
+    expect(fromShopifyJson({})).toBeNull()
+  })
+})

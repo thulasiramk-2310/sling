@@ -209,3 +209,26 @@ export function guessGarment(title: string): { category: Category; sleeves: 'sho
   const wearable = !/\b(jeans|trousers|pants|shorts|skirt|leggings|shoes?|sneakers?|sandals?|watch|bag|saree|lehenga|dress)\b/.test(t) || /\b(shirt|tee|top|jacket|hoodie|sweater|kurta)\b/.test(t)
   return { category, sleeves, wearable }
 }
+
+// Shopify stores (most Indian D2C brands) publish every product as JSON at /products/<handle>.json.
+export function shopifyJsonUrl(pageUrl: string): string | null {
+  try {
+    const u = new URL(pageUrl)
+    const m = u.pathname.match(/^(?:\/[a-z]{2}(?:-[a-z]{2})?)?(?:\/collections\/[^/]+)?\/products\/([^/.?#]+)/i)
+    return m ? `${u.origin}/products/${m[1]}.json` : null
+  } catch {
+    return null
+  }
+}
+
+export function fromShopifyJson(raw: unknown): ProductInfo | null {
+  const p = (raw as { product?: { title?: unknown; images?: unknown; variants?: unknown } } | null)?.product
+  if (!p || typeof p.title !== 'string') return null
+  const images = (Array.isArray(p.images) ? p.images : [])
+    .map((i) => (i && typeof i === 'object' ? (i as { src?: unknown }).src : null))
+    .filter((s): s is string => typeof s === 'string' && /^https?:\/\//.test(s))
+  const v = Array.isArray(p.variants) ? (p.variants[0] as { price?: unknown } | undefined) : undefined
+  const price = v ? toPrice(v.price) : null
+  if (!images.length) return null
+  return { title: cleanTitle(p.title).slice(0, 120), price, images: images.slice(0, 10), store: 'other' }
+}
