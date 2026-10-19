@@ -360,7 +360,9 @@ photoFile.addEventListener('change', async () => {
   if (!file) return
   status.textContent = 'Reading your photo…'
   try {
-    const bmp = await createImageBitmap(file)
+    const bmp = await createImageBitmap(file).catch(() => {
+      throw new Error('decode')
+    })
     const k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height))
     const c = document.createElement('canvas')
     c.width = Math.round(bmp.width * k)
@@ -370,10 +372,13 @@ photoFile.addEventListener('change', async () => {
     setSource(await startPhotoSource(import.meta.env.BASE_URL, c, showProgress))
     status.textContent = 'Your photo · pick any look, or add one from a link'
   } catch (err) {
+    const code = (err as Error).message
     status.textContent =
-      (err as Error).message === 'no-person'
+      code === 'no-person'
         ? 'No one found · use a front-facing photo with shoulders and arms in view'
-        : 'That photo couldn’t be read · try a JPEG or PNG'
+        : code === 'decode'
+          ? 'That photo couldn’t be read · try a JPEG or PNG'
+          : 'The pose model couldn’t load here · run the full app to use photos'
   } finally {
     $('#stage-load').hidden = true
   }
