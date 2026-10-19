@@ -2,9 +2,10 @@
 import * as THREE from 'three'
 import { Water } from 'three/addons/objects/Water.js'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
-import { glowTexture, grainTexture, roadTexture, seaNormalTexture, windowTextures } from './textures.js'
+import { frondTexture, glowTexture, grainTexture, roadTexture, seaNormalTexture, trunkTexture, windowTextures } from './textures.js'
 import { quality } from './quality.js'
-import { clamp, glow, lambert, lerp, rng, smooth } from './util.js'
+import { isReserved } from './route.js'
+import { clamp, glow, lambert, lerp, rng, smooth, surface } from './util.js'
 
 // Distances from the road centre where the ground mesh has a row of points.
 const COLUMNS = [-320, -140, -60, -26, -8, 8, 26, 50, 80, 110, 150, 220, 320]
@@ -83,7 +84,7 @@ export function buildGround(scene, route) {
   geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2))
   geo.setIndex(idx)
   geo.computeVertexNormals()
-  const mesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ vertexColors: true, map: grainTexture() }))
+  const mesh = new THREE.Mesh(geo, surface({ vertexColors: true, map: grainTexture() }))
   mesh.userData.receiveOnly = true
   scene.add(mesh)
   return mesh
@@ -110,7 +111,7 @@ export function buildRoad(scene, route) {
   geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2))
   geo.setIndex(idx)
   geo.computeVertexNormals()
-  const mesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ map: roadTexture() }))
+  const mesh = new THREE.Mesh(geo, surface({ map: roadTexture() }))
   mesh.userData.receiveOnly = true
   scene.add(mesh)
   return mesh
@@ -162,46 +163,59 @@ export function buildSea(scene) {
   }
 }
 
-// One coconut palm as a single merged geometry: a leaning trunk and drooping fronds.
-function palmGeometry() {
-  const parts = []
-  const trunk = new THREE.CylinderGeometry(0.16, 0.3, 9, 6, 4)
+// A coconut palm: a leaning, ringed trunk with coconuts, and a crown of drooping leafy fronds.
+function trunkGeometry() {
+  const trunk = new THREE.CylinderGeometry(0.16, 0.3, 9, 8, 8)
   trunk.translate(0, 4.5, 0)
-  // lean the trunk by bending vertices
   const p = trunk.attributes.position
   for (let i = 0; i < p.count; i++) {
     const y = p.getY(i)
     p.setX(i, p.getX(i) + (y / 9) * (y / 9) * 1.3)
   }
-  trunk.setAttribute('color', new THREE.BufferAttribute(new Float32Array(p.count * 3).fill(1).map((_, n) => [0.62, 0.5, 0.42][n % 3]), 3))
-  parts.push(trunk)
-  const fronds = 8
+  const parts = [trunk]
+  for (let i = 0; i < 5; i++) {
+    const nut = new THREE.SphereGeometry(0.2, 8, 6)
+    const a = (i / 5) * Math.PI * 2
+    nut.translate(1.3 + Math.cos(a) * 0.3, 8.6, Math.sin(a) * 0.3)
+    parts.push(nut)
+  }
+  const g = mergeGeometries(parts)
+  g.computeVertexNormals()
+  return g
+}
+
+function frondsGeometry() {
+  const parts = []
+  const fronds = 11
   for (let i = 0; i < fronds; i++) {
-    const f = new THREE.PlaneGeometry(0.9, 4.2, 1, 5)
-    f.translate(0, 2.1, 0)
+    const f = new THREE.PlaneGeometry(1.9, 4.8, 1, 10)
+    f.translate(0, 2.4, 0)
     const q = f.attributes.position
+    const lift = 0.35 + (i % 3) * 0.18
     for (let k = 0; k < q.count; k++) {
-      const t = q.getY(k) / 4.2
-      q.setZ(k, q.getZ(k) - t * t * 2.2) // droop
-      q.setX(k, q.getX(k) * (1 - t * 0.7)) // taper
+      const t = q.getY(k) / 4.8
+      q.setZ(k, q.getZ(k) - t * t * 2.6) // droop
+      q.setX(k, q.getX(k) * (1 - t * 0.35)) // taper
+      q.setZ(k, q.getZ(k) + Math.abs(q.getX(k)) * 0.25) // leaflets fold into a shallow V
     }
-    f.rotateX(-Math.PI / 2 + 0.55) // fan out
-    f.rotateY((i / fronds) * Math.PI * 2)
+    f.rotateX(-Math.PI / 2 + lift)
+    f.rotateY((i / fronds) * Math.PI * 2 + (i % 2) * 0.2)
     f.translate(1.3, 9, 0)
-    f.setAttribute('color', new THREE.BufferAttribute(new Float32Array(q.count * 3).fill(1).map((_, n) => (n % 3 === 1 ? 0.78 : n % 3 === 0 ? 0.52 : 0.4)), 3))
     parts.push(f)
   }
-  return mergeGeometries(parts.map((g) => (g.index ? g.toNonIndexed() : g)))
+  const g = mergeGeometries(parts)
+  g.computeVertexNormals()
+  return g
 }
 
 export function buildPalms(scene, route) {
-  const geo = palmGeometry()
-  const mat = new THREE.MeshLambertMaterial({ vertexColors: true, color: 0x8faa5e, side: THREE.DoubleSide })
-  const mesh = new THREE.InstancedMesh(geo, mat, quality.palms)
+  const trunks = new THREE.InstancedMesh(trunkGeometry(), surface({ map: trunkTexture(), roughness: 0.95 }), quality.palms)
+  const crowns = new THREE.InstancedMesh(frondsGeometry(), surface({ map: frondTexture(), alphaTest: 0.45, side: THREE.DoubleSide, roughness: 0.7 }), quality.palms)
   const r = rng(13)
   const m = new THREE.Matrix4()
   const q = new THREE.Quaternion()
   const sc = new THREE.Vector3()
+  const tint = new THREE.Color()
   const s = route.sample()
   let n = 0
   let guard = 0
@@ -210,24 +224,30 @@ export function buildPalms(scene, route) {
     // fewer palms on the beach side near the coast
     const side = r() > 0.5 ? 1 : -1
     if (side > 0 && u < 0.33 && r() < 0.8) continue
-    route.at(u, s)
     const lat = side * (8 + Math.pow(r(), 1.7) * 55)
+    if (isReserved(u, lat)) continue
+    route.at(u, s)
     const p = s.pos.clone().addScaledVector(s.right, lat)
     q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), r() * Math.PI * 2)
     const k = 0.8 + r() * 0.7
     sc.set(k, k, k)
     m.compose(new THREE.Vector3(p.x, 0, p.z), q, sc)
-    mesh.setMatrixAt(n++, m)
+    trunks.setMatrixAt(n, m)
+    crowns.setMatrixAt(n, m)
+    // every palm a slightly different green
+    crowns.setColorAt(n, tint.setHSL(0.2 + r() * 0.05, 0.35 + r() * 0.2, 0.42 + r() * 0.12))
+    n++
   }
-  mesh.count = n
-  scene.add(mesh)
+  trunks.count = crowns.count = n
+  scene.add(trunks, crowns)
+  return { crowns }
 }
 
 // Street lamps along the road; the bulbs light up at night.
 export function buildLamps(scene, route) {
   const group = new THREE.Group()
   const pole = lambert(0x2b2b30)
-  const bulb = glow(new THREE.MeshLambertMaterial({ color: 0xfff0c0, emissive: 0xffd88a, emissiveIntensity: 0 }), 2.2)
+  const bulb = glow(surface({ color: 0xfff0c0, emissive: 0xffd88a, emissiveIntensity: 0 }), 2.2)
   const halo = new THREE.SpriteMaterial({ map: glowTexture(), color: 0xffd58a, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false })
   const s = route.sample()
   const count = quality.lamps
@@ -255,7 +275,7 @@ export function buildLamps(scene, route) {
 // Blocks of buildings (city) and low houses (towns), as instanced boxes with window textures.
 export function buildTown(scene, route, { from, to, count, minH, maxH, seed, flat = false, lateral = [22, 90], side: onlySide = 0 }) {
   const win = windowTextures()
-  const mat = glow(new THREE.MeshLambertMaterial({ map: win.map, emissiveMap: win.glow, emissive: 0xffffff, emissiveIntensity: 0 }), 1.5)
+  const mat = glow(surface({ map: win.map, emissiveMap: win.glow, emissive: 0xffffff, emissiveIntensity: 0 }), 1.5)
   const geo = new THREE.BoxGeometry(1, 1, 1)
   geo.translate(0, 0.5, 0)
   const mesh = new THREE.InstancedMesh(geo, mat, count)
@@ -270,6 +290,12 @@ export function buildTown(scene, route, { from, to, count, minH, maxH, seed, fla
     route.at(u, s)
     const side = onlySide || (r() > 0.5 ? 1 : -1)
     const lat = side * (lateral[0] + r() * (lateral[1] - lateral[0]))
+    if (isReserved(u, lat)) {
+      // tuck it away out of sight rather than through a temple
+      m.makeScale(0, 0, 0)
+      mesh.setMatrixAt(i, m)
+      continue
+    }
     const p = s.pos.clone().addScaledVector(s.right, lat)
     const w = flat ? 5 + r() * 5 : 8 + r() * 9
     const h = minH + r() * (maxH - minH)

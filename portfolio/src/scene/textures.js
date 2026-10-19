@@ -343,3 +343,166 @@ export const cloudTexture = () =>
     }
     return toTexture(c, { repeat: false })
   })
+
+// Turns a texture's light and dark into surface bumps (a normal map): dark mortar and niches read as recessed.
+export function normalFromTexture(tex, strength = 2.5) {
+  const src = tex.image
+  const w = src.width
+  const h = src.height
+  const data = src.getContext('2d').getImageData(0, 0, w, h).data
+  const lum = new Float32Array(w * h)
+  for (let i = 0; i < w * h; i++) lum[i] = (data[i * 4] * 0.3 + data[i * 4 + 1] * 0.59 + data[i * 4 + 2] * 0.11) / 255
+  const out = new Uint8Array(w * h * 4)
+  for (let y = 0; y < h; y++)
+    for (let x = 0; x < w; x++) {
+      const l = lum[y * w + ((x + w - 1) % w)]
+      const r = lum[y * w + ((x + 1) % w)]
+      const u = lum[((y + h - 1) % h) * w + x]
+      const d = lum[((y + 1) % h) * w + x]
+      const nx = (l - r) * strength
+      const ny = (d - u) * strength
+      const len = Math.hypot(nx, ny, 1)
+      const k = (y * w + x) * 4
+      out[k] = (nx / len) * 127.5 + 127.5
+      out[k + 1] = (ny / len) * 127.5 + 127.5
+      out[k + 2] = (1 / len) * 127.5 + 127.5
+      out[k + 3] = 255
+    }
+  const t = new THREE.DataTexture(out, w, h)
+  t.wrapS = t.wrapT = THREE.RepeatWrapping
+  t.magFilter = THREE.LinearFilter
+  t.minFilter = THREE.LinearMipmapLinearFilter
+  t.generateMipmaps = true
+  t.needsUpdate = true
+  return t
+}
+
+// A colour map plus its matching normal map, cached together.
+export function withRelief(name, makeTexture, strength) {
+  return once('relief:' + name, () => {
+    const map = makeTexture()
+    return { map, normalMap: normalFromTexture(map, strength) }
+  })
+}
+
+// Granite wall of the Thanjavur vimana: pilasters, niches with carved deities, and moulding bands.
+export const vimanaWallTexture = (base = '#b89a76') =>
+  once('vimanaWall' + base, () => {
+    const { c, ctx, w, h } = canvas(512, 256)
+    const r = rng(41)
+    ctx.fillStyle = base
+    ctx.fillRect(0, 0, w, h)
+    // block courses
+    for (let y = 0; y < h; y += 16)
+      for (let x = (y / 16) % 2 ? -20 : 0; x < w; x += 40 + r() * 20) {
+        ctx.fillStyle = `rgba(${r() > 0.5 ? '255,240,220' : '60,40,25'},${0.04 + r() * 0.06})`
+        ctx.fillRect(x, y, 44, 16)
+        ctx.fillStyle = 'rgba(70,50,32,.28)'
+        ctx.fillRect(x, y, 1, 16)
+      }
+    for (let y = 0; y < h; y += 16) {
+      ctx.fillStyle = 'rgba(70,50,32,.25)'
+      ctx.fillRect(0, y, w, 1)
+    }
+    // pilasters and niches across the face
+    for (let x = 0; x < w; x += 128) {
+      ctx.fillStyle = 'rgba(255,238,212,.18)'
+      ctx.fillRect(x + 4, 18, 14, h - 36)
+      ctx.fillRect(x + 110, 18, 14, h - 36)
+      // niche (devakoshta)
+      ctx.fillStyle = 'rgba(40,26,16,.55)'
+      ctx.fillRect(x + 38, 52, 52, 150)
+      ctx.fillStyle = 'rgba(255,238,212,.2)'
+      ctx.fillRect(x + 32, 44, 64, 8)
+      ctx.fillRect(x + 32, 202, 64, 6)
+      // deity figure in the niche
+      ctx.fillStyle = 'rgba(178,150,116,.95)'
+      ctx.beginPath()
+      ctx.arc(x + 64, 86, 10, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.beginPath()
+      ctx.moveTo(x + 50, 196)
+      ctx.lineTo(x + 54, 100)
+      ctx.lineTo(x + 74, 100)
+      ctx.lineTo(x + 78, 196)
+      ctx.fill()
+      ctx.fillRect(x + 44, 108, 40, 6)
+    }
+    // mouldings top and bottom
+    ctx.fillStyle = 'rgba(255,238,212,.22)'
+    ctx.fillRect(0, 0, w, 10)
+    ctx.fillRect(0, h - 12, w, 12)
+    ctx.fillStyle = 'rgba(50,34,20,.35)'
+    ctx.fillRect(0, 10, w, 3)
+    ctx.fillRect(0, h - 14, w, 2)
+    speckle(ctx, w, h, 2600, r, '40,26,16', '255,240,220')
+    return toTexture(c)
+  })
+
+// The cloister around the courtyard: a long colonnade seen from inside.
+export const colonnadeTexture = () =>
+  once('colonnade', () => {
+    const { c, ctx, w, h } = canvas(256, 128)
+    const r = rng(52)
+    ctx.fillStyle = '#b89c7a'
+    ctx.fillRect(0, 0, w, h)
+    ctx.fillStyle = '#3a2a1e'
+    for (let x = 0; x < w; x += 32) ctx.fillRect(x + 8, 26, 18, 82)
+    ctx.fillStyle = 'rgba(255,238,212,.25)'
+    ctx.fillRect(0, 14, w, 10)
+    ctx.fillRect(0, 108, w, 8)
+    speckle(ctx, w, h, 900, r, '40,26,16', '255,240,220')
+    return toTexture(c)
+  })
+
+// A coconut frond: a midrib with many narrow leaflets, on a transparent background.
+export const frondTexture = () =>
+  once('frond', () => {
+    const c = document.createElement('canvas')
+    c.width = Math.round(128 * Math.max(quality.tex, 0.75))
+    c.height = c.width * 4
+    const ctx = c.getContext('2d')
+    ctx.scale(c.width / 128, c.height / 512)
+    const r = rng(23)
+    for (let y = 8; y < 504; y += 6) {
+      const t = y / 512
+      const len = 58 * Math.sin(Math.PI * Math.min(1, t * 1.15)) * (0.85 + r() * 0.3)
+      const g = 90 + r() * 50
+      ctx.strokeStyle = `rgb(${60 + r() * 30},${g},${30 + r() * 20})`
+      ctx.lineWidth = 2.6
+      ctx.lineCap = 'round'
+      for (const s of [-1, 1]) {
+        ctx.beginPath()
+        ctx.moveTo(64, y)
+        ctx.quadraticCurveTo(64 + s * len * 0.5, y + len * 0.15, 64 + s * len, y + len * 0.55)
+        ctx.stroke()
+      }
+    }
+    ctx.strokeStyle = '#7d7a3a'
+    ctx.lineWidth = 3.5
+    ctx.beginPath()
+    ctx.moveTo(64, 0)
+    ctx.lineTo(64, 512)
+    ctx.stroke()
+    const t = new THREE.CanvasTexture(c)
+    t.colorSpace = THREE.SRGBColorSpace
+    t.anisotropy = quality.low ? 1 : 4
+    return t
+  })
+
+// Palm trunk with its ring scars.
+export const trunkTexture = () =>
+  once('trunk', () => {
+    const { c, ctx, w, h } = canvas(64, 256)
+    const r = rng(29)
+    ctx.fillStyle = '#7a6550'
+    ctx.fillRect(0, 0, w, h)
+    for (let y = 0; y < h; y += 7 + r() * 4) {
+      ctx.fillStyle = `rgba(40,28,18,${0.35 + r() * 0.3})`
+      ctx.fillRect(0, y, w, 2)
+      ctx.fillStyle = 'rgba(200,180,150,.18)'
+      ctx.fillRect(0, y + 2, w, 2)
+    }
+    speckle(ctx, w, h, 500, r)
+    return toTexture(c)
+  })

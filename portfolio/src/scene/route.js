@@ -60,6 +60,16 @@ export function createRoute() {
   return { curve, length, at, side, sample, bridgeU }
 }
 
+// Ground kept clear for landmarks, so palms and houses don't grow through them.
+// [from u, to u, nearest lateral, farthest lateral] (positive lateral = right of the road)
+const RESERVED = [
+  [0.035, 0.11, 22, 100],
+  [0.2, 0.33, 30, 130],
+  [0.37, 0.57, 6, 200],
+  [0.63, 0.73, 6, 140],
+]
+export const isReserved = (u, lateral) => RESERVED.some(([a, b, l0, l1]) => u >= a && u <= b && lateral >= l0 && lateral <= l1)
+
 // Turns a landmark so its front (local +Z) faces the road.
 export function faceRoad(object, route, u) {
   const s = route.at(u)

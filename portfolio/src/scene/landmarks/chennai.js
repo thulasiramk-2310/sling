@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import { faceRoad } from '../route.js'
 import { bandTexture, brickTexture, clockTexture, glowTexture, windowTextures } from '../textures.js'
-import { block, column, glow, lambert, rng, uvScale } from '../util.js'
+import { block, column, glow, lambert, rng, surface, uvScale } from '../util.js'
 
 function lighthouse() {
   const g = new THREE.Group()
@@ -10,7 +10,7 @@ function lighthouse() {
   bands.position.y = 17
   g.add(bands)
   g.add(column(3.2, 3.2, 0.6, lambert(0x333338), 0, 33.8))
-  const lamp = glow(new THREE.MeshLambertMaterial({ color: 0xfff1c0, emissive: 0xffe08a, emissiveIntensity: 0.4, transparent: true, opacity: 0.85 }), 2.4)
+  const lamp = glow(surface({ color: 0xfff1c0, emissive: 0xffe08a, emissiveIntensity: 0.4, transparent: true, opacity: 0.85 }), 2.4)
   g.add(column(1.9, 1.9, 3.2, lamp, 0, 34.4))
   g.add(column(0.1, 2.5, 2.2, lambert(0xb3281f), 0, 37.6))
   // A slow turning beam, visible mostly at dusk and dawn.
@@ -38,7 +38,7 @@ function station() {
   g.add(block(W + 0.6, 0.6, 11.6, trim, 0, 6.2))
   // rows of lit windows
   const win = windowTextures()
-  const wm = glow(new THREE.MeshLambertMaterial({ map: win.map, emissiveMap: win.glow, emissive: 0xffffff, emissiveIntensity: 0 }), 1.4)
+  const wm = glow(surface({ map: win.map, emissiveMap: win.glow, emissive: 0xffffff, emissiveIntensity: 0 }), 1.4)
   for (const y of [1.6, 7.2]) {
     const strip = new THREE.Mesh(new THREE.PlaneGeometry(W - 8, 4), wm)
     uvScale(strip.geometry, 9, 0.2)
@@ -109,6 +109,10 @@ export function buildChennai({ scene, route, u }) {
   boats(route, world)
   return {
     focus: route.side(u + 0.004, 52, 14),
+    slots: [
+      { name: 'chennai-lighthouse', group: house, height: 46 },
+      { name: 'chennai-central', group: central, height: 46 },
+    ],
     update(time) {
       house.userData.beam.rotation.y = time * 1.1
     },

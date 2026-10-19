@@ -10,7 +10,8 @@ gsap.registerPlugin(ScrollTrigger)
 
 export function createScroll() {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.9, touchMultiplier: 1.4, smoothWheel: !reduced })
+  // Gentle wheel steps and heavy smoothing, so a flick of the wheel is a short drive, not a jump.
+  const lenis = new Lenis({ lerp: 0.06, wheelMultiplier: 0.55, touchMultiplier: 1.0, smoothWheel: !reduced })
   lenis.on('scroll', ScrollTrigger.update)
   lenis.stop() // locked until the visitor presses Start
 
@@ -23,6 +24,26 @@ export function createScroll() {
   measure()
   window.addEventListener('resize', measure)
   window.addEventListener('load', measure)
+
+  // When scrolling stops close to a stop, glide the rest of the way so each landmark settles in frame.
+  let idle = 0
+  let snapping = false
+  lenis.on('scroll', () => {
+    clearTimeout(idle)
+    if (snapping || lenis.isStopped) return
+    idle = window.setTimeout(() => {
+      const y = lenis.scroll
+      let best = null
+      for (let i = 1; i <= STOPS.length; i++) {
+        const d = Math.abs(anchors[i][0] - y)
+        if (d > 4 && d < window.innerHeight * 0.4 && (!best || d < Math.abs(best - y))) best = anchors[i][0]
+      }
+      if (best === null) return
+      snapping = true
+      lenis.scrollTo(best, { duration: 1.6, easing: (x) => 1 - Math.pow(1 - x, 3), onComplete: () => (snapping = false) })
+      setTimeout(() => (snapping = false), 1800)
+    }, 260)
+  })
 
   return {
     lenis,

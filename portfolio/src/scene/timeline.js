@@ -6,7 +6,7 @@ const hex = (h) => [parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 1
 
 // Each key is one moment of the day, placed at a point along the route (u from 0 to 1).
 const KEYS = [
-  { u: 0.0, phase: 'sunrise', elev: 5, top: '#5e5e94', horizon: '#f6b48c', glow: '#ff9668', glowAmt: 1.0, fog: '#eab89c', light: '#ffc89a', lightI: 1.5, hemiSky: '#ffd6b8', hemiGround: '#7a5a5a', hemiI: 0.85, sea: '#4a6a8e', night: 0.08 },
+  { u: 0.0, phase: 'sunrise', elev: 5, top: '#7d8cc0', horizon: '#f8bc94', glow: '#ff9668', glowAmt: 1.0, fog: '#eab89c', light: '#ffc89a', lightI: 1.5, hemiSky: '#ffd6b8', hemiGround: '#7a5a5a', hemiI: 0.85, sea: '#4a6a8e', night: 0.08 },
   { u: 0.14, phase: 'sunrise', elev: 22, top: '#7896c4', horizon: '#f4dcc2', glow: '#ffd2a8', glowAmt: 0.55, fog: '#eadccb', light: '#fff0d8', lightI: 2.0, hemiSky: '#dfe6f2', hemiGround: '#8a7462', hemiI: 0.95, sea: '#3a7a9e', night: 0 },
   { u: 0.34, phase: 'noon', elev: 52, top: '#4f86c4', horizon: '#ecdcc6', glow: '#ffe6c4', glowAmt: 0.35, fog: '#e6d8c4', light: '#fff8ec', lightI: 2.4, hemiSky: '#dce8f2', hemiGround: '#948066', hemiI: 1.0, sea: '#2f86a8', night: 0 },
   { u: 0.5, phase: 'noon', elev: 66, top: '#4c84c4', horizon: '#eadcc8', glow: '#ffe6c4', glowAmt: 0.3, fog: '#e4d8c6', light: '#fffaf0', lightI: 2.5, hemiSky: '#dce8f2', hemiGround: '#948066', hemiI: 1.0, sea: '#2f86a8', night: 0 },

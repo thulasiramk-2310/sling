@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import { faceRoad } from '../route.js'
 import { stoneTexture } from '../textures.js'
-import { block, glow, lambert, rng, uvScale } from '../util.js'
+import { block, glow, lambert, uvScale } from '../util.js'
 import { goldMaterial, makeGopuram } from './gopuram.js'
 
 // Rings of small lamps around the base of a tower.
@@ -57,11 +57,9 @@ export function buildMadurai({ scene, route, u }) {
   tanks.rotation.y = main.rotation.y
   world.add(tanks)
 
-  // little houses along the road in front
-  const r = rng(40)
-  void r
   return {
     focus: route.side(u, 54, 30),
+    slots: [{ name: 'madurai', group: main, height: 52 }],
     update(time, night) {
       ring.material.color.setRGB(0.25 + night * 0.75, 0.2 + night * 0.62, 0.1 + night * 0.25)
       tanks.material.color.copy(ring.material.color)

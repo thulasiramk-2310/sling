@@ -3,6 +3,7 @@
 // a gentle vignette and film grain, then tone mapping.
 import * as THREE from 'three'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js'
@@ -54,11 +55,38 @@ const GradeShader = {
     }`,
 }
 
-export function createPost(renderer, scene, camera) {
+// hide: objects (sky, sea) left out while ambient occlusion is measured, so towers don't cast dark halos on the sky.
+export function createPost(renderer, scene, camera, { hide = [] } = {}) {
   const size = renderer.getSize(new THREE.Vector2())
   const target = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.HalfFloatType, samples: 4 })
   const composer = new EffectComposer(renderer, target)
   composer.addPass(new RenderPass(scene, camera))
+  // Ambient occlusion: soft contact shadows in corners, under ledges and between carvings.
+  const ao = new GTAOPass(scene, camera, size.x / 2, size.y / 2)
+  // compute the occlusion at half resolution; it is soft anyway, and this keeps it cheap
+  const aoSetSize = ao.setSize.bind(ao)
+  ao.setSize = (w, h) => aoSetSize(Math.max(1, Math.round(w / 2)), Math.max(1, Math.round(h / 2)))
+  ao.output = GTAOPass.OUTPUT.Default
+  ao.blendIntensity = 0.85
+  ao.updateGtaoMaterial({ radius: 2.2, distanceExponent: 1.4, thickness: 2.5, scale: 1, samples: 12, distanceFallOff: 1 })
+  ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12 })
+  // Glows, beams, halos and leaf cards are see-through; ambient occlusion would treat them as solid squares.
+  const seeThrough = [...hide]
+  scene.traverse((o) => {
+    const m = o.material
+    if (o.isSprite || o.isPoints || o.isLine || (o.isMesh && m && (m.transparent || m.alphaTest > 0))) seeThrough.push(o)
+  })
+  const aoRender = ao.render.bind(ao)
+  ao.render = (...args) => {
+    const was = seeThrough.map((o) => o.visible)
+    seeThrough.forEach((o) => (o.visible = false))
+    try {
+      aoRender(...args)
+    } finally {
+      seeThrough.forEach((o, i) => (o.visible = was[i]))
+    }
+  }
+  composer.addPass(ao)
   // threshold above 1, so only real light sources (sun, lamps, lit windows) glow, not the whole sky
   const bloom = new UnrealBloomPass(new THREE.Vector2(size.x, size.y), 0.5, 0.6, 1.05)
   composer.addPass(bloom)
@@ -68,6 +96,9 @@ export function createPost(renderer, scene, camera) {
   const u = grade.uniforms
   return {
     render: () => composer.render(),
+    // the first thing to give up on a slow machine
+    aoOn: () => ao.enabled,
+    setAO: (on) => (ao.enabled = on),
     setSize: (w, h) => {
       composer.setPixelRatio(renderer.getPixelRatio())
       composer.setSize(w, h)

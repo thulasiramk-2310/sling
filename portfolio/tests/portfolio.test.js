@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { STRINGS, PROJECTS, ROLES, STOP_IDS } from '../src/content.js'
+import { AWARDS, JOBS, PROJECTS, ROLES, STATS, STOP_IDS, STRINGS } from '../src/content.js'
 import { canSpawnObstacle, moveLane, newGame, score, step } from '../src/gameLogic.js'
 import { kolamPath, kolamWidth } from '../src/kolam.js'
 import { mapScroll } from '../src/mapping.js'
@@ -100,12 +100,20 @@ describe('content', () => {
     expect(Object.keys(STRINGS.ta).sort()).toEqual(Object.keys(STRINGS.en).sort())
     expect(ROLES.ta).toHaveLength(ROLES.en.length)
   })
-  it('lists the six projects with Tamil lines and https links', () => {
-    expect(PROJECTS.map((p) => p.name)).toEqual(['StudyFlow AI', 'VARA', 'ArkaOS', 'CreditGuard AI', 'Pahara', 'RECALL X'])
+  it('lists the projects (without Pahara) with Tamil lines and GitHub links', () => {
+    const names = PROJECTS.map((p) => p.name)
+    expect(names).toEqual(['ArkaOS', 'TRX-AI', 'StudyFlow AI', 'VARA', 'CreditGuard AI', 'RECALL X'])
+    expect(names).not.toContain('Pahara')
     for (const p of PROJECTS) {
       expect(p.line.ta.length).toBeGreaterThan(5)
       expect(p.href.startsWith('https://github.com/thulasiramk-2310')).toBe(true)
     }
+  })
+  it('has the personal sections in both languages', () => {
+    for (const j of JOBS) expect(j.role.ta && j.body.ta && j.dates.ta).toBeTruthy()
+    for (const st of STATS) expect(st.ta).toBeTruthy()
+    expect(AWARDS.ta).toHaveLength(AWARDS.en.length)
+    expect(STOP_IDS[2]).toBe('thanjavur')
   })
   it('has one stop per section, in road order', () => {
     expect(STOP_IDS).toHaveLength(STOPS.length)

@@ -13,12 +13,17 @@ export const quality = {
   parallax: true,
   exhaust: true,
   seaMotion: true,
+  adaptive: true, // lower effects automatically when the frame rate sags
 }
 
 export function detectQuality() {
   const small = window.matchMedia('(max-width: 820px)').matches
   const touch = window.matchMedia('(pointer: coarse)').matches
-  if (small || touch) {
+  // ?quality=low or ?quality=high overrides the automatic choice
+  const params = new URLSearchParams(location.search)
+  const forced = params.get('quality')
+  quality.adaptive = !params.has('fixed')
+  if (forced === 'low' || (forced !== 'high' && (small || touch))) {
     Object.assign(quality, {
       low: true,
       tex: 0.5,

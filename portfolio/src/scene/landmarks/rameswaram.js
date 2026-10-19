@@ -2,7 +2,7 @@
 // an older rail bridge beside it, boats with lamps, and a lit temple on the island ahead.
 import * as THREE from 'three'
 import { glowTexture } from '../textures.js'
-import { block, glow, lambert, rng } from '../util.js'
+import { block, glow, lambert, rng, surface } from '../util.js'
 import { makeGopuram } from './gopuram.js'
 
 const UP = new THREE.Vector3(0, 1, 0)
@@ -69,7 +69,7 @@ function deckAndPiers(route, from, to, lateral, width, y) {
   geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3))
   geo.setIndex(idx)
   geo.computeVertexNormals()
-  group.add(new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color: 0x6a665e, side: THREE.DoubleSide })))
+  group.add(new THREE.Mesh(geo, surface({ color: 0x6a665e, side: THREE.DoubleSide })))
   const piers = Math.floor(((to - from) * route.length) / 16)
   const pierMesh = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.9, 1.3, 9, 8), deckMat, piers + 1)
   const m = new THREE.Matrix4()

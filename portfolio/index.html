@@ -56,7 +56,7 @@
       <span class="rail-line"><span class="rail-fill"></span></span>
       <button class="nav-dot" data-nav="0"><span data-i18n="nav.chennai">Chennai</span></button>
       <button class="nav-dot" data-nav="1"><span data-i18n="nav.mamallapuram">Mamallapuram</span></button>
-      <button class="nav-dot" data-nav="2"><span data-i18n="nav.kanchipuram">Kanchipuram</span></button>
+      <button class="nav-dot" data-nav="2"><span data-i18n="nav.thanjavur">Thanjavur</span></button>
       <button class="nav-dot" data-nav="3"><span data-i18n="nav.madurai">Madurai</span></button>
       <button class="nav-dot" data-nav="4"><span data-i18n="nav.rameswaram">Rameswaram</span></button>
     </nav>
@@ -80,18 +80,27 @@
       </section>
 
       <!-- 2. Mamallapuram: about -->
-      <section class="stop" id="mamallapuram">
-        <div class="panel">
-          <div class="divider" data-kolam="6"></div>
-          <p class="kicker" data-reveal data-i18n="about.kicker"></p>
-          <h2 data-reveal data-i18n="about.title">About</h2>
-          <p class="lead" data-reveal data-i18n="about.body"></p>
-          <p data-reveal data-i18n="about.body2"></p>
+      <section class="stop stop-about" id="mamallapuram">
+        <div class="panel panel-about">
+          <figure class="portrait" data-reveal>
+            <img src="ram.jpg" width="640" height="800" alt="" data-i18n-attr="alt:about.photo" loading="lazy" decoding="async" />
+            <figcaption class="mono">Chennai · 2026</figcaption>
+          </figure>
+          <div class="about-text">
+            <div class="divider" data-kolam="6"></div>
+            <p class="kicker" data-reveal data-i18n="about.kicker"></p>
+            <h2 data-reveal data-i18n="about.title">About me</h2>
+            <p class="lead" data-reveal data-i18n="about.body"></p>
+            <p data-reveal data-i18n="about.body2"></p>
+            <p class="edu mono" data-reveal data-i18n="about.edu"></p>
+            <dl class="stats" id="stats" data-reveal></dl>
+            <ul class="skills" id="skills" data-reveal></ul>
+          </div>
         </div>
       </section>
 
-      <!-- 3. Kanchipuram: projects -->
-      <section class="stop stop-tall" id="kanchipuram">
+      <!-- 3. Thanjavur: projects -->
+      <section class="stop stop-tall" id="thanjavur">
         <div class="panel panel-wide">
           <div class="divider" data-kolam="8"></div>
           <p class="kicker" data-reveal data-i18n="projects.kicker"></p>
@@ -107,12 +116,9 @@
           <div class="divider" data-kolam="6"></div>
           <p class="kicker" data-reveal data-i18n="exp.kicker"></p>
           <h2 data-reveal data-i18n="exp.title">Experience</h2>
-          <article class="job" data-reveal>
-            <p class="job-dates mono" data-i18n="exp.dates"></p>
-            <h3 data-i18n="exp.role"></h3>
-            <p class="job-company" data-i18n="exp.company"></p>
-            <p data-i18n="exp.body"></p>
-          </article>
+          <ol class="timeline" id="jobs" data-reveal></ol>
+          <p class="kicker awards-title" data-reveal data-i18n="exp.awards"></p>
+          <ul class="awards" id="awards" data-reveal></ul>
         </div>
       </section>
 
@@ -127,10 +133,12 @@
             <li><a class="btn btn-line" id="email-link" data-cursor="Mail"><span data-i18n="contact.email">Email</span><span class="contact-val" id="email-text"></span></a></li>
             <li><a class="btn btn-line" id="github-link" target="_blank" rel="noopener" data-cursor="Open"><span data-i18n="contact.github">GitHub</span><span class="contact-val">thulasiramk-2310</span></a></li>
             <li><a class="btn btn-line" id="linkedin-link" target="_blank" rel="noopener" data-cursor="Open"><span data-i18n="contact.linkedin">LinkedIn</span><span class="contact-val">thulasiram-k</span></a></li>
+            <li><a class="btn btn-line" id="resume-link" target="_blank" rel="noopener" data-cursor="Open"><span data-i18n="contact.resume">Resume</span><span class="contact-val" data-i18n="contact.resumeVal">PDF</span></a></li>
           </ul>
           <button class="btn btn-gold" id="play-btn-2" data-reveal data-i18n="contact.play">Play: Auto Dash</button>
           <footer class="foot">
             <span data-i18n="footer.made"></span>
+            <span id="credits"></span>
             <button class="link" data-cookie-settings data-i18n="cookie.settings">Cookie settings</button>
           </footer>
         </div>

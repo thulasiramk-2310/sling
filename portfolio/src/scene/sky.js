@@ -116,6 +116,8 @@ export function createSky(scene) {
   const tint = new THREE.Color()
 
   return {
+    group,
+    dome,
     sunDir,
     lightDir,
     // p: values from timeline.sample(); cam: camera position; time: seconds; u: place on the route

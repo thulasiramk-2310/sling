@@ -1,5 +1,6 @@
 // Small helpers shared by the 3D scene.
 import * as THREE from 'three'
+import { quality } from './quality.js'
 
 export const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
 export const lerp = (a, b, t) => a + (b - a) * t
@@ -32,7 +33,11 @@ export function setNight(n) {
   for (const m of glowing) m.emissiveIntensity = m.userData.glow * k
 }
 
-export const lambert = (color, extra = {}) => new THREE.MeshLambertMaterial({ color, ...extra })
+// Physically based surfaces on desktop (they react to sky light and the sun like real materials);
+// cheaper Lambert surfaces on phones.
+export const surface = (params = {}) =>
+  quality.low ? new THREE.MeshLambertMaterial(params) : new THREE.MeshStandardMaterial({ roughness: 0.86, metalness: 0, ...params })
+export const lambert = (color, extra = {}) => surface({ color, ...extra })
 
 // Repeats a texture across a box face by scaling its UVs (so one texture can fit any size).
 export function uvScale(geometry, sx, sy) {

@@ -1,60 +1,46 @@
 // Mamallapuram: a stepped granite Shore Temple, a carved rock wall, a balanced boulder and five small rathas.
 import * as THREE from 'three'
 import { faceRoad } from '../route.js'
-import { carveTexture, stoneTexture } from '../textures.js'
-import { block, lambert, rng, uvScale } from '../util.js'
+import { quality } from '../quality.js'
+import { carveTexture, stoneTexture, vimanaWallTexture, withRelief } from '../textures.js'
+import { block, lambert, rng, surface, uvScale } from '../util.js'
 import { goldMaterial } from './gopuram.js'
+import { dravidaTower } from './shrines.js'
 
-const granite = () => lambert(0xffffff, { map: stoneTexture('#9c8f7a', 6) })
-
-// A stack of ever-smaller layers topped with a gold finial: the shape of a South Indian temple tower.
-function steppedTower(layers, w, h, mat) {
-  const g = new THREE.Group()
-  let y = 0
-  let s = w
-  for (let i = 0; i < layers; i++) {
-    const b = block(s, h, s * 0.9, mat, 0, y)
-    uvScale(b.geometry, s / 6, 0.6)
-    g.add(b)
-    g.add(block(s * 1.1, 0.35, s * 0.98, mat, 0, y + h))
-    y += h + 0.35
-    s *= 0.78
+// Weathered sea-worn granite, with relief so the blocks and carvings catch the light.
+function graniteSet() {
+  const relief = (name, make) => {
+    const t = withRelief(name, make, 2.6)
+    return surface({ map: t.map, normalMap: quality.low ? null : t.normalMap, roughness: 0.95 })
   }
-  const cap = new THREE.Mesh(new THREE.SphereGeometry(s * 0.7, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), mat)
-  cap.position.y = y
-  g.add(cap)
-  const fin = new THREE.Mesh(new THREE.ConeGeometry(0.4, 2.2, 8), goldMaterial())
-  fin.position.y = y + s * 0.7 + 0.9
-  g.add(fin)
-  return g
+  return { stone: relief('shore-stone', () => stoneTexture('#8b8782', 6)), wall: relief('shore-wall', () => vimanaWallTexture('#918c84')) }
 }
 
 function shoreTemple() {
   const g = new THREE.Group()
-  const mat = granite()
+  const { stone, wall } = graniteSet()
   // a deep foundation, because the temple stands where the beach slopes into the sea
-  const base = block(36, 4.2, 24, mat, 0, -3)
+  const base = block(36, 4.2, 24, stone, 0, -3)
   uvScale(base.geometry, 6, 1.6)
   g.add(base)
-  const big = steppedTower(6, 13, 3.3, mat)
-  big.position.set(-5, 1.2, 0)
-  const small = steppedTower(4, 8, 2.8, mat)
-  small.position.set(9, 1.2, 1)
+  // the taller shrine faces the sea, the smaller one faces the land
+  const big = dravidaTower({ base: 10, tiers: 4, wallH: 4.2, tierH: 2.4, mat: stone, wallMat: wall, finialMat: goldMaterial() })
+  big.position.set(-6, 1.2, -1)
+  const small = dravidaTower({ base: 6.5, tiers: 3, wallH: 3.2, tierH: 1.9, mat: stone, wallMat: wall, finialMat: goldMaterial() })
+  small.position.set(9, 1.2, 1.5)
   g.add(big, small)
-  const hall = block(11, 4.4, 9, mat, 1.5, 1.2, 4)
-  uvScale(hall.geometry, 2, 0.8)
+  const hall = block(9, 3.6, 7, wall, 1.8, 1.2, 4)
+  uvScale(hall.geometry, 1.4, 0.6)
   g.add(hall)
-  // low wall topped with a row of seated bulls (nandis)
-  const wall = block(36, 1.6, 0.9, mat, 0, 1.2, 11.2)
-  g.add(wall)
-  const bull = new THREE.InstancedMesh(new THREE.BoxGeometry(1.5, 0.9, 0.8), mat, 11)
+  // low enclosure wall topped with a row of seated bulls (nandis)
+  g.add(block(36, 1.6, 0.9, stone, 0, 1.2, 11.2))
+  const bull = new THREE.InstancedMesh(new THREE.CapsuleGeometry(0.42, 0.7, 4, 8), stone, 11)
   const m = new THREE.Matrix4()
   for (let i = 0; i < 11; i++) {
-    m.setPosition(-16 + i * 3.2, 3.35, 11.2)
+    m.makeRotationZ(Math.PI / 2).setPosition(-16 + i * 3.2, 3.3, 11.2)
     bull.setMatrixAt(i, m)
   }
   g.add(bull)
-  g.userData.focus = new THREE.Vector3(0, 8, 0)
   return g
 }
 
@@ -86,15 +72,21 @@ function carvings() {
   return g
 }
 
-// Five single-stone temples in a row, each a different height.
+// Five single-stone temples (the Pancha Rathas), each a different size.
 function rathas() {
   const g = new THREE.Group()
-  const mat = granite()
-  const sizes = [6, 7.5, 5.5, 9, 6.5]
-  sizes.forEach((s, i) => {
-    const t = steppedTower(3, s, s * 0.34, mat)
-    t.position.set(-30 + i * 15, 0, 0)
-    g.add(t)
+  const { stone, wall } = graniteSet()
+  const sizes = [
+    [5, 1, 3.2],
+    [6.5, 2, 3.4],
+    [4.5, 1, 2.8],
+    [8, 3, 3.8],
+    [5.5, 2, 3],
+  ]
+  sizes.forEach(([b, t, h], i) => {
+    const tower = dravidaTower({ base: b, tiers: t, wallH: h, tierH: 1.6, mat: stone, wallMat: wall })
+    tower.position.set(-30 + i * 15, 0, 0)
+    g.add(tower)
   })
   return g
 }
@@ -111,5 +103,5 @@ export function buildMamallapuram({ scene, route, u }) {
   add(temple, 0, 84)
   add(carvings(), -0.05, 58)
   add(rathas(), 0.042, 52)
-  return { focus: route.side(u, 76, 8), update() {} }
+  return { focus: route.side(u, 76, 8), slots: [{ name: 'shore-temple', group: temple, height: 18 }], update() {} }
 }

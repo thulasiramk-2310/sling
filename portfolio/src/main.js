@@ -6,7 +6,7 @@ import './style.css'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { audio } from './audio.js'
-import { LINKS, PROJECTS, ROLES, STOP_IDS } from './content.js'
+import { AWARDS, JOBS, LINKS, PROJECTS, ROLES, SKILLS, STATS, STOP_IDS } from './content.js'
 import { initCookies } from './cookies.js'
 import { initCursor, initHover } from './cursor.js'
 import { createGame } from './game.js'
@@ -37,16 +37,33 @@ function renderProjects() {
     </a>`,
   ).join('')
 }
+// About: numbers and skills. Experience: the timeline and awards.
+function renderPersonal() {
+  const lang = getLang()
+  $('#stats').innerHTML = STATS.map((s) => `<div><dt>${escapeHtml(s.value)}</dt><dd>${escapeHtml(s[lang])}</dd></div>`).join('')
+  $('#skills').innerHTML = SKILLS.map((s) => `<li>${escapeHtml(s)}</li>`).join('')
+  $('#jobs').innerHTML = JOBS.map(
+    (j) => `<li class="job">
+      <p class="job-dates mono">${escapeHtml(j.dates[lang])}</p>
+      <h3>${escapeHtml(j.role[lang])}</h3>
+      <p class="job-company">${escapeHtml(j.org)}</p>
+      <p>${escapeHtml(j.body[lang])}</p>
+    </li>`,
+  ).join('')
+  $('#awards').innerHTML = AWARDS[lang].map((a) => `<li>${escapeHtml(a)}</li>`).join('')
+}
 function renderLinks() {
   $('#email-link').href = `mailto:${LINKS.email}`
   $('#email-text').textContent = LINKS.email
   $('#github-link').href = LINKS.github
   $('#linkedin-link').href = LINKS.linkedin
+  $('#resume-link').href = LINKS.resume
 }
 $$('[data-kolam]').forEach((el) => (el.innerHTML = kolamSvg(Number(el.dataset.kolam) || 8)))
 
 initLang()
 renderProjects()
+renderPersonal()
 renderLinks()
 initCursor()
 initHover()
@@ -81,6 +98,7 @@ $('#lang-btn').addEventListener('click', () => {
     onComplete: () => {
       setLang(next)
       renderProjects()
+      renderPersonal()
       paintSound()
       typing.restart()
       scroll.measure()
@@ -102,7 +120,12 @@ async function boot() {
   if (webgl) {
     try {
       const { createScene } = await import('./scene/index.js')
-      scene = await createScene({ canvas: $('#gl'), report: (f, label) => loader.progress(0.15 + f * 0.85, label) })
+      scene = await createScene({
+        canvas: $('#gl'),
+        report: (f, label) => loader.progress(0.15 + f * 0.85, label),
+        // credit the authors of any real 3D models in the footer
+        onCredits: (credits) => ($('#credits').textContent = credits.length ? '3D models: ' + credits.join(' · ') : ''),
+      })
     } catch (err) {
       console.error(err)
       scene = null
@@ -123,6 +146,7 @@ async function start() {
   audio.sfx.start()
   loader.hide()
   document.body.classList.add('started')
+  running = true
   scroll.start()
   scroll.measure()
   setupReveals()
@@ -193,10 +217,12 @@ window.addEventListener('resize', () => scene?.resize())
 
 // ---------- one loop for scrolling, the scene and the engine sound ----------
 gsap.ticker.lagSmoothing(0)
+let running = false
 gsap.ticker.add((time, deltaMs) => {
   scroll.raf(time)
   const u = scroll.u()
-  if (scene) {
+  // the 3D world only renders once the visitor has pressed Start
+  if (scene && running) {
     scene.setTarget(u)
     scene.frame(deltaMs / 1000)
     if (!gameOpen) audio.setEngine(scene.motion().speed)
@@ -205,4 +231,6 @@ gsap.ticker.add((time, deltaMs) => {
 })
 
 document.documentElement.classList.toggle('lite', quality.low)
+// ?debug exposes the trip position for automated checks
+if (new URLSearchParams(location.search).has('debug')) window.__trip = { u: () => scene?.position() ?? 0, y: () => scroll.lenis.scroll }
 boot()
