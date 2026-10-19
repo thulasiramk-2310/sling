@@ -335,8 +335,12 @@ cameraBtn.addEventListener('click', async () => {
     status.textContent = 'Live · sweep a hand sideways to change looks'
   } catch (err) {
     const name = err instanceof DOMException ? err.name : ''
-    status.textContent =
-      name === 'NotAllowedError'
+    // Inside an embedded preview the page itself may not be allowed a camera, whatever the visitor chooses.
+    const policy = (document as Document & { featurePolicy?: { allowsFeature: (f: string) => boolean } }).featurePolicy
+    const embeddedBlock = name === 'NotAllowedError' && (policy ? !policy.allowsFeature('camera') : window.self !== window.top)
+    status.textContent = embeddedBlock
+      ? 'Camera isn’t available in this preview · use a photo, or run the full app'
+      : name === 'NotAllowedError'
         ? 'Camera blocked · allow it in the address bar, or use a photo instead'
         : name === 'NotFoundError'
           ? 'No camera found · use a photo of yourself instead'
