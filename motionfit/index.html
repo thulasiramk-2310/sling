@@ -18,7 +18,7 @@
       <header class="top">
         <div class="brand"><span class="brand-name">MotionFit</span><span class="mono brand-sub">Fitting room 01</span></div>
         <div class="top-actions">
-          <button class="btn ghost hide-sm" id="upload-btn" aria-haspopup="dialog">Add garment</button>
+          <button class="btn ghost hide-sm" id="upload-btn" aria-haspopup="dialog">Add from a link</button>
           <button class="btn ghost" id="saved-btn" aria-haspopup="dialog">Saved <span class="count" id="saved-count">0</span></button>
           <button class="btn ghost" id="bag-btn" aria-haspopup="dialog">Bag <span class="count" id="bag-count">0</span></button>
           <button class="btn" id="camera-btn">Start camera</button>
@@ -33,7 +33,7 @@
       <section class="stage" id="stage" aria-label="Mirror">
         <div class="mirror" id="mirror"></div>
         <div class="overlay">
-          <div class="chip mono" id="status">Demo mannequin · start the camera to try it on</div>
+          <div class="chip mono" id="status">Demo mannequin · try camera or photo</div>
           <div class="backdrop-pick" id="backdrop-pick" role="radiogroup" aria-label="Background" hidden>
             <button role="radio" data-bg="off" aria-checked="true">Room</button>
             <button role="radio" data-bg="blur" aria-checked="false">Blur</button>
@@ -51,6 +51,11 @@
           </div>
           <div class="stage-load" id="stage-load" hidden><div class="load-bar"><span id="load-fill"></span></div><span class="mono" id="load-text"></span></div>
           <div class="caption" id="caption"></div>
+          <div class="stage-cta">
+            <button id="link-btn" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" /><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" /></svg><span class="hide-sm">Try a product link</span><span class="show-sm">Product link</span></button>
+            <button id="photo-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" /><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5" /></svg><span id="photo-label">Use my photo</span></button>
+            <input type="file" id="photo-file" accept="image/png,image/jpeg,image/webp" hidden />
+          </div>
           <div class="toast" id="toast" role="status" aria-live="polite"></div>
         </div>
       </section>
@@ -105,9 +110,10 @@
     </dialog>
 
     <dialog id="upload-dialog" aria-labelledby="upload-title" class="wide">
-      <div class="dialog-head"><h2 id="upload-title">Add your own garment</h2><button class="close" data-close aria-label="Close">×</button></div>
+      <div class="dialog-head"><h2 id="upload-title">Try on anything you found</h2><button class="close" data-close aria-label="Close">×</button></div>
       <div id="upload"></div>
     </dialog>
+    <div class="drop-veil" id="drop-veil" aria-hidden="true">Drop a photo or product link to try it on</div>
 
     <dialog id="prime-dialog" aria-labelledby="prime-title">
       <div class="dialog-head"><h2 id="prime-title">Try clothes on with your camera</h2></div>

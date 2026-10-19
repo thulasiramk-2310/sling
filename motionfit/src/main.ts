@@ -7,11 +7,12 @@ import { canBeInner, canLayer, catalog, completeTheLook, formatPrice, itemById, 
 import { paintFlatLay, paintSleeve, paintTorso } from './garmentArt'
 import { deleteGarment, listGarments, saveGarment, type StoredGarment } from './garmentStore'
 import { MANNEQUIN_SOURCE, drawMannequin, mannequinPose } from './mannequin'
-import { startPoseCamera, type PoseCamera } from './pose'
+import { startPhotoSource, startPoseCamera, type PoseSource } from './pose'
 import { GarmentRenderer } from './renderer'
 import { SIZES, SIZE_CHART, recommendSize, type Profile, type Size } from './size'
 import { buildTextures, uploadThumb, type UploadSpec } from './upload'
-import { mountUploadEditor, type NewGarment } from './uploadEditor'
+import { mountUploadEditor, type NewGarment, type UploadEditor } from './uploadEditor'
+import { parseProductLink } from './productLink'
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector(sel) as T
 const $$ = <T extends HTMLElement = HTMLElement>(sel: string) => Array.from(document.querySelectorAll(sel)) as T[]
@@ -47,7 +48,7 @@ const state = {
   variant: 0,
   inner: {} as Record<string, string | null>,
   size: {} as Record<string, Size>,
-  camera: null as PoseCamera | null,
+  camera: null as PoseSource | null,
   saved: load<string[]>('motionfit.saved', [], Array.isArray),
   bag: load<BagLine[]>('motionfit.bag', [], Array.isArray),
   profile: load<Profile | null>('motionfit.profile', null, (v) => !!v && typeof v === 'object'),
@@ -106,8 +107,8 @@ function measure() {
 new ResizeObserver(measure).observe(stage)
 
 function stageMap(): StageMap {
-  const v = state.camera?.video
-  if (v && v.videoWidth) return coverMap(W, H, v.videoWidth, v.videoHeight)
+  const f = state.camera?.frame
+  if (f && f.width) return coverMap(W, H, f.width, f.height)
   return coverMap(W, H, MANNEQUIN_SOURCE.w, MANNEQUIN_SOURCE.h)
 }
 
@@ -132,8 +133,8 @@ probe.height = 18
 const probeCtx = probe.getContext('2d', { willReadFrequently: true })!
 const light = { b: 1, tint: [1, 1, 1] as [number, number, number], frame: 0 }
 function updateLighting() {
-  const v = state.camera?.video
-  if (!v || !v.videoWidth) {
+  const v = state.camera?.frame
+  if (!v || !v.width) {
     light.b = 1
     light.tint = [1, 1, 1]
   } else if (light.frame++ % 10 === 0) {
@@ -169,13 +170,14 @@ function loop(t: number) {
   updateLighting()
   if (state.camera) {
     sctx.clearRect(0, 0, W, H)
-    backdrop.draw(sctx, state.camera.video, state.camera.mask(), state.backdrop, W, H, { a: css('--studio-1'), b: css('--studio-2') })
+    backdrop.draw(sctx, state.camera.frame, state.camera.mask(), state.backdrop, W, H, { a: css('--studio-1'), b: css('--studio-2') })
   } else drawMannequin(sctx, body, map, { backdrop: css('--studio-1'), floor: css('--studio-2'), skin: css('--mannequin') })
   renderer.render()
 
-  guide.hidden = !state.camera || !!body
-  if (state.camera && body) {
-    trackBuild(body)
+  guide.hidden = !state.camera || state.camera.still || !!body
+  if (state.camera && body) trackBuild(body)
+  // Hand controls only make sense live; a still photo has nobody to wave.
+  if (state.camera && !state.camera.still && body) {
     // The mirror is flipped for display, so screen x is the mirror image of camera x.
     const pts: (Pt | null)[] = [
       body.wristVis.r > 0.5 ? { x: W - body.wristR.x, y: body.wristR.y } : null,
@@ -306,41 +308,73 @@ function snapshot() {
   toast('Snapshot added')
 }
 
-// ---------- Camera ----------
+// ---------- Camera and photo ----------
 const cameraBtn = $<HTMLButtonElement>('#camera-btn')
 const status = $('#status')
+const IDLE_STATUS = 'Demo mannequin · try camera or photo'
+
+function setSource(src: PoseSource | null) {
+  state.camera?.stop()
+  state.camera = src
+  tracker.reset()
+  state.bodyRatio = null
+  $('#backdrop-pick').hidden = !src
+  cameraBtn.textContent = src && !src.still ? 'Stop camera' : 'Start camera'
+  $('#photo-label').textContent = src?.still ? 'Clear my photo' : 'Use my photo'
+  if (!src) status.textContent = IDLE_STATUS
+}
+
 cameraBtn.addEventListener('click', async () => {
-  if (state.camera) {
-    state.camera.stop()
-    state.camera = null
-    tracker.reset()
-    $('#backdrop-pick').hidden = true
-    cameraBtn.textContent = 'Start camera'
-    status.textContent = 'Demo mannequin · start the camera to try it on'
-    return
-  }
+  if (state.camera && !state.camera.still) return setSource(null)
   if (!(await primed())) return
   cameraBtn.disabled = true
   cameraBtn.textContent = 'Starting…'
   status.textContent = 'Getting the fitting room ready…'
   try {
-    state.camera = await startPoseCamera(import.meta.env.BASE_URL, showProgress)
-    tracker.reset()
-    state.bodyRatio = null
-    $('#backdrop-pick').hidden = false
-    cameraBtn.textContent = 'Stop camera'
+    setSource(await startPoseCamera(import.meta.env.BASE_URL, showProgress))
     status.textContent = 'Live · sweep a hand sideways to change looks'
   } catch (err) {
     const name = err instanceof DOMException ? err.name : ''
     status.textContent =
       name === 'NotAllowedError'
-        ? 'Camera blocked · allow it from the address bar to try clothes on'
+        ? 'Camera blocked · allow it in the address bar, or use a photo instead'
         : name === 'NotFoundError'
-          ? 'No camera found · the mannequin is modelling for you'
-          : 'Camera could not start · close other apps using it'
+          ? 'No camera found · use a photo of yourself instead'
+          : 'Camera could not start · close other apps using it, or use a photo'
     cameraBtn.textContent = 'Start camera'
   } finally {
     cameraBtn.disabled = false
+    $('#stage-load').hidden = true
+  }
+})
+
+// A full-length photo of the shopper: works without a camera, and gives the sharpest result.
+const photoFile = $<HTMLInputElement>('#photo-file')
+$('#photo-btn').addEventListener('click', () => {
+  if (state.camera?.still) return setSource(null)
+  photoFile.click()
+})
+photoFile.addEventListener('change', async () => {
+  const file = photoFile.files?.[0]
+  photoFile.value = ''
+  if (!file) return
+  status.textContent = 'Reading your photo…'
+  try {
+    const bmp = await createImageBitmap(file)
+    const k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height))
+    const c = document.createElement('canvas')
+    c.width = Math.round(bmp.width * k)
+    c.height = Math.round(bmp.height * k)
+    c.getContext('2d')!.drawImage(bmp, 0, 0, c.width, c.height)
+    bmp.close()
+    setSource(await startPhotoSource(import.meta.env.BASE_URL, c, showProgress))
+    status.textContent = 'Your photo · pick any look, or add one from a link'
+  } catch (err) {
+    status.textContent =
+      (err as Error).message === 'no-person'
+        ? 'No one found · use a front-facing photo with shoulders and arms in view'
+        : 'That photo couldn’t be read · try a JPEG or PNG'
+  } finally {
     $('#stage-load').hidden = true
   }
 })
@@ -366,7 +400,7 @@ function showProgress(loaded: number, total: number) {
   const mb = (n: number) => (n / 1048576).toFixed(1)
   const pct = total ? Math.min(100, (loaded / total) * 100) : 0
   $('#load-fill').style.width = `${pct}%`
-  $('#load-text').textContent = !total ? `Downloading · ${mb(loaded)} MB` : pct >= 100 ? 'Starting the camera…' : `Downloading the pose model · ${mb(loaded)} of ${mb(total)} MB`
+  $('#load-text').textContent = !total ? `Downloading · ${mb(loaded)} MB` : pct >= 100 ? 'Almost ready…' : `Downloading the pose model · ${mb(loaded)} of ${mb(total)} MB`
 }
 
 $$('[data-bg]').forEach((b) =>
@@ -828,20 +862,73 @@ function itemFromUpload(g: Omit<StoredGarment, 'image'>, spec: UploadSpec): Item
 async function createFromUpload(g: NewGarment) {
   const id = Math.random().toString(36).slice(2, 10)
   const meta = { id, name: g.name, price: g.price, category: g.category, sleeves: g.sleeves, markers: g.markers, createdAt: Date.now() }
-  const blob = await new Promise<Blob | null>((r) => g.image.toBlob(r, 'image/png'))
-  let stored = false
-  if (blob) stored = await saveGarment({ ...meta, image: blob }).then(() => true, () => false)
+  // Show it on the shopper straight away; keeping a copy for next time happens after.
   const item = itemFromUpload(meta, { image: g.image, markers: g.markers, sleeves: g.sleeves })
   registerItem(item)
   renderRail()
   select(catalog.indexOf(item))
   dialog('#upload-dialog').close()
-  toast(stored ? `Added ${g.name} to the edit` : `Added ${g.name} for this visit (storage unavailable)`)
+  toast(`Trying on ${g.name}`)
+  const blob = await new Promise<Blob | null>((r) => g.image.toBlob(r, 'image/png'))
+  const stored = !!blob && (await saveGarment({ ...meta, image: blob }).then(() => true, () => false))
+  if (!stored) toast('Added for this visit only (storage unavailable)')
 }
-$('#upload-btn').addEventListener('click', () => {
-  // A fresh editor each time, so a new photo never inherits old markers.
-  mountUploadEditor($('#upload'), createFromUpload)
-  dialog('#upload-dialog').showModal()
+// Opens the import dialog. A fresh editor each time, so a new photo never inherits old markers.
+let editor: UploadEditor | null = null
+function openImport(): UploadEditor {
+  const d = dialog('#upload-dialog')
+  if (!d.open || !editor) {
+    editor = mountUploadEditor($('#upload'), createFromUpload)
+    d.showModal()
+  }
+  return editor
+}
+$('#upload-btn').addEventListener('click', () => openImport())
+$('#link-btn').addEventListener('click', () => {
+  openImport()
+  $<HTMLInputElement>('#up-link').focus()
+})
+
+// Paste or drop anywhere: a copied product photo, a screenshot, or a shared store link.
+function importFrom(data: DataTransfer | null) {
+  if (!data) return false
+  const file = [...data.files].find((f) => f.type.startsWith('image/')) ?? [...data.items].find((i) => i.kind === 'file' && i.type.startsWith('image/'))?.getAsFile()
+  if (file) {
+    void openImport().loadBlob(file, file.name === 'image.png' ? undefined : file.name)
+    return true
+  }
+  const text = data.getData('text/uri-list') || data.getData('text/plain')
+  if (text && parseProductLink(text)) {
+    void openImport().loadLink(text)
+    return true
+  }
+  return false
+}
+document.addEventListener('paste', (e) => {
+  const t = e.target as HTMLElement
+  // Typing into a field keeps its normal paste, unless it's a picture (fields can't hold those).
+  const inField = !!t.closest?.('input, textarea, [contenteditable]')
+  const hasImage = [...(e.clipboardData?.items ?? [])].some((i) => i.kind === 'file' && i.type.startsWith('image/'))
+  if (inField && !hasImage) return
+  if (importFrom(e.clipboardData)) e.preventDefault()
+})
+const veil = $('#drop-veil')
+let dragDepth = 0
+document.addEventListener('dragenter', (e) => {
+  if (!e.dataTransfer?.types.some((t) => t === 'Files' || t === 'text/uri-list')) return
+  dragDepth++
+  veil.classList.add('on')
+})
+document.addEventListener('dragleave', () => {
+  dragDepth = Math.max(0, dragDepth - 1)
+  if (!dragDepth) veil.classList.remove('on')
+})
+document.addEventListener('dragover', (e) => e.preventDefault())
+document.addEventListener('drop', (e) => {
+  e.preventDefault()
+  dragDepth = 0
+  veil.classList.remove('on')
+  importFrom(e.dataTransfer)
 })
 
 async function restoreUploads() {

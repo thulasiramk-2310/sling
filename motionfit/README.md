@@ -14,7 +14,12 @@ A virtual fitting room in the browser. Stand in front of your laptop camera and 
 - **Background**: Room, Blur or Studio, using Pose Landmarker's person segmentation mask (no extra model).
 - **Bag and checkout**: sizes, quantities, free delivery over ₹1,999, a validated delivery form (6-digit PIN, phone, email) and an order confirmation. It's clearly labelled as a demo: no payment is taken.
 - **Share card**: a 1080×1350 image of the look with names and prices, downloadable or shared through the system share sheet.
-- **Add your own garment (retailers)**: upload a front-facing product photo, optionally remove a plain background, and drag six markers (shoulders, hem, cuffs). The photo is warped into the same torso and sleeve texture layout as the built-in pieces, so it follows the body, and it's stored in IndexedDB. Printed text is pre-flipped so it reads correctly in the mirror.
+- **Try on anything from a link**: paste an Amazon, Flipkart, Myntra or AJIO product link (app share links like `amzn.in/d/…` and `fkrt.it/…` work, even with the share text around them), or a link from most other stores. The local server reads the page's photos, name and price (the Amazon gallery, Flipkart images, schema.org Product data, then Open Graph tags) and requests full-size images. You pick a photo from the product gallery and it's on you.
+- **Or a photo, a paste, a drop**: choose a saved image, press Ctrl+V after **Copy image** on any store, or drag a photo or link onto the page.
+- **Automatic fit points**: if a model is wearing the garment, Pose Landmarker finds their shoulders, elbows, wrists and hips. It places the six fit points from those, cuts the model out with the person mask, and keeps only the collar above the shoulder line (not the model's neck or hair). Flat-lay photos are fitted from the garment's outline instead. Sleeve length and category come from the product title, and you can nudge any point.
+- **Your photo as the mirror**: no camera, or want the sharpest result? Use a full-length photo of yourself and try every look on it.
+- **Stays on the body**: the camera frame is copied at the moment it's measured and drawn with its own landmarks, so the garment never trails a frame behind you. Frames are processed once each via `requestVideoFrameCallback`.
+- Uploaded garments are warped into the same torso and sleeve texture layout as the built-in pieces and get soft side shading so they read as cloth, not a sticker. The backdrop is removed by an edge-in flood fill, so white prints and white shirts survive. Printed text is pre-flipped so it reads correctly in the mirror. Everything is stored in IndexedDB.
 
 ## Built around what shoppers expect
 
@@ -27,12 +32,14 @@ A virtual fitting room in the browser. Stand in front of your laptop camera and 
 
 This is a 2D approximation for style and colour. Real drape, fabric physics and accurate sizing can't be inferred from pose landmarks alone, and the app says so next to every product.
 
+Product links need the bundled server (`npm run dev` or `npm run preview`). Browsers can't read another store's page or pixels themselves. The server only fetches public addresses, re-checks every redirect hop, and only relays images. Stores sometimes answer automated requests with a robot check. When that happens, the app says so and offers Copy image → Ctrl+V, which always works. On static hosting the same fallback is shown.
+
 ## Run
 
 ```bash
 npm install
 npm run dev     # http://localhost:5173
-npm test        # body mapping, air controls, pairing rules, size advisor, bag totals
+npm test        # body mapping, air controls, pairing, size advisor, bag, link parsing, pose fit points, address guard
 npm run build
 ```
 
