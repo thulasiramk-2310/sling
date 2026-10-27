@@ -1,81 +1,141 @@
-# Ram · A road trip across Tamil Nadu
+# Ram · From Tamil Nadu to the World
 
-Thulasiram K.'s (Ram) portfolio as a 3D road trip. Scrolling drives a yellow and black auto-rickshaw from Chennai to the Pamban bridge. Each section of the portfolio is one stop on the way, and the day passes as you go: sunrise, noon, sunset, night.
-
-| Stop | Section | Landmarks | Time |
-| --- | --- | --- | --- |
-| Chennai | Hero | Marina Beach, the lighthouse, Chennai Central | Sunrise |
-| Mamallapuram | About (photo, bio, stats, skills) | Shore Temple and the five rathas in Pallava style, carved rock wall, balanced boulder | Noon |
-| Thanjavur | Projects | Periya Kovil (Brihadeeswarar): the 13-tier vimana with its octagonal cupola and gold kalasam, Keralantakan and Rajarajan gateways, the Nandi mandapam, halls and cloister | Noon |
-| Madurai | Experience (timeline, awards) | Meenakshi-style gopurams with shrine parapets, lit windows and lamps | Dusk |
-| Rameswaram | Contact | Pamban bridge with lift-span towers, the old rail bridge, boats, island temple | Night |
-
-## What's in it
-
-- **The trip:** Three.js scene, GSAP ScrollTrigger and Lenis smooth scroll. The middle of each section is pinned to its stop, so a landmark arrives with its text.
-- **Driving, not teleporting:** the auto accelerates, brakes and has a top speed, so a hard flick of the wheel becomes a short drive. Wheel steps are gentle, each stop has plenty of scroll room, and when you stop scrolling near a stop the page glides the rest of the way. The camera follows with a little lag, leans into bends, rises to frame each landmark, drifts slowly while parked, and follows the mouse (parallax).
-- **The auto:** reacts to scroll speed. Wheels spin, the body pitches and rattles, exhaust puffs, the headlight comes on at night, and a small engine sound rises with speed.
-- **Cinematic look (desktop):** physically based materials lit by the sky itself (image-based lighting), granite with relief maps, ambient occlusion, soft sun shadows, distance haze, a reflective sea, bloom on real light sources, and a colour grade that ties each time of day to one palette, plus vignette and grain. Clouds take the colour of the sky, and birds fly by day. Leafy coconut palms, and an auto with clear-coated paint, chrome, real tyres and a TN number plate.
-- **Loading screen:** a 000–100 counter driven by real build steps, a small auto beside it, a kolam that draws itself as the loading line, a Start button, and the note "Turn your sound on / Switch to desktop". Pressing Start unlocks sound.
-- **Hero:** name, and a typing animation for the role.
-- **Auto Dash mini game:** ride an auto or a bike, dodge buses, lorries, cars, taxis, other autos and the odd cow, and collect filter coffee. It has a score, coffee count, best score and restart, and works with arrow keys, swipes or taps.
-- **Tamil touch:** an English / தமிழ் toggle (Noto Sans Tamil, bundled), temple gold, deep maroon, sea blue and kolam white, kolam section dividers, and soft veena-style music (raga Mohanam over a drone) with a sound button.
-- **Motion:** power3.out easing throughout, text that slides up and fades in, a custom cursor that grows on hover, hover motion on every button and card, and a kolam curtain for page transitions between stops.
-- **Cookie banner:** Accept or Reject. Analytics loads only after Accept. Set `VITE_PLAUSIBLE_DOMAIN` when building to enable Plausible; without it nothing is loaded at all.
-- **Personal:** Ram's photo, bio, education, stats (LeetCode 1826, top 7%), skills, experience timeline (Presidio, Amazon ML Summer School, Cloud Computing Intern), awards and a resume link. These come from his resume and GitHub READMEs.
-- **Phones and speed:** phones get a lighter scene. That means fewer palms, lamps, particles and clouds, no shadows, no reflections, no post-processing, half-size textures and a lower pixel ratio. Resolution also drops automatically if the frame rate sags. Browsers without WebGL get a clear message and the full content (and the game) without 3D. The 3D code loads as a separate chunk behind the loading screen.
-
-## Real 3D models (optional)
-
-The landmarks and the auto are built in code. They look architectural, but they can't look photoreal, and no free, accurately licensed models of these exact places exist today. Any real model you add replaces the hand-built one automatically:
-
-1. Put the `.glb` file in `public/models/`, compressed: `npx gltfpack -i in.glb -o public/models/thanjavur.glb -cc` (WebP textures: `npx @gltf-transform/cli webp public/models/thanjavur.glb public/models/thanjavur.glb`).
-2. List it in `public/models/models.json`:
-   ```json
-   { "thanjavur": { "file": "thanjavur.glb", "rotateY": 90, "credit": "Model name by Author, CC BY 4.0 (link)" } }
-   ```
-   The slots are `chennai-lighthouse`, `chennai-central`, `shore-temple`, `thanjavur` (the vimana), `madurai` (main gopuram) and `auto`. Each model is scaled to the real size, set on the ground and centred. Use `rotateY`, `scale` and `offset` to adjust. Credits appear in the footer, as CC BY licences require.
-
-Paid options exist, for example a [Shore Temple](https://www.cgtrader.com/3d-models/architectural/floor/mamallapuram-shore-temple-0b26d8e0-da83-4355-8cfa-bb6ddfa545b2) on CGTrader, generic [gopurams on Fab](https://www.fab.com/listings/7956d40a-869a-4373-8e1c-3d198bfe3d2e) and [auto-rickshaws on CGTrader](https://www.cgtrader.com/3d-models/vehicle/other/tuk-tuk-auto-rickshaw). Photogrammetry of your own (for example with a phone scanning app) is another route.
-
-## Quality switches
-
-- `?quality=low` or `?quality=high` overrides the automatic choice (phones get low).
-- On slow machines the site drops ambient occlusion first, then lowers the resolution. `?fixed` turns that off.
-
-## Assets and licences
-
-Every model, texture and sound is made in code: models from shapes and turned profiles, textures painted on canvases at 512 px or smaller (with relief maps generated from them), sound synthesised with the Web Audio API. The photo is Ram's own, from his portfolio repository. Nothing is downloaded or copied from other sites. The fonts (Noto Sans Tamil, Fraunces, DM Sans) are open-source (SIL Open Font License) and bundled via Fontsource.
-
-## Edit the content
-
-Everything you read on the site is in `src/content.js`, in English and Tamil. ArkaOS, TRX-AI, StudyFlow AI and VARA use their real READMEs and repositories. CreditGuard AI and RECALL X have no public repository yet, so their lines are drafts and their links search your repositories. The email address and resume link are set there too.
+A scroll-driven 3D portfolio for **Thulasiram K. (Ram)**, a CS (AI & ML) student
+from Chennai. Built with Vite, JavaScript, Three.js, GSAP ScrollTrigger and Lenis.
 
 ## Run
 
-```bash
-npm install
-npm run dev        # http://localhost:5173
-npm test           # scroll mapping, time of day, kolam, game rules, content
+Requires Node.js 22.12 or newer and npm. From the Sling checkout:
+
+```sh
+cd portfolio
+npm ci
+npm run dev
+```
+
+Vite prints the local URL. For the deployed build:
+
+```sh
+npm test
 npm run lint
-npm run build      # outputs dist/
+npm run build
+npm run preview
 ```
 
-## Files
+The enclosing development workspace also supports `npm run dev` directly; its
+launcher points to `sling-product/portfolio/` rather than an older implementation.
 
+## The journey
+
+The modeled-auto loader opens through an original kolam aperture into a sky
+greeting. Scrolling descends through a coastal bridge to Ram beside the parked
+auto, then drives through a connected, curved Tamil Nadu landscape.
+
+| Destination | Story and content |
+| --- | --- |
+| Chennai | Lighthouse, Central station, introduction, bio, education and resume stats |
+| Mamallapuram | Shore Temple, Pancha Rathas, original stone elephant and skill collection |
+| Thanjavur | Brihadeeswarar vimana, Nandi and seven interactive project exhibits |
+| Madurai | Meenakshi Amman Temple compound, experience and achievements |
+| Rameswaram | Pamban sea crossing and island temple |
+| Kanyakumari | Rock Memorial, original Thiruvalluvar study, new dawn and final contact ascent |
+
+These are editorial associations, not claims that Ram worked or studied in every
+place. This is a compressed narrative landscape, not a geographically exact map.
+
+**Scroll or swipe is the primary control.** Every stop occupies a reading interval:
+the auto parks while you scroll through it and resumes at its end. Reverse
+scrolling revisits the stops. Chapter dots and Skip ahead are optional shortcuts;
+Continue clicks are never required. Acceleration, braking and camera movement are
+bounded. Reduced motion removes drift and preserves the same stops.
+
+Skills have readable names, usage descriptions and an accessible index. Journey
+points count discoveries, not proficiency. Click or tap project installations to
+open a case study; “Read this chapter” provides keyboard-accessible equivalents.
+Escape closes readers and restores focus. Native modal handoffs preserve scroll
+locking. English/Tamil, sound controls, consent settings and an original Canvas 2D
+Auto Dash game are included. Sound starts muted and remembers an explicit choice.
+
+## Edit content
+
+- `src/content.js`: personal details, stats, education, experience, links and skills.
+- `src/project-content.js`: bilingual case studies, technical stacks, screenshots,
+  preview status and optional walkthrough links.
+- `src/i18n.js`: shared interface translations.
+- `public/models/models.json`: optional licensed GLB replacements for named slots.
+
+ArkaOS is featured. TRX-AI, StudyFlow AI, VARA, kural-kv and SysOracle use public
+README descriptions. CreditGuard AI remains a labeled concept with a search link;
+RECALL X and Pahara are excluded. Actual ArkaOS, TRX-AI and StudyFlow screenshots,
+source URLs, hashes and license records are bundled in `public/projects/`.
+No missing screenshot or live demo is fabricated.
+
+## World systems
+
+Camera choreography (`src/scene/camera.js`), route/story mapping, vehicle physics,
+landmarks, raycast exhibits and HTML readers are independent modules. Original
+curved panels, wheel suspension and an articulated character form the vehicle
+sequence. Static architecture is batched; repeated elements are instanced with
+spatial culling and projected-size ornament LODs.
+
+Desktop uses physically based materials, sky lighting, AO, shadows, water
+reflection and bloom. Phones use lighter materials, geometry and effects. Slow
+frames progressively reduce effects and DPR. `?quality=low` / `?quality=high`
+override selection; `?fixed` disables adaptation for controlled comparisons.
+Unsupported WebGL or actual context loss exposes a compact readable portfolio.
+Without JavaScript, a minimal real profile and project/contact links remain usable.
+
+## Original assets
+
+World meshes, surface textures and synthesized audio are authored in code; the
+photo is Ram's. No geometry, textures, sound or branding from the reference site
+is copied. Elephant and poet GLBs are original. The poet is finished in Blender,
+with source/output hashes in `public/models/poet-provenance.json`.
+
+```sh
+npm run export:elephant
+node scripts/export-poet.mjs --out-dir /tmp/ram-poet-pipeline
+# See scripts/finish-poet.py and docs/poet-assets-review.md for Blender finishing.
 ```
-src/main.js          start-up: loader, scene, scroll, language, sound, game
-src/content.js       all text (English and Tamil) and links
-src/scroll.js        Lenis + ScrollTrigger, text reveals
-src/mapping.js       scroll position → place on the road
-src/loader.js        000–100 counter, kolam line, Start
-src/audio.js         engine, veena music, game sounds (Web Audio)
-src/game.js          Auto Dash drawing and controls
-src/gameLogic.js     Auto Dash rules (tested)
-src/i18n.js          English / Tamil switching
-src/cursor.js        custom cursor and hover motion
-src/transition.js    kolam curtain between stops
-src/cookies.js       consent banner and analytics loader
-src/kolam.js         kolam SVG patterns
-src/scene/           the 3D world: route, sky, timeline, auto, world, post-processing, models (optional GLB slots), landmarks/
+
+Fontsource UI fonts retain their SIL OFL licenses. `public/fonts/LICENSE` covers
+the bundled Optimer lettering font. Check usage rights and credit any optional
+replacement assets before adding them to the manifest.
+
+## Verification and remaining limits
+
+[Product readiness and evidence](docs/product-readiness.md) records the current
+unit tests, native desktop/touch checks, actual WebGL captures and performance
+limits. [The reference audit](docs/reference-audit.md) and later sculpture reviews
+record the art comparison and historical checkpoints.
+
+The scenes are original procedural architectural interpretations. They are not
+scans, exact historical reconstructions or proven reference-level craftsmanship.
+The requested above-9/10 visual standard remains unestablished. Hardware-GPU
+60 FPS, physical iOS/Android performance and sound quality by listening are not
+claimed. Static screenshots and reduced-motion tests are not FPS benchmarks.
+
+For static QA, open `/?debug`, press Start and use `window.__trip.inspect(.245)`
+(introduction), `.49` (Mamallapuram), `.915` (Kanyakumari) or `.947` (statue visit).
+`story()`, `exhibits()`, `profile()` and `scrollState()` expose QA diagnostics.
+Reload to resume ordinary navigation. Browser review scripts expect an HTTP
+server on port 5174 and a task-owned Chromium CDP endpoint on port 9224.
+
+## Deploy and package
+
+Serve the contents of `dist/` from a static HTTP(S) host. The relative Vite base
+supports subdirectory deployment. Enable compression for JavaScript, GLBs and
+fonts. No backend, API keys or external font service is required. Analytics is
+absent unless `VITE_PLAUSIBLE_DOMAIN` is configured at build time and consent is
+granted; consent can be withdrawn through Cookie settings.
+
+```sh
+python scripts/package-release.py --out-dir ../../
+python scripts/package-review.py
 ```
+
+The first command produces standalone source, static deployment ZIPs and SHA-256
+records. The second verifies a binary patch against `origin/claude/chat-session-ay91ey`
+and proves unrelated Sling applications are unchanged. Changes are committed
+locally under the user's configured identity without co-author trailers. Nothing
+is pushed or published automatically.

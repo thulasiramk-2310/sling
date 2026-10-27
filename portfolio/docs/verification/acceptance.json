@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-27",
+  "unitTests": {
+    "passed": 118,
+    "failed": 0,
+    "files": 26
+  },
+  "lint": {
+    "tool": "oxlint",
+    "exitCode": 0,
+    "warnings": 0
+  },
+  "build": {
+    "tool": "Vite",
+    "exitCode": 0,
+    "entrySha256": "cbd086eccf4e7c14d660c6826ec2ab96ff2ed15a327e4a905f10456c18d02759"
+  },
+  "nativeInput": {
+    "desktop": 21,
+    "phone": 21
+  },
+  "visualQualityGoal": "Above 9/10 remains unestablished; see product-readiness.md",
+  "hardwareGpuFps": "Unverified; software rendering only",
+  "note": "Native input covers final interaction logic. Subsequent art-only changes have separate final production rendering and fallback checks."
+}

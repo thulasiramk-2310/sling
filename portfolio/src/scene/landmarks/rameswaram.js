@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import { glowTexture } from '../textures.js'
 import { block, glow, lambert, rng, surface } from '../util.js'
 import { makeGopuram } from './gopuram.js'
+import { carvedPillarGeometry } from './stonework.js'
 
 const UP = new THREE.Vector3(0, 1, 0)
 
@@ -155,31 +156,50 @@ export function buildRameswaram({ scene, route, u }) {
   const world = new THREE.Group()
   scene.add(world)
   const from = route.bridgeU
-  world.add(deckAndPiers(route, from - 0.004, 1, 0, 5.4, -0.3))
-  world.add(truss(route, { from, to: 1, lateral: 4.9, lift: 0, height: 3.4, spacing: 4, color: 0xd9d4c8 }))
-  world.add(truss(route, { from, to: 1, lateral: -4.9, lift: 0, height: 3.4, spacing: 4, color: 0xd9d4c8 }))
+  const to = route.bridgeEndU
+  world.add(deckAndPiers(route, from - 0.004, to, 0, 5.4, -0.3))
+  world.add(truss(route, { from, to, lateral: 4.9, lift: 0, height: 3.4, spacing: 4, color: 0xd9d4c8 }))
+  world.add(truss(route, { from, to, lateral: -4.9, lift: 0, height: 3.4, spacing: 4, color: 0xd9d4c8 }))
   // the older rail bridge, lower and rustier, to the right
-  world.add(deckAndPiers(route, from + 0.02, 1, 26, 2.4, -1.2))
-  world.add(truss(route, { from: from + 0.02, to: 1, lateral: 26, lift: -1.2, height: 4.5, spacing: 6, color: 0x7a2f22 }))
+  world.add(deckAndPiers(route, from + 0.02, to, 26, 2.4, -1.2))
+  world.add(truss(route, { from: from + 0.02, to, lateral: 26, lift: -1.2, height: 4.5, spacing: 6, color: 0x7a2f22 }))
   const lift = liftTowers(route, u)
   world.add(lift.group)
-  world.add(boats(route, from, 1))
+  world.add(boats(route, from, to))
 
   // the island ahead: low sand, with a lit temple tower
-  const end = route.at(1)
-  const island = new THREE.Mesh(new THREE.CylinderGeometry(130, 170, 7, 28), lambert(0xb6a07a))
-  island.position.copy(end.pos).addScaledVector(end.tan, 220)
-  island.position.y = -2.9
+  const end = route.at(to)
+  const island = new THREE.Mesh(new THREE.CylinderGeometry(90, 120, 7, 28), lambert(0xb6a07a))
+  // Keep this island around its temple; the next destination needs open water.
+  island.position.copy(end.pos).addScaledVector(end.tan, 80)
+  island.position.y = -3.6
   world.add(island)
-  const temple = makeGopuram({ tiers: 7, baseW: 30, baseD: 17, tierH: 5.6, palette: 'madurai', seed: 6, podiumH: 7 })
-  temple.position.copy(end.pos).addScaledVector(end.tan, 210)
+  const temple = makeGopuram({ tiers: 7, baseW: 30, baseD: 17, tierH: 5.6, palette: 'rameswaram', seed: 6, podiumH: 7 })
+  temple.position.copy(end.pos).addScaledVector(end.tan, 80).addScaledVector(end.right,65)
   temple.position.y = 0.6
   temple.rotation.y = Math.atan2(-end.tan.x, -end.tan.z)
+  const corridor=new THREE.Group()
+  corridor.name='Ramanathaswamy-inspired open pillared approach'
+  const granite=surface({color:0xb7b4a3,roughness:.91})
+  const rows=15
+  const pillars=new THREE.InstancedMesh(carvedPillarGeometry(7.4,1),granite,rows*2)
+  const matrix=new THREE.Matrix4()
+  for(let i=0;i<rows;i++) for(let side=0;side<2;side++) {
+    matrix.makeTranslation(side?5:-5,.4,14+i*3.1)
+    pillars.setMatrixAt(i*2+side,matrix)
+  }
+  corridor.add(pillars,block(13,.4,47,granite,0,0,35),block(13,.7,47,granite,0,7.8,35))
+  temple.add(corridor)
+  const templeLight=new THREE.PointLight(0xffd9a2,0,120,2)
+  templeLight.position.set(0,22,20)
+  temple.add(templeLight)
   world.add(temple)
 
   return {
-    focus: route.side(u + 0.012, 8, 14),
+    focus: temple.position.clone().add(new THREE.Vector3(0,24,0)),
+    slots: [{name: 'rameswaram',group:temple,height:temple.userData.height}],
     update(time, night) {
+      templeLight.intensity = night * 400
       lift.blink(time, night)
       lift.lightMat.color.setRGB(0.2 + night * 0.8, 0.05, 0.04)
     },

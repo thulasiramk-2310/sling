@@ -5,10 +5,14 @@
 import * as THREE from 'three'
 import { quality } from '../quality.js'
 import { faceRoad } from '../route.js'
-import { colonnadeTexture, stoneTexture, vimanaWallTexture, withRelief } from '../textures.js'
+import { stoneTexture, vimanaWallTexture, withRelief } from '../textures.js'
 import { block, lambert, surface, uvScale } from '../util.js'
 import { goldMaterial, makeGopuram } from './gopuram.js'
 import { cupolaGeometry, kutaGeometry, salaGeometry } from './shrines.js'
+import { createSculptureInstances } from './sculptures.js'
+import { createNandi } from './nandi.js'
+import { createTerraceBulls } from './terrace-bulls.js'
+import { carvedPillarGeometry } from './stonework.js'
 
 const BASE = 30 // side of the vimana's square base
 
@@ -34,43 +38,10 @@ function kalasamGeometry() {
   return new THREE.LatheGeometry(pts, 16)
 }
 
-// A seated bull. Big version for the mandapam, tiny versions along the walls.
-function nandi(mat) {
-  const g = new THREE.Group()
-  const body = new THREE.Mesh(new THREE.CapsuleGeometry(1.15, 2.4, 6, 12), mat)
-  body.rotation.z = Math.PI / 2
-  body.position.set(0, 1.25, 0)
-  const hump = new THREE.Mesh(new THREE.SphereGeometry(0.75, 12, 10), mat)
-  hump.position.set(0.75, 2.2, 0)
-  const neck = new THREE.Mesh(new THREE.CapsuleGeometry(0.6, 0.6, 4, 10), mat)
-  neck.position.set(1.75, 1.9, 0)
-  neck.rotation.z = -0.6
-  const head = new THREE.Mesh(new THREE.CapsuleGeometry(0.42, 0.9, 4, 10), mat)
-  head.position.set(2.35, 2.05, 0)
-  head.rotation.z = 0.35
-  g.add(body, hump, neck, head)
-  for (const s of [-1, 1]) {
-    const horn = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.6, 8), mat)
-    horn.position.set(2.15, 2.75, s * 0.32)
-    horn.rotation.x = s * 0.4
-    const ear = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 6), mat)
-    ear.scale.set(0.6, 0.4, 1.4)
-    ear.position.set(2.1, 2.35, s * 0.55)
-    const leg = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.45, 0.5), mat)
-    leg.position.set(1.4, 0.3, s * 0.85)
-    const hind = new THREE.Mesh(new THREE.SphereGeometry(0.75, 10, 8), mat)
-    hind.scale.set(1.3, 0.8, 0.7)
-    hind.position.set(-1.25, 0.75, s * 0.75)
-    g.add(horn, ear, leg, hind)
-  }
-  const plinth = new THREE.Mesh(new THREE.BoxGeometry(5.4, 0.6, 3), mat)
-  plinth.position.y = -0.2
-  g.add(plinth)
-  return g
-}
-
 function vimana(stone, wall) {
   const g = new THREE.Group()
+  g.name = 'Thanjavur — granite vimana'
+  const sculptures = createSculptureInstances(quality.low)
   const add = (mesh) => (g.add(mesh), mesh)
   let y = 0
   // plinth mouldings
@@ -100,6 +71,11 @@ function vimana(stone, wall) {
         pivot.add(corner)
       }
       g.add(pivot)
+      const count = quality.low ? 3 : 8
+      for (let j = 0; j < count; j++) {
+        const position = new THREE.Vector3((j - (count - 1) / 2) * (BASE - 3) / count, y + 1.1, BASE / 2 + 1.15).applyAxisAngle(new THREE.Vector3(0,1,0), a)
+        sculptures.place(position.x, position.y, position.z, a, 4.1, '#aa9275')
+      }
     }
     y += h
     add(block(BASE + 3, 0.5, BASE + 3, stone, 0, y))
@@ -118,7 +94,10 @@ function vimana(stone, wall) {
   let w = BASE * 0.92
   for (let i = 0; i < tiers; i++) {
     const h = 2.5
-    const core = add(block(w, h, w, wall, 0, y))
+    // Upper talas are granite courses with modeled figures, rather than the
+    // lower-storey niche texture repeated as rows of window-like rectangles.
+    const core = add(block(w, h, w, stone, 0, y))
+    core.name = 'Granite vimana tier ' + (i + 1)
     uvScale(core.geometry, w / 9, 0.55)
     add(block(w + 0.7, 0.35, w + 0.7, stone, 0, y + h))
     const top = y + h + 0.35
@@ -135,6 +114,11 @@ function vimana(stone, wall) {
     for (let side = 0; side < 4; side++) {
       const a = (side * Math.PI) / 2
       q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), a)
+      const reliefPositions = !quality.low && w > 20 ? [-.26, 0, .26] : [0]
+      for (const along of reliefPositions) {
+        const local = new THREE.Vector3(along * w, y + .08, w / 2 + .14).applyAxisAngle(new THREE.Vector3(0, 1, 0), a)
+        sculptures.place(local.x, local.y, local.z, a, 1.55, '#ac9475')
+      }
       for (const along of [-0.24, 0.24]) {
         const local = new THREE.Vector3(along * w, top, (w - s) / 2).applyAxisAngle(new THREE.Vector3(0, 1, 0), a)
         m.compose(local, q, new THREE.Vector3(s, s, s))
@@ -144,7 +128,7 @@ function vimana(stone, wall) {
     y += h + 0.35
     w *= 0.935
   }
-  g.add(kutas, salas)
+  g.add(kutas, salas, sculptures.build())
 
   // platform, four little bulls, octagonal neck, cupola and kalasam
   add(block(w + 2.4, 0.6, w + 2.4, stone, 0, y))
@@ -155,7 +139,7 @@ function vimana(stone, wall) {
     [-1, 1],
     [1, 1],
   ]) {
-    const b = nandi(stone)
+    const b = createNandi(stone, quality.low)
     b.scale.setScalar(0.32)
     b.position.set((cx * (w + 1.4)) / 2, y + 0.1, (cz * (w + 1.4)) / 2)
     b.rotation.y = Math.atan2(-cx, -cz) + Math.PI / 2
@@ -210,40 +194,65 @@ function hall(w, h, d, wall, stone) {
 // The Nandi mandapam: a pillared pavilion sheltering the great bull, facing the shrine.
 function nandiMandapam(stone, polished) {
   const g = new THREE.Group()
+  g.name = 'Thanjavur — open Nandi mandapam'
   g.add(block(14, 1.6, 14, stone))
-  const pillars = new THREE.InstancedMesh(new THREE.BoxGeometry(0.85, 6.4, 0.85), stone, 16)
+  const pillars = new THREE.InstancedMesh(carvedPillarGeometry(6.4, 0.85), stone, 12)
+  pillars.name = 'Nandi mandapam perimeter columns'
   const m = new THREE.Matrix4()
   let i = 0
   for (const x of [-5.4, -1.8, 1.8, 5.4])
     for (const z of [-5.4, -1.8, 1.8, 5.4]) {
-      m.setPosition(x, 1.6 + 3.2, z)
+      // Support the roof along its perimeter. The four interior grid points
+      // previously passed through the sculpture and closed its viewing bays.
+      if (Math.abs(x) < 5.4 && Math.abs(z) < 5.4) continue
+      m.makeTranslation(x, 1.6, z)
       pillars.setMatrixAt(i++, m)
     }
+  pillars.computeBoundingBox();pillars.computeBoundingSphere()
   g.add(pillars)
   g.add(block(14.4, 0.9, 14.4, stone, 0, 8))
   g.add(block(12.4, 0.8, 12.4, stone, 0, 8.9))
   g.add(block(9, 0.7, 9, stone, 0, 9.7))
-  const bull = nandi(polished)
+  const bull = createNandi(polished, quality.low)
+  bull.name = 'Great Nandi beneath the mandapam'
+  bull.userData.preserveAssembly = true
   bull.scale.setScalar(1.15)
-  bull.position.y = 2
+  // Seat the sculpture's own plinth on the pavilion platform, without a gap.
+  bull.position.y = 1.6 - bull.geometry.boundingBox.min.y * 1.15
   bull.rotation.y = Math.PI / 2 // faces the vimana (local -Z)
   g.add(bull)
   return g
 }
 
 // The cloister wall: a long roofed colonnade with little bulls along the top.
-function cloister(stone, colonnade, x0, z0, x1, z1, bulls) {
+function cloister(stone, x0, z0, x1, z1, bulls) {
   const len = Math.hypot(x1 - x0, z1 - z0)
   const g = new THREE.Group()
-  const body = block(len, 6.5, 5, colonnade)
-  uvScale(body.geometry, len / 8, 1)
-  g.add(body)
-  g.add(block(len + 0.4, 0.7, 5.6, stone, 0, 6.5))
+  // Open bays: carved columns and a rear wall, rather than painted columns.
+  g.add(block(len, 0.45, 5.4, stone))
+  // Both colonnade edges remain open in this original scene interpretation,
+  // so the courtyard and Nandi can be seen from the traveling camera.
+  const rearPillars = new THREE.InstancedMesh(carvedPillarGeometry(6.05, .7), stone, Math.max(2, Math.floor(len / 3.2) + 1))
+  const rearMatrix = new THREE.Matrix4()
+  for (let i = 0; i < rearPillars.count; i++) {
+    rearMatrix.makeTranslation(-len / 2 + i * len / (rearPillars.count - 1), .45, -1.7)
+    rearPillars.setMatrixAt(i, rearMatrix)
+  }
+  g.add(rearPillars)
+  const bays = Math.max(1, Math.floor(len / 3.2))
+  const pillars = new THREE.InstancedMesh(carvedPillarGeometry(6.05, .7), stone, bays + 1)
+  const matrix = new THREE.Matrix4()
+  for (let i = 0; i <= bays; i++) {
+    matrix.makeTranslation(-len / 2 + i * len / bays, .45, 1.7)
+    pillars.setMatrixAt(i, matrix)
+  }
+  pillars.castShadow = pillars.receiveShadow = true
+  g.add(pillars, block(len + .4, .7, 5.6, stone, 0, 6.5))
   const step = 4
   const count = Math.floor(len / step)
   const m = new THREE.Matrix4()
   for (let i = 0; i < count; i++) {
-    m.makeRotationY(Math.PI / 2)
+    m.makeRotationY(Math.PI / 2).scale(new THREE.Vector3(.25, .25, .25))
     m.setPosition(-len / 2 + step / 2 + i * step, 7.2, 0)
     bulls.push(m.clone().premultiply(new THREE.Matrix4().makeRotationY(Math.atan2(-(z1 - z0), x1 - x0)).setPosition((x0 + x1) / 2, 0, (z0 + z1) / 2)))
   }
@@ -255,10 +264,10 @@ function cloister(stone, colonnade, x0, z0, x1, z1, bulls) {
 export function buildThanjavur({ scene, route, u }) {
   const stone = granite('thanjavur-stone', () => stoneTexture('#b59775', 19), 2.2)
   const wall = granite('vimana-wall', vimanaWallTexture, 3)
-  const colonnade = granite('colonnade', colonnadeTexture, 2.5)
   const polished = surface({ color: 0x3d3733, roughness: 0.32, metalness: 0 })
 
   const temple = new THREE.Group()
+  temple.userData.staticBatchRoot = true
   const v = vimana(stone, wall)
   temple.add(v)
   // halls joined to the front of the vimana
@@ -281,15 +290,13 @@ export function buildThanjavur({ scene, route, u }) {
   const bulls = []
   const W = 62
   temple.add(
-    cloister(stone, colonnade, -W, 82, -13, 82, bulls),
-    cloister(stone, colonnade, 13, 82, W, 82, bulls),
-    cloister(stone, colonnade, -W, -48, W, -48, bulls),
-    cloister(stone, colonnade, -W, -48, -W, 82, bulls),
-    cloister(stone, colonnade, W, -48, W, 82, bulls),
+    cloister(stone, -W, 82, -13, 82, bulls),
+    cloister(stone, 13, 82, W, 82, bulls),
+    cloister(stone, -W, -48, W, -48, bulls),
+    cloister(stone, -W, -48, -W, 82, bulls),
+    cloister(stone, W, -48, W, 82, bulls),
   )
-  const bullMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1.4, 0.9, 0.7), stone, bulls.length)
-  bulls.forEach((mm, i) => bullMesh.setMatrixAt(i, mm))
-  temple.add(bullMesh)
+  temple.add(createTerraceBulls(bulls, stone))
   // lawns and the stone path along the axis
   const lawn = new THREE.Mesh(new THREE.BoxGeometry(W * 2 - 6, 0.12, 124), lambert(0x86a35a, { roughness: 1 }))
   lawn.position.set(0, 0.06, 17)

@@ -276,22 +276,20 @@ body.no-3d {
   color: var(--maroon-deep);
   border-color: var(--gold);
 }
-/* the Start bar: a wide strip with a slow gold sheen */
+/* A quiet entry control; the environment carries the visual emphasis. */
 .loader-start {
   width: min(460px, 80vw);
   min-height: 54px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  background: linear-gradient(100deg, #6a1a2c 0%, #a8607a 30%, #e9c98e 50%, #a8607a 70%, #6a1a2c 100%);
-  background-size: 220% 100%;
-  color: #fff;
-  font-family: var(--display);
-  font-size: 20px;
+  border-radius: 2px;
+  border: 1px solid #51483c;
+  background: #25332d;
+  color: #f4eee0;
+  font-family: var(--body);
+  font-size: 14px;
   font-weight: 500;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  box-shadow: 0 14px 40px rgba(90, 15, 30, 0.25);
-  animation: sheen 3.6s var(--ease) infinite;
+  box-shadow: 0 8px 24px rgba(28, 35, 30, 0.12);
 }
 .loader-start::before {
   display: none;
@@ -564,6 +562,18 @@ svg.ctl-icon {
 }
 .hud-phase {
   color: var(--gold-2);
+}
+
+/* A shallow cinema-style lower fade protects the small travel controls over
+   both bright sand and dark water without adding floating interface panels. */
+body.world-first:not(.clean-journey):not(.no-3d)::after {
+  content: '';
+  position: fixed;
+  inset: auto 0 0;
+  height: 100px;
+  z-index: 9;
+  pointer-events: none;
+  background: linear-gradient(transparent,rgba(4,14,20,.66));
 }
 
 /* ---------- sections and panels ---------- */
@@ -1232,9 +1242,6 @@ html[lang='ta'] .hero-role {
   .top-actions {
     gap: 6px;
   }
-  #play-btn {
-    display: none;
-  }
   .stop {
     padding: 0 16px;
   }
@@ -1259,6 +1266,10 @@ html[lang='ta'] .hero-role {
     margin-top: 0;
     top: 16vh;
     padding: 0;
+  }
+  .panel-hero::before {
+    left: 0;
+    right: 0;
   }
   .cards {
     grid-template-columns: 1fr;
@@ -1292,6 +1303,98 @@ html[lang='ta'] .hero-role {
   }
 }
 
+/* The 3D trip owns the screen. The sections only provide the scroll track. */
+body.world-first main { pointer-events: none; }
+body.world-first main .panel { display: none; }
+body.world-first .stop,
+body.world-first .stop-hero,
+body.world-first .stop-about,
+body.world-first .stop-tall,
+body.world-first .stop-end { min-height: 180vh; padding: 0; }
+body.world-first .stop-hero { min-height: 135vh; }
+body.world-first .stop-end { min-height: 155vh; }
+.journey-caption {
+  position: fixed;
+  z-index: 10;
+  left: var(--gutter);
+  top: 19vh;
+  width: min(300px, 29vw);
+  color: #faf5e9;
+  text-shadow: 0 2px 15px rgba(14, 22, 22, .85);
+}
+.journey-eyebrow { font-size: 10px; letter-spacing: .16em; margin: 0 0 14px; color: #f1d8a1; }
+.journey-heading { font-size: clamp(28px, 3.3vw, 48px); line-height: 1.07; font-weight: 300; letter-spacing: -.025em; }
+.journey-subtitle { max-width: 250px; margin: 14px 0 18px; font-size: 13px; line-height: 1.6; color: #f3eadb; }
+.journey-read,
+.journey-clean,
+.detail-close {
+  padding: 9px 0;
+  border: 0;
+  border-bottom: 1px solid rgba(246, 229, 195, .65);
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+}
+.journey-read:hover { color: #f1d8a1; }
+.journey-clean { position: fixed; bottom: 22px; right: var(--gutter); z-index: 21; color: #fff5df; text-shadow: 0 1px 8px #18211f; }
+.clean-journey .journey-caption,
+.clean-journey .topbar,
+.clean-journey .rail,
+.clean-journey .hud { visibility: hidden; pointer-events: none; }
+body.reading-stop { overflow: hidden; }
+.stop-detail {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(520px, 100vw);
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0 32px 40px;
+  border: 0;
+  border-left: 1px solid #5b6155;
+  border-radius: 0;
+  background: #202923;
+  color: #f6f1e5;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.stop-detail::backdrop { background: rgba(7, 16, 18, .25); }
+.detail-header { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; margin-bottom: 20px; border-bottom: 1px solid #52604e; background: #202923; font-size: 11px; }
+.stop-detail .panel { position: static; display: block; width: 100%; max-width: none; margin: 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; backdrop-filter: none; text-align: left; }
+.stop-detail .panel-hero::before { display: none; }
+.stop-detail [data-reveal], .stop-detail [data-intro] { opacity: 1 !important; transform: none !important; }
+.stop-detail .kolam-line { stroke-dashoffset: 0; }
+.stop-detail .hero-name { font-size: 48px; }
+.stop-detail .hero-role { letter-spacing: .08em; font-size: 14px; }
+.stop-detail .scroll-hint { display: none; }
+.stop-detail .portrait { width: 125px; margin: 0 0 24px; }
+.stop-detail .portrait img { border-radius: 2px; }
+.stop-detail .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.stop-detail .cards { display: block; }
+.stop-detail .card { display: grid; padding: 22px 0; border: 0; border-bottom: 1px solid #56604e; border-radius: 0; background: none; }
+.stop-detail .card-top { justify-content: start; gap: 16px; }
+.stop-detail .card-tag { padding: 0; border: 0; }
+.stop-detail .card h3 { font-size: 28px; }
+.stop-detail .contact .btn { border-radius: 2px; padding: 12px; }
+.stop-detail, .stop-detail * { cursor: auto; }
+.stop-detail button, .stop-detail a { cursor: pointer; }
+body.world-first .cookie { right: auto; bottom: 65px; left: var(--gutter); max-width: 330px; font-size: 12px; }
+@media (max-width: 820px) {
+  .journey-caption { top: 105px; left: 20px; width: 62vw; max-width: 255px; }
+  .journey-heading { font-size: 31px; }
+  .journey-eyebrow { font-size: 9px; margin-bottom: 8px; }
+  .journey-subtitle { font-size: 12px; margin: 10px 0; max-width: 230px; }
+  .journey-clean { right: 16px; bottom: 48px; font-size: 11px; }
+  .stop-detail { padding: 0 22px 30px; }
+  .stop-detail .hero-name { font-size: 40px; }
+  body.world-first .cookie { left: 12px; right: 12px; bottom: 90px; max-width: 280px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1301,3 +1404,357 @@ html[lang='ta'] .hero-role {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Daylight type must remain readable against the pale coastal horizon. */
+body.world-first:not(.trip-night) .journey-caption { color: #182e31; text-shadow: none; }
+body.world-first:not(.trip-night) .journey-eyebrow { color: #5d4c2b; }
+body.world-first:not(.trip-night) .journey-subtitle { color: #263c40; }
+body.world-first:not(.trip-night) .journey-read { border-color: #4b5d5b; }
+body.world-first:not(.trip-night) .topbar,
+body.world-first:not(.trip-night) .hud,
+body.world-first:not(.trip-night) .nav-dot,
+body.world-first:not(.trip-night) .journey-clean { color: #182e31; text-shadow: none; }
+body.world-first .hud,
+body.world-first .journey-clean,
+body.world-first:not(.trip-night) .hud,
+body.world-first:not(.trip-night) .journey-clean {
+  color: #f7f2e6;
+  text-shadow: 0 1px 6px rgba(4,14,20,.9);
+}
+body.world-first:not(.trip-night) .topbar button { color: #182e31; text-shadow: none; }
+.journey-caption { transition: color .5s ease; }
+
+@media (max-width: 700px) {
+  .journey-caption { top: 100px; }
+  .journey-heading { font-size: 27px; }
+  .journey-eyebrow { font-size: 8px; margin-bottom: 5px; }
+  .journey-subtitle { display: none; }
+  .journey-read { margin-top: 8px; }
+  body.world-first:not(.trip-night) .topbar::before {
+    background: linear-gradient(rgba(244,237,220,.85), rgba(244,237,220,.2) 70%, transparent);
+  }
+}
+
+/* Story beats share one world; only contextual reading controls overlay it. */
+.story-intro-copy, .story-skills { display: none; }
+.journey-caption[data-stage='introduction'] .story-intro-copy { display: block; }
+.journey-caption[data-stage='introduction'] { width: min(350px,32vw); top: 22vh; }
+.story-intro-copy > p { font-size: 13px; line-height: 1.75; margin: 18px 0; }
+.story-intro-copy .story-education { font-size: 10px; line-height: 1.7; }
+.story-stats { display: flex; gap: 24px; margin: 18px 0; }
+.story-stats dt { font-family: var(--display); font-size: 25px; }
+.story-stats dd { margin: 0; font-size: 10px; max-width: 110px; }
+.journey-caption[data-stage='skills'] .story-skills { display: block; }
+.story-score { font-size: 10px; letter-spacing: .05em; margin: 18px 0 10px; }
+.story-skill-list { display: flex; flex-wrap: wrap; gap: 6px; max-width: 280px; }
+.story-skill-list span { font-size: 11px; border-bottom: 1px solid currentColor; padding: 3px 7px 3px 0; }
+.journey-direction { position: fixed; z-index: 14; bottom: 6vh; left: 50%; transform: translateX(-50%); font-size: 10px; letter-spacing: .12em; text-align: center; color: #fff3d9; text-shadow: 0 1px 8px #14252c; }
+body.world-first[data-story-stage='greeting'] .journey-caption,
+body.world-first[data-story-stage='bridge-flight'] .journey-caption,
+body.world-first[data-story-stage='ascent'] .journey-caption,
+body.world-first[data-story-stage='connections'] .journey-caption { visibility: hidden; pointer-events: none; }
+body.world-first:not([data-story-stage='greeting']):not([data-story-stage='bridge-flight']):not([data-story-stage='ascent']) .journey-direction { display: none; }
+body[data-story-stage='greeting'] .rail,body[data-story-stage='bridge-flight'] .rail { visibility: hidden; }
+.story-connections { position: fixed; bottom: 12vh; left: 50%; transform: translateX(-50%); z-index: 15; width: min(560px,88vw); text-align: center; color: #fff3d9; }
+.story-connections p { font-size: 11px; letter-spacing: .12em; margin-bottom: 25px; }
+.story-connections nav { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; }
+.story-connections a { color: inherit; font-size: 15px; text-decoration: none; border-bottom: 1px solid #e0b23a; padding-bottom: 7px; }
+.clean-journey .story-connections,.clean-journey .journey-direction { visibility: hidden; pointer-events: none; }
+.project-detail article { padding: 45px 30px; }
+.project-detail h2 { font-size: 42px; margin-bottom: 18px; }
+.project-stack,.project-status { font-size: 11px; color: #f4d57a; }
+.project-description { margin: 30px 0; font-size: 17px; line-height: 1.8; }
+body.world-first .stop-hero { min-height: 450vh; }
+@media(max-width:700px) {
+  .journey-caption[data-stage='introduction'] { top: 100px; width: 56vw; max-width: 270px; }
+  .journey-caption[data-stage='introduction'] .journey-heading { font-size: 24px; }
+  .story-intro-copy > p { font-size: 11px; line-height: 1.55; margin: 12px 0; }
+  .story-intro-copy .story-education { font-size: 8px; }
+  .story-stats { gap: 12px; margin: 12px 0; }
+  .story-stats dt { font-size: 20px; }
+  .story-stats dd { font-size: 8px; }
+  .journey-direction { width: 80vw; font-size: 9px; }
+  .story-skill-list { max-width: 210px; }
+  .story-connections { bottom: 14vh; }
+  .story-connections nav { gap: 18px; }
+  .project-detail article { padding: 30px 20px; }
+}
+@media(prefers-reduced-motion:reduce) { .journey-caption { transition: none; } }
+.journey-caption[data-stage='introduction'] { background: rgba(242,235,218,.91); padding: 24px 26px; color: #182e31; border-left: 1px solid #b4975c; text-shadow: none; }
+.journey-caption[data-stage='introduction'] .journey-subtitle { color: #32474a; }
+@media(max-width:700px) {
+  .journey-caption[data-stage='introduction'] { padding: 16px; left: 14px; width: 44vw; top: 95px; }
+  .journey-caption[data-stage='introduction'] .story-stats { display: none; }
+  .journey-caption[data-stage='introduction'] .story-intro-copy > p:first-child { max-height: 155px; overflow-y: auto; }
+}
+
+body.world-first[data-story-stage='skills']::before { content: ''; position: fixed; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(90deg,rgba(240,232,213,.94),rgba(240,232,213,.5) 22%,transparent 42%); }
+.journey-caption[data-stage='skills'] .journey-heading { font-size: 30px; }
+.project-open { background: none; border: 0; border-bottom: 1px solid #bfa364; color: #f1ddb1; padding: 10px 0; margin: 0 0 15px; cursor: pointer; font-size: 12px; }
+@media(max-width:700px) {
+  .journey-caption[data-stage='skills'] { width: 46vw; }
+  .journey-caption[data-stage='skills'] .journey-heading { font-size: 22px; }
+  .journey-caption[data-stage='skills'] .story-skill-list { max-height: 145px; overflow-y: auto; }
+  body.world-first[data-story-stage='skills']::before { background: linear-gradient(90deg,rgba(240,232,213,.94),rgba(240,232,213,.4) 40%,transparent 60%); }
+}
+
+/* Reading pauses belong to the journey; wheel inertia cannot dismiss them. */
+.journey-continue { display:block; margin-top:18px; padding:12px 0; border:0; border-bottom:1px solid currentColor; background:none; color:inherit; cursor:pointer; font:inherit; font-size:12px; text-align:left; }
+.journey-continue[hidden],.arrival-copy[hidden],.arrival-projects[hidden],.arrival-links[hidden] { display:none; }
+.journey-caption.at-stop { background:rgba(242,235,218,.96); color:#182e31; text-shadow:none; padding:22px; width:min(365px,33vw); top:16vh; max-height:74dvh; overflow:auto; overscroll-behavior:contain; border-left:1px solid #a58a59; }
+.trip-night .journey-caption.at-stop { background:rgba(24,36,41,.96);color:#f5e9d4; }
+.arrival-status { font-size:10px; letter-spacing:.07em; color:#82683e; margin:18px 0 8px; }
+.trip-night .arrival-status {color:#e0c68e;}
+.arrival-summary { font-size:13px; line-height:1.7; }
+.arrival-projects { max-height:33dvh; overflow:auto; overscroll-behavior:contain; margin-top:12px; }
+.arrival-project { width:100%; display:block; border:0; border-top:1px solid #a49a81; background:none; color:inherit; padding:12px 0; text-align:left; cursor:pointer; }
+.arrival-project strong { font-family:var(--display); font-size:21px; font-weight:400; display:block; }
+.arrival-project .mono {font-size:9px;letter-spacing:.1em;display:block;margin-bottom:8px;}
+.arrival-project p {font-size:12px;line-height:1.6;margin:9px 0 2px;}
+.arrival-links {display:flex;gap:14px;flex-wrap:wrap;margin-top:16px;font-size:12px;}
+.journey-caption[data-stage='projects'] {width:min(350px,32vw);background:rgba(242,235,218,.95);padding:22px;color:#182e31;text-shadow:none;}
+.story-skill-focus { margin:18px 0 12px; }
+.story-skill-focus strong {font-family:var(--display);font-size:36px;font-weight:400;}
+.story-skill-focus p {font-size:12px;line-height:1.6;margin-top:7px;}
+.story-skill-list button {background:none;color:inherit;border:1px solid #9d947a;padding:6px 9px;font:inherit;font-size:11px;cursor:pointer;}
+body.world-first[data-story-stage='skills']::before {display:none;}
+.journey-caption[data-stage='skills'] {background:rgba(242,235,218,.95);padding:22px;color:#182e31;text-shadow:none;}
+.project-website {margin-top:12px;}
+.project-website[hidden] {display:none;}
+button:focus-visible,a:focus-visible {outline:2px solid #b88b38;outline-offset:4px;}
+@media(max-width:700px) {
+  .journey-caption.at-stop {left:12px;top:95px;width:calc(100vw - 24px);max-height:45dvh;padding:16px;}
+  .journey-caption.at-stop .journey-heading {font-size:26px;}
+  .journey-caption.at-stop .story-intro-copy {display:none;}
+  .journey-caption[data-stage='skills']:not(.at-stop),.journey-caption[data-stage='projects']:not(.at-stop) {left:12px;top:95px;width:calc(100vw - 24px);padding:14px;max-height:31dvh;overflow:auto;}
+  .story-skill-focus {margin:9px 0;}.story-skill-focus strong{font-size:28px;}
+  .journey-caption[data-stage='skills'] .journey-heading {font-size:21px;}
+  .journey-caption .story-score {margin:8px 0;font-size:10px;}
+  .arrival-projects {max-height:22dvh;}
+  .journey-caption .story-skill-list {max-height:100px;overflow:auto;}
+  .journey-continue {position:sticky;bottom:-16px;background:#f2ebda;width:100%;padding:13px 0;margin-top:10px;color:#182e31;}
+  .trip-night .journey-continue {background:#182429;color:#f5e9d4;}
+}
+
+.journey-continue[hidden] {display:none;}
+@media(max-width:700px) {
+  .journey-caption.at-stop {max-width:none;max-height:48dvh;}
+  .journey-caption[data-stage='skills']:not(.at-stop),.journey-caption[data-stage='projects']:not(.at-stop) {max-width:none;}
+  .journey-caption.at-stop .arrival-projects {max-height:none;overflow:visible;}
+  .journey-caption[data-stage='projects'].at-stop .arrival-summary {display:none;}
+}
+
+.arrival-scroll {font-size:10px;letter-spacing:.04em;margin-top:16px;padding-top:13px;position:relative;}
+.arrival-scroll::before {content:'';position:absolute;left:0;right:0;top:0;height:1px;background:currentColor;opacity:.2;}
+.arrival-scroll::after {content:'';position:absolute;left:0;right:0;top:0;height:2px;background:currentColor;transform:scaleX(var(--reading-progress,0));transform-origin:left;}
+.journey-caption.at-stop {overscroll-behavior:auto;}
+.journey-continue {opacity:.65;font-size:10px;}
+
+/* Scene composition provides the negative space for the introduction. */
+body.world-first .journey-caption[data-stage='introduction'] {background:none;border:0;padding:0;width:min(300px,27vw);max-width:none;}
+.journey-caption[data-stage='introduction'] .journey-heading {font-size:clamp(28px,2.65vw,38px);}
+.journey-caption[data-stage='introduction'] .story-education {display:none;}
+.journey-caption[data-stage='introduction'].at-stop .arrival-summary {display:none;}
+.journey-caption[data-stage='introduction'] .story-intro-copy>p:first-child {margin:16px 0;}
+body.world-first:not(.trip-night) .story-connections {color:#203b3e;}
+body.world-first.connections-visible:not(.clean-journey)::after {
+  height: 300px;
+}
+body.world-first.connections-visible .story-connections,
+body.world-first.connections-visible:not(.trip-night) .story-connections {
+  color: #f7f2e6;
+  text-shadow: 0 1px 6px rgba(4,14,20,.9);
+}
+@media(max-width:700px) {
+ body.world-first .journey-caption[data-stage='introduction'] {left:18px;top:100px;width:calc(100vw - 36px);max-height:38dvh;}
+ .journey-caption[data-stage='introduction'] .journey-heading {font-size:29px;}
+ .journey-caption[data-stage='introduction'].at-stop .arrival-status {margin-top:8px;}
+ .journey-caption[data-stage='introduction'] .journey-continue {background:none;}
+}
+
+/* Quiet studio loading stage; the same modeled vehicle continues into the trip. */
+#loader { background: #e8e8df; color: #34413d; mask-repeat: no-repeat; mask-size: 100% 100%; }
+.loader-signature { position: absolute; top: 32px; left: 40px; margin: 0; font-size: 10px; letter-spacing: .26em; }
+.loader-inner { gap: 12px; }
+.loader-row { display: grid; place-items: center; gap: 0; position: relative; min-height: 250px; }
+.loader-auto { width: min(340px, 75vw); height: auto; animation: none; position: relative; z-index: 1; }
+.loader-count { font-size: clamp(64px, 10vw, 100px); color: #34413d; opacity: .18; letter-spacing: .08em; margin-top: -35px; font-weight: 300; }
+.loader-kolam { width: 180px; opacity: .45; }
+#loader .kolam-line { stroke: #56645b; }
+#loader .kolam-dots circle { fill: #9c7c44; }
+.loader-label { color: #56645b; font-size: 9px; letter-spacing: .18em; }
+.loader-note { color: #68726b; font-size: 10px; line-height: 1.8; letter-spacing: .08em; max-width: 300px; }
+.loader-start { width: 210px; min-height: 42px; border: 0; background: #4b5550; box-shadow: none; font-size: 11px; letter-spacing: .18em; }
+.loader-start:hover { background: #34413d; color: #fff8e8; }
+.preview-unavailable .loader-auto { display: none; }
+.preview-unavailable .loader-count { opacity: .7; margin-top: 0; }
+@media(max-width: 600px) { .loader-signature { left: 24px; top: 24px; } .loader-row { min-height: 210px; } }
+
+.loader-row .loader-auto { grid-row: 1; }
+.loader-row .loader-count { grid-row: 2; }
+
+@media(max-width:600px) {
+ body[data-story-stage='greeting'] .journey-clean, body[data-story-stage='bridge-flight'] .journey-clean { display: none; }
+ .journey-direction { bottom: 66px; }
+}
+
+/* Desktop captions sit in the authored scene; project names remain compact. */
+@media(min-width:701px) {
+ body.world-first .journey-caption[data-stage='projects'],
+ body.world-first .journey-caption[data-stage='skills'] { background:none;border:0;padding:0;width:min(300px,27vw); }
+ .journey-caption[data-stage='projects'] .journey-heading { font-size:38px; }
+ .journey-caption[data-stage='projects'] .arrival-summary,
+ .journey-caption[data-stage='projects'] .arrival-status { display:none; }
+ .journey-caption[data-stage='projects'] .arrival-projects { display:flex;flex-wrap:wrap;gap:8px 18px;max-height:none;overflow:visible; }
+ .journey-caption[data-stage='projects'] .arrival-project { width:auto;border:0;padding:0; }
+ .journey-caption[data-stage='projects'] .arrival-project strong { font-family:var(--body);font-size:13px; }
+ .journey-caption[data-stage='projects'] .arrival-project:first-child {width:100%;padding:15px 0 18px;border-bottom:1px solid #a49a81;margin-bottom:8px;}
+ .journey-caption[data-stage='projects'] .arrival-project:first-child strong {font-family:var(--display);font-size:27px;}
+ .journey-caption[data-stage='projects'] .arrival-project:first-child p {font-size:12px;line-height:1.7;}
+ .journey-caption[data-stage='skills']::before {content:'';position:absolute;inset:-40px -25px;z-index:-1;background:radial-gradient(ellipse,rgba(242,235,218,.9),rgba(242,235,218,.65) 50%,transparent 75%);pointer-events:none;}
+}
+@media(min-width:701px) {
+ body.world-first[data-story-stage='projects']:not(.clean-journey)::before {content:'';position:fixed;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(242,235,218,.96),rgba(242,235,218,.87) 23%,rgba(242,235,218,.3) 34%,transparent 45%);}
+}
+
+/* On phones, keep the world visible and use the chapter dialog for long reading. */
+@media(max-width:700px) {
+ body.world-first .journey-caption.at-stop,
+ body.world-first .journey-caption[data-stage='projects'],
+ body.world-first .journey-caption[data-stage='skills'] {background:none;border:0;padding:0;left:18px;top:102px;width:min(265px,calc(100vw - 36px));max-height:36dvh;}
+ .journey-caption.at-stop .arrival-status,
+ .journey-caption.at-stop .arrival-summary {display:none;}
+ .journey-caption.at-stop .arrival-copy {margin-top:0;}
+ .journey-caption.at-stop .journey-heading {font-size:25px;}
+ .journey-caption.at-stop .journey-read {margin:6px 0 0;padding:6px 0;font-size:11px;}
+ .journey-caption.at-stop .arrival-scroll {margin-top:10px;padding-top:8px;font-size:9px;}
+ .journey-caption.at-stop .journey-continue {position:static;background:none;padding:4px 0;margin-top:2px;font-size:9px;}
+ .trip-night .journey-caption.at-stop .journey-continue {background:none;}
+ .journey-caption[data-stage='introduction'].at-stop .story-intro-copy {display:block;}
+ .journey-caption[data-stage='introduction'].at-stop .story-intro-copy>p:first-child {font-size:11px;line-height:1.6;max-height:none;margin:10px 0;}
+ .journey-caption[data-stage='projects'] .arrival-projects {display:flex;flex-wrap:wrap;gap:7px 13px;max-height:none;overflow:visible;margin-top:10px;}
+ .journey-caption[data-stage='projects'] .arrival-project {width:auto;border:0;padding:0;}
+ .journey-caption[data-stage='projects'] .arrival-project strong {font-family:var(--body);font-size:11px;}
+ .journey-caption[data-stage='projects'] .arrival-project:first-child {width:100%;padding-bottom:7px;}
+ .journey-caption[data-stage='projects'] .arrival-project:first-child strong {font-family:var(--display);font-size:23px;}
+ .journey-caption[data-stage='projects'] .arrival-project p {display:none;}
+ .journey-caption[data-stage='projects'] .arrival-project .mono {font-size:8px;margin-bottom:3px;}
+ .journey-caption[data-stage='skills'] .story-skill-list {gap:4px;max-height:70px;}
+ .journey-caption[data-stage='skills'] .story-skill-list button {font-size:9px;padding:3px 6px;}
+ body.world-first .journey-caption[data-stage='projects']::before,
+ body.world-first .journey-caption[data-stage='skills']::before {content:'';position:absolute;inset:-20px -20px;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 25% 30%,rgba(242,235,218,.9),rgba(242,235,218,.6) 55%,transparent 78%);}
+}
+@media(max-width:700px) {
+ body.world-first .journey-caption[data-stage='projects']::before,
+ body.world-first .journey-caption[data-stage='skills']::before {display:none;}
+ body.world-first[data-story-stage='projects']:not(.clean-journey)::before,
+ body.world-first[data-story-stage='skills']:not(.clean-journey)::before {content:'';position:fixed;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(242,235,218,.87),rgba(242,235,218,.65) 25%,transparent 75%);}
+}
+@media(max-width:700px) {
+ body.world-first[data-story-stage='projects']:not(.clean-journey)::before,
+ body.world-first[data-story-stage='skills']:not(.clean-journey)::before {background:radial-gradient(ellipse 330px 300px at 0 180px,rgba(242,235,218,.95),rgba(242,235,218,.65) 52%,transparent 100%);}
+}
+
+/* A full reading interval at the last destination, followed by the ascent. */
+.journey-runway { display:none; }
+body.world-first .journey-runway { display:block; height:var(--journey-runway-height,0px); pointer-events:none; }
+
+/* Project reading room: real work, inspectable detail, then return to the drive. */
+.project-detail { width:min(880px,100vw); padding:0 42px 40px; background:#f2efe5; color:#243330; border-left:1px solid #c8c2b3; }
+.project-detail::backdrop { background:rgba(12,24,26,.56); backdrop-filter:blur(5px); }
+.project-detail .detail-header { background:#f2efe5; color:#46554e; border-bottom:1px solid #c8c2b3; margin-bottom:0; }
+.project-detail .detail-close { color:#243330; border-color:#8a9388; font-size:12px; }
+.project-detail article { padding:34px 0 0; }
+.project-detail h2 { font-size:clamp(38px,6vw,66px); line-height:1.05; margin:14px 0 22px; letter-spacing:-.04em; }
+.project-detail .project-status { color:#7b673e; font-size:10px; letter-spacing:.12em; text-transform:uppercase; }
+.project-number { float:right; color:#748076; font-size:10px; }
+.project-description { margin:0 0 24px; max-width:64ch; font-size:16px; line-height:1.8; }
+.project-technologies { display:flex; flex-wrap:wrap; gap:7px; list-style:none; padding:0; margin:0 0 25px; }
+.project-technologies li { font-size:10px; padding:6px 10px; border:1px solid #d1d3c7; color:#536355; border-radius:2px; }
+.project-actions { display:flex; flex-wrap:wrap; gap:12px 24px; margin:26px 0; }
+.project-actions .btn { min-height:44px; color:#263e35; border-color:#778a79; font-size:12px; padding:10px 0; border-width:0 0 1px; border-radius:0; }
+.project-note { border-left:2px solid #ad925b; padding:4px 0 4px 14px; color:#6d725f; font-size:12px; line-height:1.7; margin:22px 0; }
+.project-inside { margin:36px 0; }
+.project-inside h3 { font-family:var(--display); font-size:25px; font-weight:400; margin-bottom:16px; }
+.project-inside ul { padding-left:20px; color:#536055; font-size:14px; line-height:1.8; }
+.project-inside li+li { margin-top:9px; }
+.project-gallery { display:grid; gap:28px; margin-top:32px; }
+.project-gallery figure { margin:0; }
+.project-gallery img { display:block; width:100%; height:auto; background:#dce0d7; border:1px solid #d0d5ca; border-radius:3px; }
+.project-gallery figcaption { margin-top:10px; color:#6b766b; font-size:11px; line-height:1.6; }
+.project-gallery .image-unavailable { padding:24px; border:1px solid #c8c2b3; }
+.project-pagination { display:flex; justify-content:space-between; gap:20px; border-top:1px solid #c8c2b3; padding-top:24px; margin-top:40px; }
+.project-pagination button { background:none; border:0; color:#334f42; font:inherit; font-size:12px; min-height:44px; text-align:left; cursor:pointer; }
+.project-pagination button:last-child { text-align:right; }
+.project-detail :focus-visible { outline:2px solid #796337; outline-offset:5px; }
+.project-detail h2:focus { outline:none; }
+@media(max-width:700px) {
+ .project-detail { padding:0 20px 28px; }
+ .project-detail article { padding:26px 0 0; }
+ .project-description { font-size:14px; line-height:1.8; }
+ .project-actions { gap:10px 18px; }
+ .project-actions .btn { font-size:11px; }
+ .project-inside { margin:28px 0; }
+ .project-inside ul { font-size:13px; }
+}
+
+/* One editorial caption system across the journey; the world keeps the stage. */
+@media(min-width:701px) {
+ body.world-first .journey-caption.at-stop { background:none; border:0; padding:0; width:min(310px,28vw); color:#22382f; text-shadow:none; }
+ body.world-first.trip-night .journey-caption.at-stop { color:#f5f0e3; }
+ .journey-caption.at-stop .arrival-summary { max-width:31ch; font-size:12px; line-height:1.75; }
+ .journey-caption.at-stop .arrival-status { font-size:9px; letter-spacing:.10em; }
+ .journey-caption.at-stop .journey-continue { margin-top:10px; font-size:10px; opacity:.75; }
+}
+@media(max-width:700px) {
+ body.world-first .journey-caption,
+ body.world-first .journey-caption.at-stop,
+ body.world-first .journey-caption[data-stage='introduction'],
+ body.world-first .journey-caption[data-stage='projects'],
+ body.world-first .journey-caption[data-stage='skills'] {
+   left:18px; top:102px; width:min(290px,calc(100vw - 76px)); max-height:28dvh; padding:0; border:0;
+   background:none; overscroll-behavior:contain; scrollbar-width:thin;
+ }
+ .journey-caption .journey-eyebrow { font-size:8px; margin-bottom:7px; }
+ .journey-caption .journey-heading { font-size:25px; line-height:1.12; }
+ .journey-caption.at-stop .journey-subtitle { display:none; }
+ .journey-caption .journey-subtitle { margin:8px 0; font-size:11px; }
+ .journey-caption .story-skill-focus { margin:8px 0; }
+ .journey-caption .story-skill-focus strong { font-size:25px; line-height:1.1; }
+ .journey-caption .story-skill-focus p { margin-top:4px; font-size:10px; line-height:1.5; }
+ .journey-caption .story-score { font-size:8px; margin:6px 0; }
+ .journey-caption[data-stage='skills'] .story-skill-list { max-height:88px; }
+ .journey-caption[data-stage='skills'] .story-skill-list button { font-size:10px; padding:6px 8px; min-height:30px; }
+ .journey-caption.at-stop .journey-continue { display:none; }
+ .journey-caption.at-stop .arrival-scroll { margin-top:7px; padding-top:5px; }
+}
+
+/* The readable fallback is a complete compact portfolio, not an empty scroll track. */
+body.no-3d { background:#f2efe5; color:#25382f; }
+body.no-3d .vignette,body.no-3d .hud,body.no-3d .rail { display:none; }
+body.no-3d .topbar { color:#25382f; }
+body.no-3d .no-webgl { position:relative; inset:auto; margin:100px auto 0; max-width:1000px; padding:18px 24px; border:0; border-bottom:1px solid #c4c8b9; border-radius:0; background:none; color:#25382f; }
+body.no-3d .no-webgl p { color:#5e6d5b; }
+body.no-3d main { max-width:1100px; margin:auto; }
+body.no-3d .stop { min-height:0; padding:70px var(--gutter); }
+body.no-3d .panel { position:static; top:auto; width:100%; margin:0; padding:0; border:0; border-radius:0; background:none; box-shadow:none; backdrop-filter:none; text-shadow:none; color:inherit; }
+body.no-3d .panel-hero { display:block; text-align:left; }
+body.no-3d .hero-name { font-size:clamp(40px,7vw,78px); }
+body.no-3d .hero-nick,body.no-3d .hero-role,body.no-3d .hero-place { color:#64715e; }
+body.no-3d .scroll-hint { display:none; }
+body.no-3d .card { border:0; border-radius:0; border-bottom:1px solid #c4c8b9; background:none; box-shadow:none; color:#25382f; }
+body.no-3d .card p,body.no-3d .lead,body.no-3d .edu,body.no-3d .job p { color:#56654f; }
+body.no-3d .project-open,body.no-3d .contact a { color:#355f4b; }
+body.no-3d .skills li { border-color:#c4c8b9; color:#355f4b; }
+body.no-3d .stats dd,body.no-3d .contact p,body.no-3d .contact-label { color:#64715e; }
+body.no-3d .contact .btn { color:#355f4b; border-color:#859478; }
+@media(max-width:700px) { body.no-3d .no-webgl { margin-top:90px; } body.no-3d .stop { padding-top:40px; padding-bottom:40px; } }
+
+body.no-3d { display:flow-root; min-height:100dvh; --gold:#927238; --gold-2:#876d36; --kolam:#25382f; --kolam-dim:#62725f; --line:#c4c8b9; }
+body.no-3d .panel h1,body.no-3d .panel h2,body.no-3d .panel h3,body.no-3d .panel p { color:#25382f; }
+body.no-3d .panel-hero::before { display:none; }
+body.no-3d .topbar::before { background:rgba(242,239,229,.96); backdrop-filter:blur(10px); border-bottom:1px solid #c4c8b9; }
+body.no-3d .topbar .ctl,body.no-3d .topbar button { color:#25382f; text-shadow:none; }
+body.no-3d .brand-en { color:#25382f; }
+body.no-3d .portrait figcaption { color:#62725f; }
+body.no-3d .hero-role { letter-spacing:.10em; font-size:14px; line-height:1.6; }

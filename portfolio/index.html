@@ -3,30 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#2c0710" />
+    <meta name="theme-color" content="#e8e8df" />
     <meta name="description" content="Thulasiram K. (Ram): CS (AI & ML) student and systems and AI builder from Chennai. A 3D road trip across Tamil Nadu." />
     <title>Ram · Thulasiram K. · A road trip across Tamil Nadu</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Thulasiram K. — From Tamil Nadu to the World" />
+    <meta property="og:description" content="Systems, AI and open-source work by Ram. A continuous 3D road trip from Chennai to Kanyakumari." />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235a0f1e'/%3E%3Cpath d='M32 10 Q36 28 54 32 Q36 36 32 54 Q28 36 10 32 Q28 28 32 10Z' fill='none' stroke='%23e0b23a' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23f7f2e6'/%3E%3C/svg%3E" />
   </head>
   <body>
+    <noscript>
+      <style>
+        html { background:#f2efe5; }
+        body { overflow:auto!important; min-height:100dvh; display:flow-root; margin:0; background:#f2efe5; color:#243330; }
+        body>canvas,body>main,#loader,.vignette,.topbar,.rail,.hud,.cookie,.curtain,.cursor-ring,.cursor-dot,#game,.no-webgl { display:none!important; }
+        .script-free-profile { max-width:760px; margin:12vh auto; padding:28px; font:17px/1.8 system-ui,sans-serif; }
+        .script-free-profile h1 { font-size:42px; line-height:1.1; }
+        .script-free-profile a { color:#355f4b; text-underline-offset:4px; }
+      </style>
+      <article class="script-free-profile">
+        <p>FROM TAMIL NADU TO THE WORLD</p>
+        <h1>Thulasiram K. <small>(Ram)</small></h1>
+        <p>CS (AI &amp; ML) student from Chennai, building systems, AI tools and open-source software.</p>
+        <p>Enable JavaScript for the interactive road trip. You can also explore my work directly:</p>
+        <p><a href="https://github.com/thulasiramk-2310/Arka">ArkaOS</a> · <a href="https://github.com/thulasiramk-2310/TRX-AI">TRX-AI</a> · <a href="https://github.com/thulasiramk-2310/studyflow-ai">StudyFlow AI</a> · <a href="https://github.com/thulasiramk-2310/vara">VARA</a></p>
+        <p><a href="mailto:thulasiramk.git@gmail.com">Email Ram</a> · <a href="https://github.com/thulasiramk-2310">GitHub</a> · <a href="https://www.linkedin.com/in/thulasiram-k-60a864328">LinkedIn</a></p>
+      </article>
+    </noscript>
     <canvas id="gl" aria-hidden="true"></canvas>
     <div class="vignette" aria-hidden="true"></div>
 
     <!-- Loading screen -->
-    <div id="loader" role="dialog" aria-modal="true" aria-labelledby="loader-count">
+    <div id="loader" role="dialog" aria-modal="true" aria-label="Preparing the Tamil Nadu road trip">
+      <p class="loader-signature mono">RAM · TAMIL NADU</p>
       <div class="loader-inner">
         <div class="loader-row">
           <span class="loader-count" id="loader-count" aria-live="polite">000</span>
-          <svg class="loader-auto" viewBox="0 0 120 80" aria-hidden="true">
-            <path d="M18 54 L18 34 Q20 20 40 18 L86 18 Q96 18 98 28 L102 54 Z" fill="#17171a" />
-            <path d="M14 56 L14 40 Q16 32 26 32 L70 32 L70 56 Z" fill="#f2b705" />
-            <path d="M70 34 L94 34 Q104 40 106 56 L70 56 Z" fill="#f2b705" />
-            <rect x="12" y="54" width="96" height="6" rx="3" fill="#17171a" />
-            <path d="M74 22 L88 22 L92 32 L74 32 Z" fill="#9fd0e6" opacity=".7" />
-            <circle cx="30" cy="62" r="9" fill="#17171a" /><circle cx="30" cy="62" r="3.5" fill="#f2b705" />
-            <circle cx="94" cy="62" r="9" fill="#17171a" /><circle cx="94" cy="62" r="3.5" fill="#f2b705" />
-            <circle cx="105" cy="46" r="3" fill="#fff6c8" />
-          </svg>
+          <canvas class="loader-auto" width="340" height="230" aria-hidden="true"></canvas>
         </div>
         <div class="loader-kolam" data-kolam="12"></div>
         <p class="loader-label mono" data-i18n="loader.loading">Loading</p>
@@ -59,6 +72,7 @@
       <button class="nav-dot" data-nav="2"><span data-i18n="nav.thanjavur">Thanjavur</span></button>
       <button class="nav-dot" data-nav="3"><span data-i18n="nav.madurai">Madurai</span></button>
       <button class="nav-dot" data-nav="4"><span data-i18n="nav.rameswaram">Rameswaram</span></button>
+      <button class="nav-dot" data-nav="5"><span data-i18n="nav.kanyakumari">Kanyakumari</span></button>
     </nav>
     <div class="hud mono" aria-live="polite"><span class="hud-stop"></span><span class="hud-phase"></span></div>
 
@@ -122,8 +136,16 @@
         </div>
       </section>
 
-      <!-- 5. Rameswaram: contact -->
-      <section class="stop stop-end" id="rameswaram">
+      <!-- 5. Rameswaram: the sea crossing -->
+      <section class="stop" id="rameswaram">
+        <div class="panel">
+          <p class="kicker" data-i18n="nav.rameswaram">Rameswaram</p>
+          <h2 data-i18n="journey.bridge">Across the sea</h2>
+          <p class="lead" data-i18n="journey.crossing">One bridge, another horizon.</p>
+        </div>
+      </section>
+      <!-- 6. Kanyakumari: contact -->
+      <section class="stop stop-end" id="kanyakumari">
         <div class="panel">
           <div class="divider" data-kolam="6"></div>
           <p class="kicker" data-reveal data-i18n="contact.kicker"></p>

@@ -1,1 +1,15 @@
-{}
+{
+  "mamallapuram-elephant": {
+    "file": "elephant-study.glb",
+    "lowFile": "elephant-study-low.glb",
+    "credit": "Original stone elephant study \u00b7 generated in code"
+  },
+  "poet-figure": {
+    "file": "poet-carving.glb",
+    "lowFile": "poet-carving-low.glb",
+    "scale": 1,
+    "preserveOrigin": true,
+    "useOriginalMaterial": true,
+    "credit": "Original Thiruvalluvar study \u00b7 code-authored and finished in Blender"
+  }
+}

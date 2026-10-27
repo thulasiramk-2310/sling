@@ -16,8 +16,8 @@ const GradeShader = {
     contrast: { value: 1.08 },
     tint: { value: new THREE.Color(1, 1, 1) },
     shadowTint: { value: new THREE.Color(0, 0, 0) },
-    vignette: { value: 0.55 },
-    grain: { value: 0.025 },
+    vignette: { value: 0.28 },
+    grain: { value: 0.01 },
     time: { value: 0 },
   },
   vertexShader: /* glsl */ `
@@ -48,14 +48,15 @@ const GradeShader = {
       col = pow(max(col, 0.0) / 0.18, vec3(contrast)) * 0.18;
       // vignette
       float d = distance(vUv, vec2(0.5));
-      col *= mix(1.0, smoothstep(0.95, 0.3, d), vignette);
+      col *= mix(1.0, 1.0 - smoothstep(0.3, 0.95, d), vignette);
       // film grain
       col += (hash(vUv * 1000.0 + time) - 0.5) * grain * (0.3 + l);
       gl_FragColor = vec4(max(col, 0.0), 1.0);
     }`,
 }
 
-// hide: objects (sky, sea) left out while ambient occlusion is measured, so towers don't cast dark halos on the sky.
+// hide: background sky and foliage left out of AO. Opaque water stays in its
+// depth/normal buffer so underwater terrain cannot shade the visible surface.
 export function createPost(renderer, scene, camera, { hide = [] } = {}) {
   const size = renderer.getSize(new THREE.Vector2())
   const target = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.HalfFloatType, samples: 4 })
@@ -94,11 +95,14 @@ export function createPost(renderer, scene, camera, { hide = [] } = {}) {
   composer.addPass(grade)
   composer.addPass(new OutputPass())
   const u = grade.uniforms
+  const neutralTint=new THREE.Color(1,1,1)
   return {
     render: () => composer.render(),
     // the first thing to give up on a slow machine
     aoOn: () => ao.enabled,
     setAO: (on) => (ao.enabled = on),
+    bloomOn: () => bloom.enabled,
+    setBloom: (on) => (bloom.enabled = on),
     setSize: (w, h) => {
       composer.setPixelRatio(renderer.getPixelRatio())
       composer.setSize(w, h)
@@ -108,6 +112,7 @@ export function createPost(renderer, scene, camera, { hide = [] } = {}) {
       u.time.value = time % 100
       // highlights lean toward the horizon colour (gold at dawn, rose at dusk, blue at night)
       u.tint.value.setRGB(1, 1, 1).lerp(new THREE.Color().setRGB(...p.horizon), 0.16 + p.glowAmt * 0.08)
+      u.tint.value.lerp(neutralTint,p.finalDawn)
       u.shadowTint.value.setRGB(...p.top)
       bloom.strength = 0.35 + p.night * 0.55 + p.glowAmt * 0.1
     },

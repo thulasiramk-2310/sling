@@ -1,6 +1,7 @@
 // Miniature shrines that crown every tier of a South Indian temple tower.
 import * as THREE from 'three'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
+import { carvedPillarGeometry, kuduGeometry, taperedStoneCourse } from './stonework.js'
 
 // A miniature shrine: square cell with a domed roof (a "kuta"), used along every tier.
 export function kutaGeometry() {
@@ -55,6 +56,25 @@ export function dravidaTower({ base, tiers, wallH, tierH, mat, wallMat = mat, fi
   }
   box(base + 1.2, 0.6, base + 1.2, mat, 0)
   box(base, wallH, base, wallMat, 0.6)
+  const niche=new THREE.InstancedMesh(kuduGeometry(),mat,12)
+  const pilasters=new THREE.InstancedMesh(carvedPillarGeometry(wallH,.48),mat,16)
+  const frame=new THREE.Matrix4(),rotation=new THREE.Quaternion()
+  let ni=0,pi=0
+  for(let side=0;side<4;side++) {
+    const angle=side*Math.PI/2
+    rotation.setFromAxisAngle(new THREE.Vector3(0,1,0),angle)
+    for(const along of [-.32,0,.32]) {
+      const p=new THREE.Vector3(along*base,.8,base/2+.08).applyAxisAngle(new THREE.Vector3(0,1,0),angle)
+      frame.compose(p,rotation,new THREE.Vector3(wallH*.55,wallH*.73,wallH*.45))
+      niche.setMatrixAt(ni++,frame)
+    }
+    for(const along of [-.45,-.18,.18,.45]) {
+      const p=new THREE.Vector3(along*base,.6,base/2+.08).applyAxisAngle(new THREE.Vector3(0,1,0),angle)
+      frame.compose(p,rotation,new THREE.Vector3(1,1,1))
+      pilasters.setMatrixAt(pi++,frame)
+    }
+  }
+  g.add(niche,pilasters)
   let y = 0.6 + wallH
   box(base + 0.8, 0.35, base + 0.8, mat, y)
   y += 0.35
@@ -90,7 +110,9 @@ export function dravidaTower({ base, tiers, wallH, tierH, mat, wallMat = mat, fi
   ring(y, w)
   for (let i = 0; i < tiers; i++) {
     w *= 0.74
-    box(w, tierH, w, wallMat, y)
+    const course=new THREE.Mesh(taperedStoneCourse(w,w,tierH,.90),wallMat)
+    course.position.y=y
+    g.add(course)
     y += tierH
     box(w + 0.4, 0.25, w + 0.4, mat, y)
     y += 0.25

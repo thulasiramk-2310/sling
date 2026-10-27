@@ -1,0 +1,57 @@
+[
+  {
+    "file": "arka-desktop.webp",
+    "source": "https://raw.githubusercontent.com/thulasiramk-2310/Arka/master/assets/screenshots/dp1/desktop.png",
+    "author": "Thulasiram K. and respective project contributors",
+    "usage": "Project-owner portfolio showcase; screenshot, not generated imagery",
+    "license": "GPL-3.0-or-later repository",
+    "width": 1440,
+    "height": 900,
+    "bytes": 14676,
+    "sha256": "0ccca3862ba684f397aae9e7c04efe00f9bbf09c52259c0e721a7ce9008a1f98"
+  },
+  {
+    "file": "arka-privacy.webp",
+    "source": "https://raw.githubusercontent.com/thulasiramk-2310/Arka/master/assets/screenshots/dp1/privacy-report.png",
+    "author": "Thulasiram K. and respective project contributors",
+    "usage": "Project-owner portfolio showcase; screenshot, not generated imagery",
+    "license": "GPL-3.0-or-later repository",
+    "width": 1440,
+    "height": 900,
+    "bytes": 28878,
+    "sha256": "573d7cd4c175d2ff4f81eb806f465f76e3f3dcce23ce67c71ca3dd825d283307"
+  },
+  {
+    "file": "trx-terminal.webp",
+    "source": "https://raw.githubusercontent.com/thulasiramk-2310/TRX-AI/main/assets/demo/trx-demo-poster.png",
+    "author": "Thulasiram K. and respective project contributors",
+    "usage": "Project-owner portfolio showcase; screenshot, not generated imagery",
+    "license": "MIT repository",
+    "width": 1280,
+    "height": 720,
+    "bytes": 52624,
+    "sha256": "72d30af55289e9719e8d92e6c33bf46566ab256208afae8c1df4fdebd38560fd"
+  },
+  {
+    "file": "studyflow-notes.webp",
+    "source": "https://raw.githubusercontent.com/thulasiramk-2310/studyflow-ai/main/docs/screenshots/ask-ai.png",
+    "author": "Thulasiram K. and respective project contributors",
+    "usage": "Project-owner portfolio showcase; screenshot, not generated imagery",
+    "license": "Owner-authorized repository screenshot; no general third-party license asserted",
+    "width": 1440,
+    "height": 900,
+    "bytes": 55680,
+    "sha256": "29a2c7c6814fb2ede94880252ea57798208859c6a02484089e39a927b9926896"
+  },
+  {
+    "file": "studyflow-team.webp",
+    "source": "https://raw.githubusercontent.com/thulasiramk-2310/studyflow-ai/main/docs/screenshots/professional-team.png",
+    "author": "Thulasiram K. and respective project contributors",
+    "usage": "Project-owner portfolio showcase; screenshot, not generated imagery",
+    "license": "Owner-authorized repository screenshot; no general third-party license asserted",
+    "width": 1440,
+    "height": 900,
+    "bytes": 35802,
+    "sha256": "a2eb8e2c5326c616f5ef19aefcc3713c1e33d6f5ecae0a68b86e5d04f99ea0e3"
+  }
+]

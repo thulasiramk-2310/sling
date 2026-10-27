@@ -6,7 +6,7 @@
 //   "thanjavur": { "file": "periya-kovil.glb", "rotateY": 90, "credit": "Periya Kovil by Jane Doe, CC BY 4.0 (sketchfab.com/...)" },
 //   "auto": { "file": "auto-rickshaw.glb", "rotateY": 180 }
 // }
-// Slots: chennai-lighthouse, chennai-central, shore-temple, thanjavur, madurai, auto.
+// Slots: chennai-lighthouse, chennai-central, shore-temple, mamallapuram-elephant, thanjavur, madurai, auto.
 // Compress models first (meshopt and WebP textures), for example:
 //   npx gltfpack -i in.glb -o public/models/out.glb -cc
 //   npx @gltf-transform/cli webp public/models/out.glb public/models/out.glb
@@ -30,6 +30,8 @@ function fit(model, slot, entry) {
   }
   model.scale.multiplyScalar(k)
   model.updateMatrixWorld(true)
+  // Original generated models already use their assembly's authored origin.
+  if(entry.preserveOrigin)return
   box.setFromObject(model)
   const center = box.getCenter(new THREE.Vector3())
   model.position.x -= center.x
@@ -43,22 +45,32 @@ export async function loadModels(slots) {
   let manifest = {}
   try {
     const res = await fetch(base + 'models.json', { cache: 'no-cache' })
-    if (res.ok && (res.headers.get('content-type') ?? '').includes('json')) manifest = await res.json()
+    if (res.ok && (res.headers.get('content-type') ?? '').includes('json')) {
+      const data=await res.json()
+      if(data && typeof data==='object' && !Array.isArray(data))manifest=data
+    }
   } catch {
-    return []
+    // Deferred procedural fallbacks still need to be built if the manifest is
+    // unavailable. Existing landmarks already contain their own fallback mesh.
   }
   const loader = new GLTFLoader()
   loader.setMeshoptDecoder(MeshoptDecoder)
   const credits = []
   for (const slot of slots) {
     const entry = manifest[slot.name]
-    if (!entry?.file) continue
+    const fallback=()=>{if(slot.fallback && slot.group.children.length===0)slot.group.add(slot.fallback())}
+    if (!entry?.file) {fallback();continue}
     try {
-      const gltf = await loader.loadAsync(base + entry.file)
+      const file = quality.low && entry.lowFile ? entry.lowFile : entry.file
+      const gltf = await loader.loadAsync(base + file)
       const model = gltf.scene
+      model.userData.preserveAssembly = true
       fit(model, slot, entry)
+      let originalMaterial=slot.material
+      if(entry.useOriginalMaterial && !originalMaterial)slot.group.traverse(object=>{if(!originalMaterial && object.isMesh)originalMaterial=object.material})
       model.traverse((o) => {
         if (!o.isMesh) return
+        if(entry.useOriginalMaterial && originalMaterial)o.material=originalMaterial
         o.castShadow = o.receiveShadow = !quality.low
       })
       // hide the hand-built version, keep its place in the world
@@ -67,6 +79,7 @@ export async function loadModels(slots) {
       if (entry.credit) credits.push(entry.credit)
     } catch (err) {
       console.warn(`Model for "${slot.name}" could not be loaded:`, err)
+      fallback()
     }
   }
   return credits

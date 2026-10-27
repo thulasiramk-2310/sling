@@ -23,11 +23,13 @@ describe('scroll to road mapping', () => {
 })
 
 describe('time of day', () => {
-  it('runs sunrise, noon, sunset, night along the trip', () => {
-    expect(STOPS.map(phaseAt)).toEqual(['sunrise', 'noon', 'noon', 'sunset', 'night'])
+  it('ends a full day of travel with a new dawn', () => {
+    expect(STOPS.map(phaseAt)).toEqual(['sunrise', 'noon', 'noon', 'sunset', 'night', 'sunrise'])
   })
-  it('is dark at the end and bright at noon', () => {
-    expect(sample(0.95).night).toBe(1)
+  it('preserves Pamban night and reaches dawn at the final stop', () => {
+    expect(sample(0.79).night).toBe(1)
+    expect(sample(0.96).night).toBe(0)
+    expect(sample(0.96).elev).toBe(5)
     expect(sample(0.47).night).toBe(0)
     expect(sample(0.47).elev).toBeGreaterThan(50)
     expect(sample(0.68).elev).toBeLessThan(5)
@@ -102,7 +104,7 @@ describe('content', () => {
   })
   it('lists the projects (without Pahara) with Tamil lines and GitHub links', () => {
     const names = PROJECTS.map((p) => p.name)
-    expect(names).toEqual(['ArkaOS', 'TRX-AI', 'StudyFlow AI', 'VARA', 'CreditGuard AI', 'RECALL X'])
+    expect(names).toEqual(['ArkaOS', 'TRX-AI', 'StudyFlow AI', 'VARA', 'CreditGuard AI', 'kural-kv', 'SysOracle'])
     expect(names).not.toContain('Pahara')
     for (const p of PROJECTS) {
       expect(p.line.ta.length).toBeGreaterThan(5)

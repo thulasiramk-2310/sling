@@ -3,21 +3,16 @@
 // a yellow Tamil Nadu commercial number plate, and a driver in a khaki shirt.
 // Its front faces local +Z. update() makes it react to how fast you scroll.
 import * as THREE from 'three'
-import { glowTexture } from './textures.js'
+import { glowTexture,grainTexture,withRelief } from './textures.js'
 import { quality } from './quality.js'
+import { createRamAvatar } from './avatar.js'
+import { DRIVE } from './drive.js'
+import { stepSuspension } from './suspension.js'
+import { batchStaticMeshes } from './batch.js'
+import { roundedNoseGeometry, passengerShellGeometry, windshieldGeometry, canopyRoofGeometry, canopyValanceGeometry, frontFasciaGeometry, rearCurtainGeometry, roundedPanelShape } from './auto-panels.js'
 import { clamp, glow, smooth, surface } from './util.js'
 
 const UP = new THREE.Vector3(0, 1, 0)
-
-// Extrudes a side profile (z forward, y up) across the width of the vehicle, with soft rounded edges.
-function profile(points, width, mat, bevel = 0.05) {
-  const shape = new THREE.Shape(points.map(([z, y]) => new THREE.Vector2(z, y)))
-  const geo = new THREE.ExtrudeGeometry(shape, { depth: width - bevel * 2, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 4, curveSegments: 12 })
-  geo.translate(0, 0, -(width - bevel * 2) / 2)
-  geo.rotateY(-Math.PI / 2) // shape x becomes forward (+Z), extrusion becomes width (X)
-  geo.computeVertexNormals()
-  return new THREE.Mesh(geo, mat)
-}
 
 function plateTexture(text) {
   const c = document.createElement('canvas')
@@ -41,6 +36,7 @@ function plateTexture(text) {
 
 function wheel(radius, width, rubber, rim, chrome) {
   const g = new THREE.Group()
+  g.name='Rickshaw rolling wheel';g.userData.preserveAssembly=true
   const tyre = new THREE.Mesh(new THREE.TorusGeometry(radius - width * 0.45, width * 0.5, 12, 28), rubber)
   tyre.rotation.y = Math.PI / 2
   const disc = new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.58, radius * 0.58, width * 0.7, 20), rim)
@@ -58,15 +54,16 @@ function wheel(radius, width, rubber, rim, chrome) {
   return g
 }
 
-export function createAuto() {
+export function createAuto(routeLength = 1270) {
   const root = new THREE.Group() // placed and turned along the road
   const body = new THREE.Group() // pitches and bounces on its own
   root.add(body)
 
   const paint = quality.low
     ? surface({ color: 0xf2b705 })
-    : new THREE.MeshPhysicalMaterial({ color: 0xf4b400, roughness: 0.42, metalness: 0, clearcoat: 0.8, clearcoatRoughness: 0.12 })
-  const canvasMat = surface({ color: 0x141416, roughness: 0.92, side: THREE.DoubleSide })
+    : new THREE.MeshPhysicalMaterial({ color: 0xf4b400, roughness: 0.28, metalness: 0.08, clearcoat: 0.95, clearcoatRoughness: 0.12 })
+  const cloth=quality.low?{}:withRelief('auto-cloth',grainTexture,.2)
+  const canvasMat = surface({ color: 0x252822, roughness: 0.94, side: THREE.DoubleSide, ...cloth })
   const blackTrim = surface({ color: 0x18181b, roughness: 0.55 })
   const chrome = surface({ color: 0xd8dade, metalness: 1, roughness: 0.18 })
   const rubber = surface({ color: 0x121214, roughness: 0.82 })
@@ -74,38 +71,12 @@ export function createAuto() {
   const seat = surface({ color: 0x3a1f1c, roughness: 0.5 })
   const glass = surface({ color: 0xbfd9e6, transparent: true, opacity: 0.28, roughness: 0.05, metalness: 0.1, side: THREE.DoubleSide })
 
-  // rear passenger tub
-  const tub = profile(
-    [
-      [-1.18, 0.42],
-      [-1.25, 0.7],
-      [-1.18, 1.0],
-      [-1.02, 1.05],
-      [-0.36, 1.05],
-      [-0.3, 0.42],
-    ],
-    1.32,
-    paint,
-    0.06,
-  )
-  body.add(tub)
-  // front cowl, narrower, rounding down to the nose
-  const cowl = profile(
-    [
-      [0.42, 0.42],
-      [0.42, 1.12],
-      [0.62, 1.2],
-      [0.95, 1.16],
-      [1.2, 0.98],
-      [1.31, 0.72],
-      [1.27, 0.5],
-      [1.12, 0.42],
-    ],
-    0.96,
-    paint,
-    0.07,
-  )
-  body.add(cowl)
+  // Original continuous body panels: curved nose and rounded open passenger tub.
+  const tub=new THREE.Mesh(passengerShellGeometry(),paint)
+  const cowl=new THREE.Mesh(roundedNoseGeometry(),paint)
+  tub.name='Rounded passenger body shell';cowl.name='Continuous curved front cowl'
+  body.add(tub,cowl)
+  const fascia=new THREE.Mesh(frontFasciaGeometry(),blackTrim);fascia.name='Recessed front lamp fascia';body.add(fascia)
   // black lower skirt and floor between the two
   const skirt = new THREE.Mesh(new THREE.BoxGeometry(1.34, 0.14, 2.42), blackTrim)
   skirt.position.set(0, 0.42, 0.05)
@@ -117,25 +88,23 @@ export function createAuto() {
   stripe.position.set(0, 0.86, -0.7)
   body.add(stripe)
 
-  // canvas hood: roof and rear panel in one curved shell
-  const hood = profile(
-    [
-      [0.76, 1.58],
-      [0.56, 1.84],
-      [-0.95, 1.87],
-      [-1.2, 1.72],
-      [-1.27, 1.1],
-      [-1.19, 1.1],
-      [-1.14, 1.68],
-      [-0.92, 1.79],
-      [0.52, 1.77],
-      [0.69, 1.56],
-    ],
-    1.4,
-    canvasMat,
-    0.03,
-  )
-  body.add(hood)
+  // A stitched crowned canopy, with a cut-out rear window and a separate pane.
+  const hood=new THREE.Mesh(canopyRoofGeometry(quality.low),canvasMat)
+  hood.name='Crowned canvas canopy'
+  const curtain=new THREE.Mesh(rearCurtainGeometry(),canvasMat)
+  curtain.name='Rear curtain with real window opening'
+  const rearGlass=new THREE.Mesh(new THREE.ShapeGeometry(roundedPanelShape(.86,.37,.075,0,1.48)),glass)
+  rearGlass.position.z=-1.214;rearGlass.userData.noShadow=true
+  const valance=new THREE.Mesh(canopyValanceGeometry(),canvasMat);valance.name='Canvas front header'
+  body.add(hood,curtain,rearGlass,valance)
+  const windowPoints=roundedPanelShape(.90,.41,.085,0,1.48).getPoints(48).map(p=>new THREE.Vector3(p.x,p.y,-1.227))
+  const windowSeal=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(windowPoints,true),72,.013,6,true),blackTrim)
+  body.add(windowSeal)
+  for(const x of [-.68,.68]) {
+    const points=[]
+    for(let i=0;i<=32;i++){const t=i/32;points.push(new THREE.Vector3(x,1.76+.105*(1-(x/.7)**2)+.025*Math.sin(t*Math.PI)-.004*t**6,-1.2+t*2.04))}
+    body.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points),32,.012,6,false),blackTrim))
+  }
   // rolled-up side curtains
   for (const s of [-1, 1]) {
     const roll = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.7, 8), canvasMat)
@@ -150,11 +119,26 @@ export function createAuto() {
     post.rotation.x = -0.18
     body.add(post)
   }
-  const screen = new THREE.Mesh(new THREE.PlaneGeometry(1.18, 0.56), glass)
-  screen.position.set(0, 1.47, 0.71)
-  screen.rotation.x = -0.18
+  const screen = new THREE.Mesh(windshieldGeometry(), glass)
   screen.userData.noShadow = true
   body.add(screen)
+  const perimeter=[]
+  for(let i=0;i<=20;i++) {const x=-.56+i*.056,y=.285;perimeter.push(new THREE.Vector3(x,y+1.47,.76+.13*(1-(x/.56)**2)-y*.18))}
+  for(let i=0;i<=8;i++){const x=.56,y=.285-i*.57/8;perimeter.push(new THREE.Vector3(x,y+1.47,.76-y*.18))}
+  for(let i=0;i<=20;i++){const x=.56-i*.056,y=-.285;perimeter.push(new THREE.Vector3(x,y+1.47,.76+.13*(1-(x/.56)**2)-y*.18))}
+  for(let i=0;i<=8;i++){const x=-.56,y=-.285+i*.57/8;perimeter.push(new THREE.Vector3(x,y+1.47,.76-y*.18))}
+  body.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(perimeter,true),80,.016,6,true),blackTrim))
+  // Canopy seams, side step and stainless bumpers give the close parked shot detail.
+  for(const x of [-.42,0,.42]) {
+    const path=new THREE.CatmullRomCurve3([new THREE.Vector3(x,1.83-(x/.7)**2*.105,.45),new THREE.Vector3(x,1.89-(x/.7)**2*.105,-.35),new THREE.Vector3(x,1.88-(x/.7)**2*.105,-1.03)])
+    body.add(new THREE.Mesh(new THREE.TubeGeometry(path,20,.006,4,false),blackTrim))
+  }
+  for(const x of [-.68,.68]) {
+    const step=new THREE.Mesh(new THREE.BoxGeometry(.15,.06,.75),chrome)
+    step.position.set(x,.48,-.05);body.add(step)
+  }
+  const bumper=new THREE.Mesh(new THREE.CapsuleGeometry(.035,.72,5,16),chrome)
+  bumper.rotation.z=Math.PI/2;bumper.position.set(0,.51,1.24);body.add(bumper)
 
   // handlebar and round mirrors
   const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.78, 8), chrome)
@@ -177,40 +161,27 @@ export function createAuto() {
   const back = new THREE.Mesh(new THREE.BoxGeometry(1.14, 0.48, 0.12), seat)
   back.position.set(0, 1.4, -1.02)
   const driverSeat = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.12, 0.42), seat)
-  driverSeat.position.set(0, 1.1, 0.04)
+  driverSeat.position.set(0, .84, 0.04)
   body.add(bench, back, driverSeat)
-  const shirt = surface({ color: 0x9b8a5e, roughness: 0.9 })
-  const skin = surface({ color: 0x8a5a3c, roughness: 0.7 })
-  const hair = surface({ color: 0x15100d, roughness: 0.9 })
-  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.19, 0.34, 4, 10), shirt)
-  torso.position.set(0, 1.42, 0.06)
-  torso.rotation.x = 0.12
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.125, 16, 12), skin)
-  head.position.set(0, 1.78, 0.1)
-  const cap = new THREE.Mesh(new THREE.SphereGeometry(0.13, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), hair)
-  cap.position.set(0, 1.8, 0.09)
-  body.add(torso, head, cap)
-  for (const s of [-1, 1]) {
-    const arm = new THREE.Mesh(new THREE.CapsuleGeometry(0.055, 0.42, 4, 8), shirt)
-    arm.position.set(s * 0.26, 1.38, 0.32)
-    arm.rotation.x = 1.15
-    arm.rotation.z = s * -0.25
-    body.add(arm)
-  }
-
+  const driverRig=createRamAvatar({seated:true})
+  const driver=driverRig.root
+  driver.userData.preserveAssembly=true
+  body.add(driver)
   // headlamp with chrome ring, indicators, tail lights and number plates
   const lampMat = glow(surface({ color: 0xfff6dc, emissive: 0xfff2c4, emissiveIntensity: 0, roughness: 0.1 }), 2.2)
-  const lens = new THREE.Mesh(new THREE.CircleGeometry(0.11, 20), lampMat)
-  lens.position.set(0, 0.98, 1.235)
-  lens.rotation.x = -0.55
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.115, 0.022, 8, 24), chrome)
-  ring.position.copy(lens.position)
-  ring.rotation.x = -0.55
-  body.add(lens, ring)
+  for(const side of [-1,1]){
+    const housing=new THREE.Mesh(new THREE.CylinderGeometry(.119,.119,.045,20),blackTrim)
+    housing.rotation.x=Math.PI/2;housing.position.set(side*.30,1.015,.975)
+    const lens=new THREE.Mesh(new THREE.CircleGeometry(.092,24),lampMat)
+    lens.position.set(side*.30,1.015,1.002);lens.rotation.x=-.16
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(.101,.012,8,24),chrome)
+    ring.position.copy(lens.position);ring.rotation.x=-.16
+    body.add(housing,lens,ring)
+  }
   const amber = glow(surface({ color: 0xffa21a, emissive: 0xff8a00, emissiveIntensity: 0 }), 0.8)
   for (const s of [-1, 1]) {
     const ind = new THREE.Mesh(new THREE.SphereGeometry(0.035, 8, 6), amber)
-    ind.position.set(s * 0.32, 1.08, 1.1)
+    ind.position.set(s * 0.47, .91, .974)
     body.add(ind)
   }
   const tailMat = glow(surface({ color: 0xc8241c, emissive: 0xff2a20, emissiveIntensity: 0 }), 1.6)
@@ -227,23 +198,35 @@ export function createAuto() {
   front.rotation.x = -0.3
   body.add(rear, front)
 
+  const engineCover=new THREE.Mesh(new THREE.ExtrudeGeometry(roundedPanelShape(.89,.35,.055),{depth:.025,bevelEnabled:true,bevelSize:.012,bevelThickness:.008,bevelSegments:2}),paint)
+  engineCover.rotation.y=Math.PI;engineCover.position.set(0,.85,-1.265);body.add(engineCover)
+  for(let row=0;row<5;row++) {
+    const vent=new THREE.Mesh(new THREE.BoxGeometry(.51,.018,.014),blackTrim)
+    vent.position.set(0,.75+row*.046,-1.30);body.add(vent)
+  }
+  for(const x of [-.43,.43])for(const y of [.71,.99]){
+    const bolt=new THREE.Mesh(new THREE.SphereGeometry(.011,8,6),chrome);bolt.scale.z=.35;bolt.position.set(x,y,-1.31);body.add(bolt)
+  }
+  for(const side of [-1,1]) {
+    const housing=new THREE.Mesh(new THREE.BoxGeometry(.16,.24,.05),blackTrim);housing.position.set(side*.54,.86,-1.275);body.add(housing)
+    for(const [y,material] of [[.91,amber],[.83,tailMat]]){
+      const lens=new THREE.Mesh(new THREE.BoxGeometry(.12,.065,.015),material);lens.position.set(side*.54,y,-1.309);body.add(lens)
+    }
+    const arch=new THREE.Mesh(new THREE.TorusGeometry(.335,.025,6,20,Math.PI),blackTrim)
+    arch.rotation.y=Math.PI/2;arch.position.set(side*.70,.3,-.82);body.add(arch)
+  }
+  const rearBumper=new THREE.Mesh(new THREE.CapsuleGeometry(.026,1.12,4,16),chrome)
+  rearBumper.rotation.z=Math.PI/2;rearBumper.position.set(0,.44,-1.30);body.add(rearBumper)
+
   // headlight beam and road light at night
   const lamp = new THREE.SpotLight(0xffe2a8, 0, 34, 0.6, 0.9, 1.2)
   lamp.position.set(0, 1.0, 1.3)
   lamp.target.position.set(0, 0, 9)
   body.add(lamp, lamp.target)
-  const beam = new THREE.Mesh(
-    new THREE.ConeGeometry(1.4, 7, 20, 1, true),
-    new THREE.MeshBasicMaterial({ color: 0xffe9b8, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, fog: false }),
-  )
-  beam.rotation.x = -Math.PI / 2
-  beam.position.set(0, 0.95, 4.8)
-  beam.userData.noShadow = true
-  body.add(beam)
-
   // wheels: one in front under a mudguard, two at the back
   const wheels = []
   const frontWheel = new THREE.Group()
+  frontWheel.name='Front steering fork';frontWheel.userData.preserveAssembly=true
   const fw = wheel(0.3, 0.14, rubber, rim, chrome)
   frontWheel.add(fw)
   const guard = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.03, 6, 16, Math.PI), blackTrim)
@@ -262,7 +245,7 @@ export function createAuto() {
   // soft contact shadow under the auto
   const shade = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 3.4), new THREE.MeshBasicMaterial({ map: glowTexture(), color: 0x000000, transparent: true, opacity: 0.45, depthWrite: false }))
   shade.rotation.x = -Math.PI / 2
-  shade.position.y = 0.04
+  shade.position.y = 0.052
   shade.userData.noShadow = true
   root.add(shade)
 
@@ -284,15 +267,21 @@ export function createAuto() {
   let nextPuff = 0
   const tailPos = new THREE.Vector3()
 
+  // The body moves as one assembly. Merge its fixed painted/metal panels while
+  // keeping every steering, rolling and character joint independently alive.
+  batchStaticMeshes(body)
+
   return {
     root,
     body,
+    driver,
     attachPuffs(scene) {
       puffs.forEach((p) => scene.add(p))
     },
     // speed: 0..1 how fast it is going; dir: +1 forward, -1 reverse; turn: how sharply the road bends.
     update(dt, speed, dir, turn, time, night) {
-      const spin = (dir * speed * 0.034 * 1270) / 0.3 // road speed / wheel radius
+      driverRig.update(time,1,dt===0)
+      const spin = (dir * speed * DRIVE.speed * routeLength) / 0.3 // road speed / wheel radius
       wheels.forEach((w) => (w.rotation.x += spin * dt))
       // weight shifts back when accelerating, forward when braking
       const accel = (speed - lastSpeed) / Math.max(dt, 0.001)
@@ -301,8 +290,9 @@ export function createAuto() {
       roll += (clamp(-turn * 4, -0.07, 0.07) - roll) * Math.min(1, dt * 4)
       // a springy suspension excited by the road and the engine
       const road = (Math.sin(time * 17) + Math.sin(time * 23.7) * 0.6) * 0.004 * speed
-      bounceV += (-bounce * 220 - bounceV * 14 + road * 900) * dt
-      bounce += bounceV * dt
+      const suspension = stepSuspension(bounce, bounceV, road * 900 / 220, dt)
+      bounce = suspension.position
+      bounceV = suspension.velocity
       const idle = Math.sin(time * 52) * 0.0025 * (1 - speed * 0.6)
       body.position.y = bounce + idle
       body.rotation.x = pitch + bounce * 0.6
@@ -310,7 +300,6 @@ export function createAuto() {
       frontWheel.rotation.y = clamp(turn * 10, -0.35, 0.35)
       const lights = smooth(0.3, 0.8, night)
       lamp.intensity = lights * 22
-      beam.material.opacity = lights * 0.08
       // puffs rise from the exhaust and fade
       if (puffs.length) {
         nextPuff -= dt

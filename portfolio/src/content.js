@@ -1,5 +1,6 @@
 // All the words on the site, in English and Tamil. Edit this file to change the text.
 // Facts come from Ram's resume and GitHub READMEs.
+import { PROJECT_DETAILS } from './project-content.js'
 
 export const LINKS = {
   github: 'https://github.com/thulasiramk-2310',
@@ -9,8 +10,8 @@ export const LINKS = {
   email: 'thulasiramk.git@gmail.com',
 }
 
-// The five stops, in road order. `id` matches the section id in index.html.
-export const STOP_IDS = ['chennai', 'mamallapuram', 'thanjavur', 'madurai', 'rameswaram']
+// The six stops, in road order. `id` matches the section id in index.html.
+export const STOP_IDS = ['chennai', 'mamallapuram', 'thanjavur', 'madurai', 'rameswaram', 'kanyakumari']
 
 const gh = (repo) => `${LINKS.github}/${repo}`
 // For projects without a public repo yet, the link searches your repositories.
@@ -19,10 +20,12 @@ const search = (q) => `${LINKS.github}?tab=repositories&q=${encodeURIComponent(q
 export const PROJECTS = [
   {
     name: 'ArkaOS',
-    tag: 'Rust · Linux',
+    featured: true,
+    website: 'https://thulasiramk-2310.github.io/Arka/',
+    tag: 'Rust · bootc · KDE Plasma',
     href: gh('Arka'),
     line: {
-      en: 'A privacy-first, immutable Linux desktop OS. Atomic, fully rollbackable updates, and a Rust daemon that keeps privacy settings from drifting.',
+      en: 'A privacy-first Linux desktop OS with an immutable system image, atomic updates and rollback. Built with Rust, bootc and KDE Plasma. Developer Preview 1; not a general release.',
       ta: 'தனியுரிமையை முதன்மையாகக் கொண்ட, மாற்ற முடியாத Linux டெஸ்க்டாப் இயக்க முறைமை. முழுமையாகத் திரும்பப்பெறக்கூடிய புதுப்பிப்புகள், தனியுரிமை அமைப்புகளைக் காக்கும் Rust டீமன்.',
     },
   },
@@ -31,8 +34,8 @@ export const PROJECTS = [
     tag: 'Python · LLMs',
     href: gh('TRX-AI'),
     line: {
-      en: 'A terminal-first, multi-agent code reviewer (analyzer, generator, critic, fixer) on local LLMs. 91% accuracy on a held-out set.',
-      ta: 'உள்ளூர் LLM-களில் இயங்கும், டெர்மினல் முதன்மை பல-முகவர் குறியீடு மதிப்பாய்வாளர். தனித்த சோதனைத் தொகுப்பில் 91% துல்லியம்.',
+      en: 'A terminal-first assistant for debugging and code review with local LLMs, hybrid intent routing, and analyzer, generator, critic and fixer stages.',
+      ta: 'உள்ளூர் LLM-கள், கலப்பு நோக்கத் தேர்வு மற்றும் பல-முகவர் செயல்முறையுடன் குறியீடு மதிப்பாய்வு, பிழைதிருத்தம் செய்யும் டெர்மினல் உதவியாளர்.',
     },
   },
   {
@@ -56,24 +59,33 @@ export const PROJECTS = [
   {
     // EDIT: description and link are drafts; there is no public repo for this yet.
     name: 'CreditGuard AI',
+    draft: true,
     tag: 'AI',
     href: search('creditguard'),
     line: {
-      en: 'An AI model that scores credit risk and flags suspicious activity.',
-      ta: 'கடன் அபாயத்தை மதிப்பிட்டு சந்தேகமான செயல்பாட்டைக் குறிக்கும் AI மாதிரி.',
+      en: 'An exploration of credit-risk scoring and suspicious-activity detection. Concept in progress; no public release.',
+      ta: 'கடன் அபாய மதிப்பீடு மற்றும் சந்தேகமான செயல்பாடுகளைக் கண்டறியும் முயற்சி. கருத்து நிலையில் உள்ளது; பொது வெளியீடு இல்லை.',
     },
   },
   {
-    // EDIT: description and link are drafts; there is no public repo for this yet.
-    name: 'RECALL X',
-    tag: 'AI',
-    href: search('recall'),
+    name: 'kural-kv',
+    tag: 'Python · PyTorch · ML research',
+    href: gh('kural-kv'),
     line: {
-      en: 'AI-powered memory: save what you learn and recall it when you need it.',
-      ta: 'நீங்கள் கற்றதைச் சேமித்து தேவைப்படும்போது நினைவூட்டும் AI நினைவகம்.',
+      en: 'A reproduction study of KV-cache eviction on small grouped-query attention models, with explicit methods, held-out replications and limitations.',
+      ta: 'சிறிய GQA மாதிரிகளில் KV-cache நீக்க முறைகளை மீளாய்வு செய்யும் ஆராய்ச்சி. முறைகள், தனித்த சோதனைகள் மற்றும் வரம்புகள் ஆவணப்படுத்தப்பட்டுள்ளன.',
     },
   },
-]
+  {
+    name: 'SysOracle',
+    tag: 'Rust · Lua · Terminal UI',
+    href: gh('SysOracle'),
+    line: {
+      en: 'A terminal system monitor with live CPU and memory graphs, process views and programmable Lua alerts.',
+      ta: 'நேரடி CPU மற்றும் நினைவக வரைபடங்கள், செயல்முறைப் பட்டியல் மற்றும் Lua அறிவிப்புகளுடன் கூடிய டெர்மினல் கணினிக் கண்காணிப்பான்.',
+    },
+  },
+].map(project=>({...project,...PROJECT_DETAILS[project.name]}))
 
 // Numbers from the resume, shown in the About stop.
 export const STATS = [
@@ -82,6 +94,36 @@ export const STATS = [
   { value: '2', en: 'hackathon wins', ta: 'ஹேக்கத்தான் வெற்றிகள்' },
   { value: 's2n-tls', en: 'AWS open-source contributor', ta: 'AWS திறந்த மூல பங்களிப்பாளர்' },
 ]
+
+export const SKILL_DETAILS = {
+  Python: ['AI tools and research', 'TRX-AI · kural-kv'],
+  'C/C++': ['Systems programming', 'Coursework and problem solving'],
+  Go: ['Version control and backends', 'VARA'],
+  Rust: ['Operating systems and tools', 'ArkaOS · SysOracle'],
+  Kotlin: ['Application development'],
+  JavaScript: ['Web development', 'This interactive portfolio'],
+  PyTorch: ['Machine learning research', 'kural-kv'],
+  React: ['Web interfaces', 'StudyFlow AI'],
+  FastAPI: ['Python APIs', 'StudyFlow AI'],
+  Docker: ['Containers and service deployment', 'StudyFlow AI'],
+  AWS: ['Cloud and open source', 's2n-tls contribution'],
+  Linux: ['Operating systems', 'ArkaOS'],
+}
+
+export const SKILL_DETAILS_TA={
+  Python:['AI கருவிகளும் ஆராய்ச்சியும்','TRX-AI · kural-kv'],
+  'C/C++':['கணினி அமைப்பு நிரலாக்கம்','பாடப்பணி மற்றும் கணக்குத் தீர்வு'],
+  Go:['பதிப்புக் கட்டுப்பாடும் பின்னணி சேவைகளும்','VARA'],
+  Rust:['இயக்க முறைமைகளும் கருவிகளும்','ArkaOS · SysOracle'],
+  Kotlin:['செயலி உருவாக்கம்'],
+  JavaScript:['வலை உருவாக்கம்','இந்த ஊடாடும் தனிப்பட்ட தளம்'],
+  PyTorch:['இயந்திரக் கற்றல் ஆராய்ச்சி','kural-kv'],
+  React:['வலை இடைமுகங்கள்','StudyFlow AI'],
+  FastAPI:['Python API சேவைகள்','StudyFlow AI'],
+  Docker:['கொள்கலன்களும் சேவை நிறுவலும்','StudyFlow AI'],
+  AWS:['கிளவுடும் திறந்த மூலமும்','s2n-tls பங்களிப்பு'],
+  Linux:['இயக்க முறைமைகள்','ArkaOS'],
+}
 
 export const SKILLS = ['Python', 'C/C++', 'Go', 'Rust', 'Kotlin', 'JavaScript', 'PyTorch', 'React', 'FastAPI', 'Docker', 'AWS', 'Linux']
 
@@ -122,7 +164,26 @@ export const AWARDS = {
 
 export const STRINGS = {
   en: {
-    'loader.note': 'Turn your sound on / Switch to desktop',
+    'journey.scrollContinue': 'Scroll to explore, then carry on',
+    'journey.continue': 'Skip ahead',
+    'journey.stopped': 'Parked · scroll through this stop',
+    'journey.featured': 'Featured project',
+    'journey.website': 'Project website',
+    'stop.chennai': 'I’m Ram, a CS (AI & ML) student from Chennai. Explore my background here before we leave for Mamallapuram.',
+    'stop.mamallapuram': 'The skills collected on this stretch are listed below. Select one to see where I use it. Scroll farther when you are ready for my projects.',
+    'stop.thanjavur': 'ArkaOS is my featured systems project. Explore it or another project here; the auto stays parked while you read.',
+    'stop.madurai': 'My experience includes Presidio, Amazon ML Summer School and a cloud computing internship. Read the timeline and awards here.',
+    'stop.rameswaram': 'A pause on the Pamban crossing. My work links systems engineering, AI tools and research. Next: Kanyakumari and contact.',
+    'stop.kanyakumari': 'The end of this drive. Say hello, explore my code or read my resume. Scroll farther for the final ascent.',
+    'journey.read': 'Read this chapter',
+    'journey.close': 'Back to the road',
+    'journey.hideUI': 'Just the journey',
+    'journey.showUI': 'Show portfolio',
+    'journey.about': 'A little about the person behind the wheel.',
+    'journey.projects': 'Systems, experiments, and things I build.',
+    'journey.experience': 'Learning by building, with people who care.',
+    'journey.contact': 'The road goes on. Let’s build something.',
+    'loader.note': 'Six chapters. One journey. Headphones optional.',
     'loader.start': 'Start',
     'loader.loading': 'Loading',
     'loader.ready': 'Ready for the trip',
@@ -131,6 +192,24 @@ export const STRINGS = {
     'nav.thanjavur': 'Thanjavur',
     'nav.madurai': 'Madurai',
     'nav.rameswaram': 'Rameswaram',
+    'nav.kanyakumari': 'Kanyakumari',
+    'journey.confluence': 'A new horizon',
+    'journey.dawn': 'Kanyakumari. Three seas, another beginning.',
+    'journey.bridge': 'Across the sea',
+    'journey.crossing': 'One bridge, another horizon.',
+    'story.greeting': 'Hello, world.',
+    'story.scroll': 'Scroll to begin the journey',
+    'story.skillIndex': 'Skill index',
+    'story.points': 'journey points',
+    'story.fly': 'A journey begins beneath the bridge.',
+    'story.bioShort': 'I’m Ram, a CS (AI & ML) student in Chennai. I build operating systems, AI tools and developer software.',
+    'story.intro': 'The person behind the wheel',
+    'story.skills': 'Skills, along the way',
+    'story.collect': 'Scroll to discover skills',
+    'story.collected': 'Discovered',
+    'story.ascent': 'The journey is only beginning.',
+    'story.connections': 'Let’s stay connected',
+    'story.project': 'Explore project',
     'nav.label': 'Trip stops',
     'hud.stop': 'Stop',
     'phase.sunrise': 'Sunrise',
@@ -152,10 +231,12 @@ export const STRINGS = {
     'projects.title': 'Projects',
     'projects.intro': 'Things I’ve built. Each one opens on GitHub.',
     'projects.view': 'View on GitHub',
+    'projects.draft': 'Concept',
+    'projects.search': 'Search repositories',
     'exp.kicker': 'Stop 4 · Madurai',
     'exp.title': 'Experience',
     'exp.awards': 'Wins and ranks',
-    'contact.kicker': 'Stop 5 · Rameswaram',
+    'contact.kicker': 'Stop 6 · Kanyakumari',
     'contact.title': 'Contact',
     'contact.body': 'End of the road, start of the next trip. Say hello.',
     'contact.email': 'Email',
@@ -189,11 +270,30 @@ export const STRINGS = {
     'cookie.reject': 'Reject',
     'cookie.settings': 'Cookie settings',
     'webgl.title': 'Your browser cannot show the 3D trip',
-    'webgl.body': 'WebGL is not available here, so the road trip is turned off. All the content is below, and the game still works.',
+    'webgl.body': 'The 3D view is unavailable here. My profile, projects and contact details are available below.',
     'footer.made': 'Made in Chennai with Three.js, GSAP and Lenis.',
   },
   ta: {
-    'loader.note': 'ஒலியை இயக்குங்கள் / டெஸ்க்டாப்பில் பாருங்கள்',
+    'journey.scrollContinue': 'பார்த்து அறியவும் தொடரவும் ஸ்க்ரோல் செய்யுங்கள்',
+    'journey.continue': 'அடுத்த இடம்',
+    'journey.stopped': 'வாகனம் நிற்கிறது · ஸ்க்ரோல் செய்து பாருங்கள்',
+    'journey.featured': 'முதன்மைத் திட்டம்',
+    'journey.website': 'திட்ட இணையதளம்',
+    'stop.chennai': 'நான் ராம், சென்னையைச் சேர்ந்த CS (AI & ML) மாணவன். மாமல்லபுரம் செல்லும் முன் என்னைப் பற்றி அறியுங்கள்.',
+    'stop.mamallapuram': 'இந்தப் பகுதியில் அறிந்த திறன்கள் கீழே உள்ளன. ஒன்றைத் தேர்ந்தெடுத்து அதன் பயன்பாட்டைப் பாருங்கள். அடுத்து என் திட்டங்கள்.',
+    'stop.thanjavur': 'ArkaOS எனது முதன்மை சிஸ்டம் திட்டம். அதையும் மற்ற திட்டங்களையும் இங்கே பாருங்கள். நீங்கள் படிக்கும்போது வாகனம் நிற்கும்.',
+    'stop.madurai': 'Presidio, Amazon ML Summer School மற்றும் கிளவுட் பயிற்சி எனது அனுபவத்தில் அடங்கும். காலவரிசையையும் விருதுகளையும் பாருங்கள்.',
+    'stop.rameswaram': 'பாம்பன் பாலத்தில் ஒரு இடைவேளை. சிஸ்டம் பொறியியல், AI கருவிகள் மற்றும் ஆராய்ச்சி என் பணியில் இணைகின்றன. அடுத்து கன்னியாகுமரி.',
+    'stop.kanyakumari': 'இந்தப் பயணத்தின் நிறைவு. தொடர்புகொள்ளுங்கள், என் குறியீட்டைப் பாருங்கள் அல்லது சுயவிவரத்தைப் படியுங்கள். அடுத்து வானத்தை நோக்கி.',
+    'journey.read': 'இந்த அத்தியாயத்தைப் படி',
+    'journey.close': 'பயணத்திற்குத் திரும்பு',
+    'journey.hideUI': 'பயணம் மட்டும்',
+    'journey.showUI': 'விவரங்களைக் காட்டு',
+    'journey.about': 'இந்தப் பயணத்தின் பின்னால் இருக்கும் நான்.',
+    'journey.projects': 'நான் உருவாக்கும் கருவிகளும் முயற்சிகளும்.',
+    'journey.experience': 'சேர்ந்து உருவாக்கி, தொடர்ந்து கற்கிறேன்.',
+    'journey.contact': 'பயணம் தொடர்கிறது. இணைந்து உருவாக்குவோம்.',
+    'loader.note': 'ஆறு அத்தியாயங்கள். ஒரு பயணம்.',
     'loader.start': 'தொடங்கு',
     'loader.loading': 'ஏற்றுகிறது',
     'loader.ready': 'பயணத்திற்குத் தயார்',
@@ -202,6 +302,24 @@ export const STRINGS = {
     'nav.thanjavur': 'தஞ்சாவூர்',
     'nav.madurai': 'மதுரை',
     'nav.rameswaram': 'இராமேஸ்வரம்',
+    'nav.kanyakumari': 'கன்னியாகுமரி',
+    'journey.confluence': 'புதிய தொடுவானம்',
+    'journey.dawn': 'கன்னியாகுமரி. மூன்று கடல்கள், ஒரு புதிய தொடக்கம்.',
+    'journey.bridge': 'கடலைக் கடந்து',
+    'journey.crossing': 'ஒரு பாலம், புதிய தொடுவானம்.',
+    'story.greeting': 'வணக்கம், உலகமே.',
+    'story.scroll': 'பயணத்தைத் தொடங்க ஸ்க்ரோல் செய்யுங்கள்',
+    'story.skillIndex': 'திறன் பட்டியல்',
+    'story.points': 'பயணப் புள்ளிகள்',
+    'story.fly': 'பாலத்தின் கீழ் தொடங்கும் ஒரு பயணம்.',
+    'story.bioShort': 'நான் ராம், சென்னையில் CS (AI & ML) மாணவன். இயக்க முறைமைகள், AI கருவிகள் மற்றும் மென்பொருள் உருவாக்குகிறேன்.',
+    'story.intro': 'இந்தப் பயணத்தின் பின்னால் நான்',
+    'story.skills': 'பயணத்தில் என் திறன்கள்',
+    'story.collect': 'திறன்களை அறிய ஸ்க்ரோல் செய்யுங்கள்',
+    'story.collected': 'அறிந்தவை',
+    'story.ascent': 'பயணம் இப்போதுதான் தொடங்குகிறது.',
+    'story.connections': 'தொடர்பில் இருப்போம்',
+    'story.project': 'திட்டத்தை அறிக',
     'nav.label': 'பயண நிறுத்தங்கள்',
     'hud.stop': 'நிறுத்தம்',
     'phase.sunrise': 'சூரிய உதயம்',
@@ -223,10 +341,12 @@ export const STRINGS = {
     'projects.title': 'திட்டங்கள்',
     'projects.intro': 'நான் உருவாக்கியவை. ஒவ்வொன்றும் GitHub-இல் திறக்கும்.',
     'projects.view': 'GitHub-இல் பார்க்க',
+    'projects.draft': 'கருத்துநிலை',
+    'projects.search': 'களஞ்சியங்களைத் தேடு',
     'exp.kicker': 'நிறுத்தம் 4 · மதுரை',
     'exp.title': 'அனுபவம்',
     'exp.awards': 'வெற்றிகளும் இடங்களும்',
-    'contact.kicker': 'நிறுத்தம் 5 · இராமேஸ்வரம்',
+    'contact.kicker': 'நிறுத்தம் 6 · கன்னியாகுமரி',
     'contact.title': 'தொடர்புக்கு',
     'contact.body': 'சாலையின் முடிவு, அடுத்த பயணத்தின் தொடக்கம். வணக்கம் சொல்லுங்கள்.',
     'contact.email': 'மின்னஞ்சல்',
@@ -260,7 +380,7 @@ export const STRINGS = {
     'cookie.reject': 'மறுக்கிறேன்',
     'cookie.settings': 'குக்கீ அமைப்புகள்',
     'webgl.title': 'உங்கள் உலாவியால் 3D பயணத்தைக் காட்ட முடியாது',
-    'webgl.body': 'இங்கு WebGL இல்லை, எனவே சாலைப் பயணம் நிறுத்தப்பட்டுள்ளது. எல்லா உள்ளடக்கமும் கீழே உள்ளது, விளையாட்டும் இயங்கும்.',
+    'webgl.body': 'இங்கு 3D காட்சி கிடைக்கவில்லை. என்னைப் பற்றிய தகவல்கள், திட்டங்கள் மற்றும் தொடர்பு விவரங்கள் கீழே உள்ளன.',
     'footer.made': 'சென்னையில் Three.js, GSAP மற்றும் Lenis கொண்டு உருவாக்கப்பட்டது.',
   },
 }

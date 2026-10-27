@@ -35,8 +35,13 @@ export function setNight(n) {
 
 // Physically based surfaces on desktop (they react to sky light and the sun like real materials);
 // cheaper Lambert surfaces on phones.
-export const surface = (params = {}) =>
-  quality.low ? new THREE.MeshLambertMaterial(params) : new THREE.MeshStandardMaterial({ roughness: 0.86, metalness: 0, ...params })
+export const surface = (params = {}) => {
+  if (!quality.low) return new THREE.MeshStandardMaterial({ roughness: .86, metalness: 0, ...params })
+  const supported = { ...params }
+  delete supported.roughness
+  delete supported.metalness
+  return new THREE.MeshLambertMaterial(supported)
+}
 export const lambert = (color, extra = {}) => surface({ color, ...extra })
 
 // Repeats a texture across a box face by scaling its UVs (so one texture can fit any size).

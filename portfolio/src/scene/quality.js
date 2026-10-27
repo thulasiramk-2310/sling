@@ -7,7 +7,7 @@ export const quality = {
   lamps: 34,
   buildings: 40,
   houses: 70,
-  particles: 240,
+  particles: 90,
   clouds: 10,
   fogFar: 460,
   parallax: true,
@@ -32,7 +32,7 @@ export function detectQuality() {
       lamps: 14,
       buildings: 16,
       houses: 26,
-      particles: 70,
+      particles: 24,
       clouds: 5,
       fogFar: 300,
       parallax: false,
@@ -48,7 +48,9 @@ export function detectQuality() {
 export function hasWebGL() {
   try {
     const c = document.createElement('canvas')
-    return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl')))
+    // The installed Three.js renderer requires WebGL 2. A WebGL 1 context is
+    // not sufficient and would otherwise produce a renderer startup error.
+    return !!(window.WebGL2RenderingContext && c.getContext('webgl2'))
   } catch {
     return false
   }

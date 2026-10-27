@@ -125,6 +125,32 @@ export function createGame({ onOpen, onClose }) {
   const menu = root.querySelector('.game-menu')
   const over = root.querySelector('.game-over')
   const finalEl = root.querySelector('[data-game="final"]')
+  let opened = false
+  let closing = false
+  let restoreFocus = null
+  const background = new Map()
+  const containBackground = () => {
+    for (const element of document.body.children) {
+      if (element === root || background.has(element)) continue
+      background.set(element, element.inert)
+      element.inert = true
+    }
+  }
+  const additions = new MutationObserver(containBackground)
+  const focusable = () => [...root.querySelectorAll('button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])')]
+    .filter(element => !element.inert && element.getClientRects().length > 0)
+  const containFocus = (event) => {
+    if (!opened || event.key !== 'Tab') return
+    const controls = focusable()
+    const first = controls[0], last = controls.at(-1)
+    if (!first) { event.preventDefault(); return }
+    if (event.shiftKey && (document.activeElement === first || !root.contains(document.activeElement))) {
+      event.preventDefault(); last.focus({ preventScroll: true })
+    } else if (!event.shiftKey && (document.activeElement === last || !root.contains(document.activeElement))) {
+      event.preventDefault(); first.focus({ preventScroll: true })
+    }
+  }
+  document.addEventListener('keydown', containFocus, true)
   let vehicle = 'auto'
   let state = newGame(vehicle)
   let running = false
@@ -243,9 +269,15 @@ export function createGame({ onOpen, onClose }) {
     over.querySelector('button').focus({ preventScroll: true })
   }
 
-  function open() {
+  function open(initiator=document.activeElement) {
+    if (opened) return
+    opened = true
+    closing = false
+    restoreFocus = initiator
     root.hidden = false
     onOpen()
+    containBackground()
+    additions.observe(document.body, { childList: true })
     gsap.fromTo(root, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power3.out' })
     gsap.fromTo(root.querySelector('.game-box'), { y: 40, scale: 0.96 }, { y: 0, scale: 1, duration: 0.7, ease: 'power3.out' })
     fit()
@@ -260,10 +292,24 @@ export function createGame({ onOpen, onClose }) {
   }
 
   function close() {
+    if (!opened || closing) return
+    closing = true
     running = false
     cancelAnimationFrame(raf)
-    gsap.to(root, { opacity: 0, duration: 0.35, ease: 'power3.out', onComplete: () => (root.hidden = true) })
-    onClose()
+    gsap.to(root, { opacity: 0, duration: 0.35, ease: 'power3.out', onComplete: () => {
+      additions.disconnect()
+      for (const [element, inert] of background) element.inert = inert
+      background.clear()
+      // Let the browser apply the released inert state before moving focus.
+      // Keep the world paused until the modal's close lifecycle has finished.
+      requestAnimationFrame(() => {
+        opened = false
+        closing = false
+        root.hidden = true
+        if (restoreFocus instanceof HTMLElement && restoreFocus.isConnected) restoreFocus.focus({ preventScroll: true })
+        onClose()
+      })
+    } })
   }
 
   // ---- controls ----

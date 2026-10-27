@@ -1,0 +1,31 @@
+{
+  "checks": [
+    "Loader contains native Tab and Shift+Tab",
+    "Start releases background controls",
+    "Scroll arrives and holds stop 1",
+    "Scroll arrives and holds stop 2",
+    "Skill activation retains focus and keyboard order",
+    "Scroll arrives and holds stop 3",
+    "Real project screenshots, technical stacks and case-study navigation work",
+    "ArkaOS opens with its verified source; Escape restores project-button focus",
+    "Chapter-to-project handoff retains scroll lock and returns focus to the world reader",
+    "Scroll arrives and holds stop 4",
+    "Scroll arrives and holds stop 5",
+    "Scroll arrives and holds stop 6",
+    "Contact reader hands off to usable cookie settings and restores focus after rejecting",
+    "Scroll reaches final ascent without Continue clicks",
+    "Reverse scrolling revisits all six reading stops",
+    "Keyboard language switching works",
+    "Sound can be enabled and muted through the keyboard",
+    "Native touch raycasts all seven project installations with the correct source",
+    "Game menu contains native Tab and Shift+Tab",
+    "Running game closes and returns focus to Play",
+    "Actual WebGL context loss exposes readable fallback content"
+  ],
+  "errors": [],
+  "layout": {
+    "width": 390,
+    "overflow": false
+  },
+  "reducedMotion": true
+}

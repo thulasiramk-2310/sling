@@ -1,8 +1,9 @@
 // Ground, road, sea, palms, street lamps, houses and drifting dust. Everything that is not a landmark.
 import * as THREE from 'three'
 import { Water } from 'three/addons/objects/Water.js'
+import { streetGeometry } from './architecture.js'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
-import { frondTexture, glowTexture, grainTexture, roadTexture, seaNormalTexture, trunkTexture, windowTextures } from './textures.js'
+import { glowTexture, grainTexture, roadTexture, seaNormalTexture, trunkTexture } from './textures.js'
 import { quality } from './quality.js'
 import { isReserved } from './route.js'
 import { clamp, glow, lambert, lerp, rng, smooth, surface } from './util.js'
@@ -42,7 +43,7 @@ export function buildGround(scene, route) {
   for (let i = 0; i < rows; i++) {
     const u = i / (rows - 1)
     route.at(u, s)
-    const sea = smooth(seaFrom, seaTo, u)
+    const sea = smooth(seaFrom, seaTo, u) * (1 - smooth(route.bridgeEndU-.005,route.bridgeEndU+.045,u))
     const coast = 1 - smooth(0.31, 0.37, u)
     COLUMNS.forEach((lat, j) => {
       const edge = Math.abs(lat)
@@ -50,11 +51,24 @@ export function buildGround(scene, route) {
       const roadW = 1 - smooth(8, 30, edge)
       let y = s.pos.y * roadW
       if (lat > 50) y -= coast * smooth(50, 125, lat) * 4.6
+      if (u > .88) y -= smooth(.88,.94,u) * smooth(24,100,edge) * 5
       // gentle hills away from the road
       y += smooth(30, 120, edge) * (Math.sin(u * 80 + lat * 0.03) * 1.6 + Math.sin(u * 31 + lat * 0.011) * 2.4) * (1 - sea)
+      const forecourt=smooth(.025,.045,u)*(1-smooth(.108,.125,u))*smooth(8,20,-lat)*(1-smooth(160,200,-lat))
+      y=lerp(y,0,forecourt)
       y = lerp(y, -6, sea)
+      // Beyond the final promenade, the sea must surround both rock islands.
+      // Apply after hills so a terrain ridge cannot join the memorial to shore.
+      const finalShore=smooth(.88,.94,u)*smooth(18,42,lat)
+      y=lerp(y,-6,finalShore)
       const k = (i * COLUMNS.length + j) * 3
-      const p = s.pos.clone().addScaledVector(s.right, lat)
+      // Thanjavur and Madurai are inland. Extend their land to the horizon
+      // instead of exposing the shared ocean plane behind the temple compounds.
+      const inland=smooth(.32,.38,u)*(1-smooth(route.bridgeU-.03,route.bridgeU+.005,u))
+      const outer=smooth(150,320,edge)
+      const terrainLat=lat+Math.sign(lat)*outer*1400*inland
+      y += outer*inland*(8+Math.pow(Math.sin(u*22+lat*.009),2)*20)
+      const p = s.pos.clone().addScaledVector(s.right, terrainLat)
       pos[k] = p.x
       pos[k + 1] = y
       pos[k + 2] = p.z
@@ -117,10 +131,28 @@ export function buildRoad(scene, route) {
   return mesh
 }
 
-// The sea: one big plane under everything. On desktop it reflects the sky and the bridge.
+function coastalWaterFinish(material) {
+  const horizon={value:new THREE.Color(0xa5bbc2)}
+  material.userData.seaHorizon=horizon
+  material.onBeforeCompile=shader=>{
+    shader.uniforms.tripSeaHorizon=horizon
+    shader.fragmentShader=shader.fragmentShader
+      .replace('#include <common>','#include <common>\nuniform vec3 tripSeaHorizon;')
+      .replace('#include <envmap_fragment>',`#include <envmap_fragment>
+        float tripGrazing=1.0-clamp(dot(normal,geometryViewDir),0.0,1.0);
+        float tripReflectance=.02+.98*pow(tripGrazing,5.0);
+        outgoingLight=mix(outgoingLight,tripSeaHorizon*.85,tripReflectance*.72);
+      `)
+  }
+  material.customProgramCacheKey=()=> 'coastal-water-horizon-1'
+  return material
+}
+
+// The sea: desktop renders the reflected scene. The lighter surface uses an
+// inexpensive horizon/Fresnel approximation, not a second world render.
 export function buildSea(scene) {
   const normal = seaNormalTexture()
-  const geo = new THREE.PlaneGeometry(4000, 4000)
+  const geo = new THREE.PlaneGeometry(12000, 12000)
   if (!quality.low) {
     const water = new Water(geo, {
       textureWidth: 512,
@@ -129,27 +161,44 @@ export function buildSea(scene) {
       sunDirection: new THREE.Vector3(0, 1, 0),
       sunColor: 0xffffff,
       waterColor: 0x0f5f86,
-      distortionScale: 2.4,
+      distortionScale: .7,
       fog: true,
     })
     water.rotation.x = -Math.PI / 2
     water.position.set(0, -1.4, -600)
     water.userData.noShadow = true
-    water.material.uniforms.size.value = 2.2
+    water.material.uniforms.size.value = 30
     scene.add(water)
     const u = water.material.uniforms
+    const reflect = water.onBeforeRender
+    let reflections = true
+    const waterMaterial = water.material
+    const fallbackNormal = normal.clone()
+    fallbackNormal.repeat.set(1000, 1000)
+    const fallback = coastalWaterFinish(new THREE.MeshPhongMaterial({ color: 0x0f5f86, specular: 0x718d98, shininess: 70, normalMap: fallbackNormal, normalScale: new THREE.Vector2(0.15, 0.15) }))
+    water.onBeforeRender = (...args) => {
+      // The AO normal/depth pass needs this opaque surface, but its override
+      // material does not sample a reflection. Do not rerender the mirror there.
+      if (!reflections || args[1].overrideMaterial) return
+      reflect.apply(water, args)
+    }
     return {
       mesh: water,
+      reflectionsOn: () => reflections,
+      setReflections: (on) => { reflections = on; water.material = on ? waterMaterial : fallback },
       update(time, p, lightDir) {
         u.time.value = time * 0.4
         u.sunDirection.value.copy(lightDir)
         u.sunColor.value.setRGB(...p.light).multiplyScalar(0.6 + (1 - p.night) * 0.4)
         u.waterColor.value.setRGB(...p.sea).multiplyScalar(0.7)
+        fallback.color.setRGB(...p.sea).multiplyScalar(0.7)
+        fallback.userData.seaHorizon.value.setRGB(...p.horizon)
+        fallbackNormal.offset.set(time * 0.002, time * 0.001)
       },
     }
   }
-  normal.repeat.set(60, 60)
-  const mat = new THREE.MeshPhongMaterial({ color: 0x0f7fae, specular: 0xbbd8ee, shininess: 90, normalMap: normal, normalScale: new THREE.Vector2(0.5, 0.5) })
+  normal.repeat.set(1000, 1000)
+  const mat = coastalWaterFinish(new THREE.MeshPhongMaterial({ color: 0x0f7fae, specular: 0x718d98, shininess: 50, normalMap: normal, normalScale: new THREE.Vector2(0.18, 0.18) }))
   const mesh = new THREE.Mesh(geo, mat)
   mesh.rotation.x = -Math.PI / 2
   mesh.position.set(0, -1.4, -600)
@@ -157,8 +206,11 @@ export function buildSea(scene) {
   scene.add(mesh)
   return {
     mesh,
+    reflectionsOn: () => false,
+    setReflections() {},
     update(time, p) {
       mat.color.setRGB(...p.sea)
+      mat.userData.seaHorizon.value.setRGB(...p.horizon)
     },
   }
 }
@@ -185,32 +237,54 @@ function trunkGeometry() {
 }
 
 function frondsGeometry() {
-  const parts = []
-  const fronds = 11
-  for (let i = 0; i < fronds; i++) {
-    const f = new THREE.PlaneGeometry(1.9, 4.8, 1, 10)
-    f.translate(0, 2.4, 0)
-    const q = f.attributes.position
-    const lift = 0.35 + (i % 3) * 0.18
-    for (let k = 0; k < q.count; k++) {
-      const t = q.getY(k) / 4.8
-      q.setZ(k, q.getZ(k) - t * t * 2.6) // droop
-      q.setX(k, q.getX(k) * (1 - t * 0.35)) // taper
-      q.setZ(k, q.getZ(k) + Math.abs(q.getX(k)) * 0.25) // leaflets fold into a shallow V
-    }
-    f.rotateX(-Math.PI / 2 + lift)
-    f.rotateY((i / fronds) * Math.PI * 2 + (i % 2) * 0.2)
-    f.translate(1.3, 9, 0)
-    parts.push(f)
+  const positions=[],uv=[]
+  const fronds=quality.low?8:11
+  const leaves=quality.low?9:16
+  const v=new THREE.Vector3()
+  const vertex=(x,y,z,angle)=>{
+    v.set(x,y,z).applyAxisAngle(new THREE.Vector3(0,1,0),angle)
+    positions.push(v.x+1.3,v.y+9,v.z)
+    uv.push(x,z/4.8)
   }
-  const g = mergeGeometries(parts)
-  g.computeVertexNormals()
-  return g
+  for(let i=0;i<fronds;i++) {
+    const angle=i/fronds*Math.PI*2
+    for(let j=0;j<leaves;j++) {
+      const t=(j+.7)/leaves
+      const z=t*4.8
+      const y=Math.sin(t*Math.PI)*1.2-t*t*2.2+(i%3)*.25*t
+      const width=.58*Math.pow(1-t,.65)+.025
+      for(const side of [-1,1]) {
+        // Broad, folded leaflets are real surfaces, without alpha-cutout moire.
+        const points=[[0,y,z],[side*width*.5,y+.09,z-.22],[side*width,y-.06,z-.7],[0,y-.025,z-.16]]
+        for(const k of [0,1,2,0,2,3]) vertex(...points[k],angle)
+      }
+    }
+  }
+  const geometry=new THREE.BufferGeometry()
+  geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3))
+  geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2))
+  geometry.computeVertexNormals()
+  const parts=[geometry]
+  for(let i=0;i<fronds;i++) {
+    const angle=i/fronds*Math.PI*2
+    const points=[]
+    for(let j=0;j<=12;j++) {
+      const t=j/12
+      points.push(new THREE.Vector3(0,Math.sin(t*Math.PI)*1.2-t*t*2.2+(i%3)*.25*t,t*4.8).applyAxisAngle(new THREE.Vector3(0,1,0),angle).add(new THREE.Vector3(1.3,9,0)))
+    }
+    parts.push(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points),12,.025,4,false))
+  }
+  const merged=mergeGeometries(parts.map((part)=>part.index?part.toNonIndexed():part))
+  parts.forEach((part)=>part.dispose())
+  return merged
 }
 
 export function buildPalms(scene, route) {
-  const trunks = new THREE.InstancedMesh(trunkGeometry(), surface({ map: trunkTexture(), roughness: 0.95 }), quality.palms)
-  const crowns = new THREE.InstancedMesh(frondsGeometry(), surface({ map: frondTexture(), alphaTest: 0.45, side: THREE.DoubleSide, roughness: 0.7 }), quality.palms)
+  const trunk = trunkGeometry(), fronds = frondsGeometry()
+  const bark = surface({ map: trunkTexture(), roughness: 0.95 })
+  const foliage = surface({ color: 0xa2b080, side: THREE.DoubleSide, roughness: .9 })
+  const trunks = new THREE.Group(), crowns = new THREE.Group(), bins = new Map()
+  trunks.name = 'Spatial palm trunks'; crowns.name = 'Spatial palm crowns'
   const r = rng(13)
   const m = new THREE.Matrix4()
   const q = new THREE.Quaternion()
@@ -224,7 +298,8 @@ export function buildPalms(scene, route) {
     // fewer palms on the beach side near the coast
     const side = r() > 0.5 ? 1 : -1
     if (side > 0 && u < 0.33 && r() < 0.8) continue
-    const lat = side * (8 + Math.pow(r(), 1.7) * 55)
+    // Keep vegetation behind the camera-side dolly corridor.
+    const lat = side < 0 ? -(65 + r() * 25) : 8 + Math.pow(r(), 1.7) * 55
     if (isReserved(u, lat)) continue
     route.at(u, s)
     const p = s.pos.clone().addScaledVector(s.right, lat)
@@ -232,13 +307,26 @@ export function buildPalms(scene, route) {
     const k = 0.8 + r() * 0.7
     sc.set(k, k, k)
     m.compose(new THREE.Vector3(p.x, 0, p.z), q, sc)
-    trunks.setMatrixAt(n, m)
-    crowns.setMatrixAt(n, m)
-    // every palm a slightly different green
-    crowns.setColorAt(n, tint.setHSL(0.2 + r() * 0.05, 0.35 + r() * 0.2, 0.42 + r() * 0.12))
+    // Keep the original seeded transforms and colours; partition only their
+    // draw submission so distant palms have independent frustum bounds.
+    const key = `${Math.floor(p.x / 90)}:${Math.floor(p.z / 90)}`
+    if (!bins.has(key)) bins.set(key, [])
+    tint.setHSL(0.2 + r() * 0.05, 0.35 + r() * 0.2, 0.42 + r() * 0.12)
+    bins.get(key).push({ matrix: m.clone(), color: tint.clone() })
     n++
   }
-  trunks.count = crowns.count = n
+  for (const [key, placements] of bins) {
+    const trunkChunk = new THREE.InstancedMesh(trunk, bark, placements.length)
+    const crownChunk = new THREE.InstancedMesh(fronds, foliage, placements.length)
+    trunkChunk.name = `Palm trunks ${key}`; crownChunk.name = `Palm crowns ${key}`
+    for (const [i, placement] of placements.entries()) {
+      trunkChunk.setMatrixAt(i, placement.matrix)
+      crownChunk.setMatrixAt(i, placement.matrix)
+      crownChunk.setColorAt(i, placement.color)
+    }
+    for (const mesh of [trunkChunk, crownChunk]) { mesh.computeBoundingBox(); mesh.computeBoundingSphere() }
+    trunks.add(trunkChunk); crowns.add(crownChunk)
+  }
   scene.add(trunks, crowns)
   return { crowns }
 }
@@ -272,40 +360,52 @@ export function buildLamps(scene, route) {
   return { setNight: (n) => (halo.opacity = n * 0.7) }
 }
 
-// Blocks of buildings (city) and low houses (towns), as instanced boxes with window textures.
-export function buildTown(scene, route, { from, to, count, minH, maxH, seed, flat = false, lateral = [22, 90], side: onlySide = 0 }) {
-  const win = windowTextures()
-  const mat = glow(surface({ map: win.map, emissiveMap: win.glow, emissive: 0xffffff, emissiveIntensity: 0 }), 1.5)
-  const geo = new THREE.BoxGeometry(1, 1, 1)
-  geo.translate(0, 0.5, 0)
-  const mesh = new THREE.InstancedMesh(geo, mat, count)
-  const r = rng(seed)
-  const m = new THREE.Matrix4()
-  const q = new THREE.Quaternion()
-  const color = new THREE.Color()
-  const palette = flat ? ['#f0d8b8', '#e6b9a6', '#dfe2cf', '#efe0bb', '#cdd8e2', '#f2c9b6'] : ['#e2d6c4', '#d6cbbb', '#eadfcd', '#cfc8bd']
-  const s = route.sample()
-  for (let i = 0; i < count; i++) {
-    const u = from + r() * (to - from)
-    route.at(u, s)
-    const side = onlySide || (r() > 0.5 ? 1 : -1)
-    const lat = side * (lateral[0] + r() * (lateral[1] - lateral[0]))
-    if (isReserved(u, lat)) {
-      // tuck it away out of sight rather than through a temple
-      m.makeScale(0, 0, 0)
-      mesh.setMatrixAt(i, m)
-      continue
-    }
-    const p = s.pos.clone().addScaledVector(s.right, lat)
-    const w = flat ? 5 + r() * 5 : 8 + r() * 9
-    const h = minH + r() * (maxH - minH)
-    q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.atan2(s.tan.x, s.tan.z) + (r() - 0.5) * 0.2)
-    m.compose(new THREE.Vector3(p.x, 0, p.z), q, new THREE.Vector3(w, h, flat ? 5 + r() * 5 : 8 + r() * 8))
-    mesh.setMatrixAt(i, m)
-    mesh.setColorAt(i, color.set(palette[Math.floor(r() * palette.length)]))
+// Layered, shaded street fronts, built and instanced as real geometry.
+export function buildTown(scene, route, { from, to, count, seed, flat = false, side: onlySide = 0, setback = null }) {
+  const modules=[streetGeometry(flat?2:3),streetGeometry(flat?1:2,1)]
+  if(!quality.low)modules.push(streetGeometry(flat?2:3,2))
+  const slots = Math.max(1, Math.floor((to-from)*route.length/7.5))
+  count = Math.min(count,slots*(onlySide?1:2))
+  const materials = {
+    plaster: surface({ color: 0xffffff, roughness: .95 }),
+    trim: surface({ color: 0xe4d8bc, roughness: .88 }),
+    wood: surface({ color: 0x536c61, roughness: .8 }),
+    glass: glow(surface({ color: 0x273d3d, roughness: .24, emissive: 0xffd093, emissiveIntensity: 0 }),.45),
+    metal: surface({ color: 0x414a46, roughness: .52, metalness: .5 }),
+    roof: surface({ color: 0x8b7563, roughness: .9 }),
   }
-  scene.add(mesh)
-  return mesh
+  const group = new THREE.Group()
+  group.name = 'Tamil terrace street frontage'
+  const meshSets=modules.map((module,index)=>Object.entries(module.geometries).map(([name,geometry])=>{
+    const mesh=new THREE.InstancedMesh(geometry,materials[name],Math.max(0,Math.ceil((count-index)/modules.length)))
+    mesh.name=name;group.add(mesh);return mesh
+  }))
+  const r=rng(seed),m=new THREE.Matrix4(),q=new THREE.Quaternion(),color=new THREE.Color()
+  const palette=['#b88067','#d2bc8e','#b9c1b1','#c1a193','#aebbb7','#d7c3a2']
+  const rows=Math.ceil(count/(onlySide?1:2))
+  for(let i=0;i<count;i++) {
+    const row=onlySide?i:Math.floor(i/2)
+    const u=from+(row+.5)/rows*(to-from)
+    const side=onlySide||(i%2?1:-1)
+    const lateral=setback?side*setback:side<0?-(flat?65:70):(flat?17.5:19)
+    if(isReserved(u,lateral)) m.makeScale(0,0,0)
+    else {
+      const sample=route.at(u)
+      const position=route.side(u,lateral)
+      position.y=0
+      q.setFromAxisAngle(new THREE.Vector3(0,1,0),Math.atan2(-side*sample.right.x,-side*sample.right.z))
+      m.compose(position,q,new THREE.Vector3(.96+r()*.1,.96+r()*.12,1))
+    }
+    const tint=palette[Math.floor(r()*palette.length)]
+    const slot=Math.floor(i/modules.length)
+    for(const mesh of meshSets[i%modules.length]) {
+      mesh.setMatrixAt(slot,m)
+      if(mesh.name==='plaster') mesh.setColorAt(slot,color.set(tint))
+    }
+  }
+  for(const meshes of meshSets)for(const mesh of meshes) { mesh.computeBoundingBox(); mesh.computeBoundingSphere() }
+  scene.add(group)
+  return group
 }
 
 // Dust by day, fireflies at night. They float around the camera.
@@ -336,8 +436,8 @@ export function buildParticles(scene) {
       }
       p.needsUpdate = true
       mat.color.copy(dust).lerp(fly, night)
-      mat.size = 0.3 + night * 0.12
-      mat.opacity = 0.25 + night * 0.5
+      mat.size = 0.12 + night * 0.08
+      mat.opacity = 0.08 + night * 0.3
     },
   }
 }

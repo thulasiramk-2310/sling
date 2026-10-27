@@ -1,0 +1,9 @@
+{
+  "checks": [
+    "No-JavaScript profile and real links are visible at 1440px",
+    "No-JavaScript profile and real links are visible at 390px",
+    "WebGL-free content, project reader and layout work at 1440px",
+    "WebGL-free content, project reader and layout work at 390px"
+  ],
+  "errors": []
+}

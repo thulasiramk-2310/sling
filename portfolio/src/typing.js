@@ -22,12 +22,11 @@ export function startTyping(el, getPhrases, { reduced = false } = {}) {
     }
   }
 
-  return {
-    // Starts over, for example after the language changes.
-    restart() {
-      run++
-      el.textContent = ''
-      loop(run)
-    },
+  const restart=()=>{
+    run++
+    if(reduced){el.textContent=getPhrases()[0]??'';return}
+    el.textContent=''
+    loop(run)
   }
+  return {restart,setReducedMotion(value){reduced=!!value;restart()}}
 }

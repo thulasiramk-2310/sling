@@ -1,8 +1,10 @@
-// Time of day along the trip: sunrise in Chennai, noon inland, sunset and dusk in Madurai, night at the sea.
+// Time of day along the trip: sunrise in Chennai, noon inland, sunset and dusk in Madurai, night at Pamban, then a new dawn at Kanyakumari.
 // Pure data and maths (no three.js), so it is easy to test.
-import { clamp } from './util.js'
+import { clamp, smooth } from './util.js'
 
-const hex = (h) => [parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255]
+// Timeline colours are authored as sRGB hex. Three's setRGB expects linear values.
+const linear = (v) => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4
+const hex = (h) => [1, 3, 5].map((offset) => linear(parseInt(h.slice(offset, offset + 2), 16) / 255))
 
 // Each key is one moment of the day, placed at a point along the route (u from 0 to 1).
 const KEYS = [
@@ -14,7 +16,10 @@ const KEYS = [
   { u: 0.64, phase: 'sunset', elev: 6, top: '#6a5a8e', horizon: '#f2906a', glow: '#ff7a58', glowAmt: 1.2, fog: '#dc9c86', light: '#ffa070', lightI: 1.6, hemiSky: '#f6b49c', hemiGround: '#5a3a44', hemiI: 0.78, sea: '#7a5a7e', night: 0.2 },
   { u: 0.69, phase: 'sunset', elev: -3, top: '#2e2a5a', horizon: '#c0607e', glow: '#e06a88', glowAmt: 0.85, fog: '#6a4a6a', light: '#9a7ab0', lightI: 0.55, hemiSky: '#7a6aa6', hemiGround: '#2e2034', hemiI: 0.62, sea: '#3a345e', night: 0.6 },
   { u: 0.78, phase: 'night', elev: -20, top: '#0c1230', horizon: '#2a3260', glow: '#3a4a8a', glowAmt: 0.25, fog: '#141c3c', light: '#b4c6ff', lightI: 0.7, hemiSky: '#5a68a6', hemiGround: '#141830', hemiI: 0.6, sea: '#0e2246', night: 1 },
-  { u: 1.0, phase: 'night', elev: -20, top: '#090e26', horizon: '#232c56', glow: '#3a4a8a', glowAmt: 0.2, fog: '#111836', light: '#b4c6ff', lightI: 0.72, hemiSky: '#5a68a6', hemiGround: '#141830', hemiI: 0.6, sea: '#0c1e3e', night: 1 },
+  { u: 0.85, phase: 'night', elev: -20, top: '#090e26', horizon: '#232c56', glow: '#3a4a8a', glowAmt: 0.2, fog: '#111836', light: '#b4c6ff', lightI: 0.72, hemiSky: '#5a68a6', hemiGround: '#141830', hemiI: 0.6, sea: '#0c1e3e', night: 1 },
+  { u: 0.91, phase: 'sunrise', elev: -2, top: '#666e9c', horizon: '#dda998', glow: '#f5aa83', glowAmt: 0.75, fog: '#bba9aa', light: '#ffc7a0', lightI: 1.1, hemiSky: '#d6c2ce', hemiGround: '#665b63', hemiI: 0.85, sea: '#42677a', night: 0.22 },
+  { u: 0.96, phase: 'sunrise', elev: 5, top: '#809bad', horizon: '#f3d0ae', glow: '#ffba76', glowAmt: 0.85, fog: '#d9c5ad', light: '#ffdbaf', lightI: 1.85, hemiSky: '#dbe3e3', hemiGround: '#88796b', hemiI: 0.95, sea: '#487c85', night: 0 },
+  { u: 1, phase: 'sunrise', elev: 8, top: '#809bad', horizon: '#f3d0ae', glow: '#ffba76', glowAmt: 0.75, fog: '#d9c5ad', light: '#ffdbaf', lightI: 1.85, hemiSky: '#dbe3e3', hemiGround: '#88796b', hemiI: 0.95, sea: '#487c85', night: 0 },
 ].map((k) => ({
   ...k,
   top: hex(k.top),
@@ -30,6 +35,21 @@ const KEYS = [
 const COLOR_FIELDS = ['top', 'horizon', 'glow', 'fog', 'light', 'hemiSky', 'hemiGround', 'sea']
 const NUMBER_FIELDS = ['elev', 'glowAmt', 'lightI', 'hemiI', 'night']
 
+// Dawn at the three seas: blue atmosphere with warm light localized around
+// the sun, rather than a peach horizon reflected around the entire ocean.
+const COASTAL_DAWN=Object.fromEntries(Object.entries({
+  top:'#52798d',horizon:'#a9bbc2',fog:'#8da7af',glow:'#efb16b',
+  light:'#ffdda9',hemiSky:'#b0c8d2',hemiGround:'#344b50',sea:'#165969',
+}).map(([key,value])=>[key,hex(value)]))
+
+export function sunBearing(u) {
+  const original=-25+60*Math.min(1,Math.max(0,u)/.7)
+  // Rotate below the horizon before the new dawn. The same direction drives
+  // the visible disc, environment map, sea highlights and directional light.
+  return original+(-139.2094-original)*smooth(.89,.915,u)
+}
+
+
 // Blends the two keys either side of u.
 export function sample(u) {
   const x = clamp(u, 0, 1)
@@ -41,6 +61,10 @@ export function sample(u) {
   const out = { phase: t < 0.5 ? a.phase : b.phase }
   for (const f of NUMBER_FIELDS) out[f] = a[f] + (b[f] - a[f]) * t
   for (const f of COLOR_FIELDS) out[f] = a[f].map((v, k) => v + (b[f][k] - v) * t)
+  out.finalDawn=smooth(.89,.94,x)
+  for(const f of COLOR_FIELDS)out[f]=out[f].map((value,k)=>value+(COASTAL_DAWN[f][k]-value)*out.finalDawn)
+  out.hemiI+=(.58-out.hemiI)*out.finalDawn
+  out.glowAmt+=(.85-out.glowAmt)*out.finalDawn
   return out
 }
 
@@ -50,5 +74,6 @@ export function phaseAt(u) {
   if (x < 0.2) return 'sunrise'
   if (x < 0.56) return 'noon'
   if (x < 0.74) return 'sunset'
-  return 'night'
+  if (x < 0.89) return 'night'
+  return 'sunrise'
 }

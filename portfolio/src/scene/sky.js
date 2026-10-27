@@ -2,13 +2,20 @@
 import * as THREE from 'three'
 import { cloudTexture, glowTexture, moonTexture } from './textures.js'
 import { quality } from './quality.js'
+import { sunBearing } from './timeline.js'
 import { rng, smooth } from './util.js'
 
 const DOME_VERT = /* glsl */ `
   varying vec3 vDir;
+  #include <fog_pars_vertex>
   void main() {
-    vDir = normalize(position);
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    vDir = (modelMatrix * vec4(position,1.0)).xyz-cameraPosition;
+    vec4 mvPosition=modelViewMatrix * vec4(position,1.0);
+    gl_Position = projectionMatrix * mvPosition;
+    // Infinite background: Water's oblique reflection clip plane must not cut
+    // the dome into a visible circular island in the reflected sky.
+    gl_Position.z=gl_Position.w;
+    #include <fog_vertex>
   }`
 
 const DOME_FRAG = /* glsl */ `
@@ -18,15 +25,23 @@ const DOME_FRAG = /* glsl */ `
   uniform vec3 sunDir;
   uniform float glowAmt;
   varying vec3 vDir;
+  #include <fog_pars_fragment>
   void main() {
-    float h = clamp(vDir.y, 0.0, 1.0);
+    vec3 direction=normalize(vDir);
+    float h = clamp(direction.y, 0.0, 1.0);
     vec3 col = mix(horizon, top, pow(h, 0.42));
-    float s = max(dot(normalize(vDir), normalize(sunDir)), 0.0);
+    float s = max(dot(direction, normalize(sunDir)), 0.0);
     col += glow * glowAmt * (pow(s, 6.0) * 0.45 + pow(s, 48.0) * 0.8);
-    col = mix(col, horizon, smoothstep(0.0, -0.25, vDir.y));
+    col = mix(col, horizon, 1.0 - smoothstep(-0.25, 0.0, direction.y));
     gl_FragColor = vec4(col, 1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
+    // Match the water's fully fogged horizon in the renderer's output space.
+    // This also works on the direct phone renderer, whose fog is applied after
+    // tone mapping rather than through the desktop output pass.
+    #ifdef USE_FOG
+      gl_FragColor.rgb=mix(gl_FragColor.rgb,fogColor,1.0-smoothstep(-.02,.04,direction.y));
+    #endif
   }`
 
 // Direction of a body in the sky from its height (degrees) and its bearing (0 = straight ahead).
@@ -41,6 +56,7 @@ export function createSky(scene) {
   scene.add(group)
 
   const uniforms = {
+    ...THREE.UniformsUtils.clone(THREE.UniformsLib.fog),
     top: { value: new THREE.Color() },
     horizon: { value: new THREE.Color() },
     glow: { value: new THREE.Color() },
@@ -49,7 +65,7 @@ export function createSky(scene) {
   }
   const dome = new THREE.Mesh(
     new THREE.SphereGeometry(900, 24, 14),
-    new THREE.ShaderMaterial({ uniforms, vertexShader: DOME_VERT, fragmentShader: DOME_FRAG, side: THREE.BackSide, depthWrite: false }),
+    new THREE.ShaderMaterial({ uniforms, vertexShader: DOME_VERT, fragmentShader: DOME_FRAG, side: THREE.BackSide, depthWrite: false, fog:true }),
   )
   dome.frustumCulled = false
   dome.userData.noShadow = true
@@ -58,9 +74,9 @@ export function createSky(scene) {
 
   const spriteMat = (map) => new THREE.SpriteMaterial({ map, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, fog: false })
   const sun = new THREE.Sprite(spriteMat(glowTexture()))
-  sun.scale.setScalar(120)
+  sun.scale.setScalar(56)
   const moon = new THREE.Sprite(new THREE.SpriteMaterial({ map: moonTexture(), depthWrite: false, transparent: true, fog: false }))
-  moon.scale.setScalar(80)
+  moon.scale.setScalar(50)
   sun.renderOrder = moon.renderOrder = -9
   group.add(sun, moon)
 
@@ -83,15 +99,17 @@ export function createSky(scene) {
   // Soft clouds that drift past, low over the horizon where the light catches them.
   const clouds = []
   const cloudMap = cloudTexture()
-  const cloudCount = quality.clouds * 2
+  const cloudCount = quality.clouds
   for (let i = 0; i < cloudCount; i++) {
     const mat = new THREE.SpriteMaterial({ map: cloudMap, depthWrite: false, transparent: true, fog: false, opacity: 0.8 })
     const s = new THREE.Sprite(mat)
     const k = 0.7 + r() * 0.9
-    s.scale.set(380 * k, 150 * k, 1)
+    // Coastal banks stay behind the architecture instead of reading as huge
+    // cotton props immediately over the character and station.
+    s.scale.set(210 * k, 86 * k, 1)
     const a = r() * Math.PI * 2
     const dist = 520 + r() * 260
-    s.userData = { a, dist, y: 70 + r() * 170, speed: 0.004 + r() * 0.006, k }
+    s.userData = { a, dist, y: 100 + r() * 170, speed: 0.004 + r() * 0.006, k }
     s.renderOrder = -8
     clouds.push(s)
     group.add(s)
@@ -128,7 +146,7 @@ export function createSky(scene) {
       uniforms.glow.value.setRGB(...p.glow)
       uniforms.glowAmt.value = p.glowAmt
       // The sun rises ahead on the right and sets ahead on the left, as the day goes on.
-      dirFrom(p.elev, -25 + 60 * Math.min(1, u / 0.7), sunDir)
+      dirFrom(p.elev, sunBearing(u), sunDir)
       uniforms.sunDir.value.copy(sunDir)
       sun.position.copy(sunDir).multiplyScalar(820)
       sun.material.opacity = smooth(-8, 3, p.elev) * (1 - p.night * 0.6)
@@ -148,7 +166,7 @@ export function createSky(scene) {
         // clouds facing the sun glow brighter
         const facing = Math.max(0, (Math.cos(a) * sunDir.x + Math.sin(a) * sunDir.z) / Math.hypot(sunDir.x, sunDir.z || 1e-3))
         c.material.color.copy(tint).multiplyScalar(0.85 + facing * 0.35)
-        c.material.opacity = 0.85 * (1 - p.night * 0.7)
+        c.material.opacity = 0.62 * (1 - p.night * 0.7)
       }
       for (const b of birds) {
         const d = b.userData

@@ -7,14 +7,15 @@ let master = null
 let sfxBus = null
 let musicBus = null
 let engine = null
-let muted = false
+let muted = true
 let started = false
 let timer = 0
 
 try {
-  muted = localStorage.getItem(KEY) === '1'
+  // Begin quietly on a first visit; an explicit earlier sound choice persists.
+  muted = localStorage.getItem(KEY) !== '0'
 } catch {
-  muted = false
+  muted = true
 }
 
 function noiseBuffer(seconds = 1) {

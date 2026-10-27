@@ -14,14 +14,17 @@ import { apply, getLang, initLang, setLang, t } from './i18n.js'
 import { kolamSvg } from './kolam.js'
 import { createLoader } from './loader.js'
 import { detectQuality, hasWebGL } from './scene/quality.js'
-import { STOPS } from './scene/stops.js'
+import { STORY_STOPS as STOPS } from './scene/stops.js'
+import { chapterAt } from './scene/story.js'
 import { createScroll, setupReveals } from './scroll.js'
-import { transition } from './transition.js'
 import { startTyping } from './typing.js'
+import { createStopController } from './stop-controller.js'
+import { createJourneyUI } from './journey-ui.js'
 
 const $ = (s) => document.querySelector(s)
 const $$ = (s) => [...document.querySelectorAll(s)]
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
+let reduced = motionPreference.matches
 gsap.defaults({ ease: 'power3.out' })
 
 // ---------- static content ----------
@@ -30,11 +33,11 @@ function renderProjects() {
   $('#projects').innerHTML = PROJECTS.map(
     (p, i) => `
     <a class="card" href="${p.href}" target="_blank" rel="noopener" data-cursor="Open">
-      <span class="card-top"><span class="card-num mono">0${i + 1}</span><span class="card-tag mono">${escapeHtml(p.tag)}</span></span>
+      <span class="card-top"><span class="card-num mono">0${i + 1}</span><span class="card-tag mono">${escapeHtml(p.tag)}${p.draft ? ' · ' + escapeHtml(t('projects.draft')) : ''}</span></span>
       <h3>${escapeHtml(p.name)}</h3>
       <p>${escapeHtml(p.line[getLang()] ?? p.line.en)}</p>
-      <span class="card-link">${escapeHtml(t('projects.view'))} <span aria-hidden="true">↗</span></span>
-    </a>`,
+      <span class="card-link">${escapeHtml(t(p.draft ? 'projects.search' : 'projects.view'))} <span aria-hidden="true">↗</span></span>
+    </a><button type="button" class="project-open" data-open-project="${i}" aria-label="${escapeHtml(t('story.project') + ': ' + p.name)}">${escapeHtml(t('story.project'))} ↗</button>`,
   ).join('')
 }
 // About: numbers and skills. Experience: the timeline and awards.
@@ -70,8 +73,13 @@ initHover()
 
 const loader = createLoader()
 const scroll = createScroll()
-const cookies = initCookies()
+const cookies = initCookies({ beforeSettings: () => journey.close() })
 const typing = startTyping($('#role'), () => ROLES[getLang()], { reduced })
+
+document.addEventListener('click', (event) => {
+  const button=event.target.closest('[data-open-project]')
+  if(button) journey.openProject(Number(button.dataset.openProject))
+})
 
 // ---------- sound button ----------
 const soundBtn = $('#sound-btn')
@@ -94,7 +102,7 @@ $('#lang-btn').addEventListener('click', () => {
   const next = getLang() === 'en' ? 'ta' : 'en'
   gsap.to('main, .hud, .rail', {
     opacity: 0,
-    duration: 0.25,
+    duration: reduced ? 0 : 0.25,
     onComplete: () => {
       setLang(next)
       renderProjects()
@@ -102,7 +110,7 @@ $('#lang-btn').addEventListener('click', () => {
       paintSound()
       typing.restart()
       scroll.measure()
-      gsap.to('main, .hud, .rail', { opacity: 1, duration: 0.5 })
+      gsap.to('main, .hud, .rail', { opacity: 1, duration: reduced ? 0 : 0.5 })
     },
   })
 })
@@ -112,20 +120,44 @@ const quality = detectQuality()
 const webgl = hasWebGL()
 let scene = null
 let gameOpen = false
+const stops=createStopController()
+function departStop() {
+  const held=stops.state().held,index=held??scroll.readingAt(scene?.position()??scroll.u())
+  if(index<0)return
+  if(held!==null)stops.release()
+  journey.setStop(null)
+  scroll.start()
+  if(index+1<STOPS.length)goTo(index+1)
+  else scroll.scrollTo(document.documentElement.scrollHeight-innerHeight,reduced,4)
+}
+const journey = createJourneyUI({
+  onContinue:departStop,
+  onOpen: () => { scroll.stop(); scene?.setPaused(true); audio.setEngine(0) },
+  onClose: () => {
+    if (gameOpen) return false
+    scroll.start()
+    scene?.setPaused(false)
+    return true
+  },
+})
 
 async function boot() {
   loader.progress(0.05, t('loader.loading'))
   await Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 2500))])
   loader.progress(0.15)
   if (webgl) {
+    await loader.preparePreview()
     try {
       const { createScene } = await import('./scene/index.js')
       scene = await createScene({
         canvas: $('#gl'),
+        reduced,
+        onProject: (index) => journey.openProject(index),
         report: (f, label) => loader.progress(0.15 + f * 0.85, label),
         // credit the authors of any real 3D models in the footer
         onCredits: (credits) => ($('#credits').textContent = credits.length ? '3D models: ' + credits.join(' · ') : ''),
       })
+      journey.setWorldMode(true)
     } catch (err) {
       console.error(err)
       scene = null
@@ -144,26 +176,34 @@ async function start() {
   audio.unlock()
   paintSound()
   audio.sfx.start()
-  loader.hide()
+  scroll.reset()
+  scene?.jump(0)
+  scene?.frame(0)
   document.body.classList.add('started')
+  await loader.hide()
   running = true
   scroll.start()
   scroll.measure()
-  setupReveals()
+  if (!scene) setupReveals()
   typing.restart()
-  gsap.fromTo('[data-intro]', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.09, delay: 0.5, ease: 'power3.out' })
-  gsap.fromTo('.topbar, .rail, .hud', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 1, delay: 0.9, stagger: 0.1 })
+  if (reduced) gsap.set('[data-intro], .topbar, .rail, .hud', { opacity: 1, y: 0 })
+  else {
+    gsap.fromTo('[data-intro]', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.09, delay: 0, ease: 'power3.out' })
+    gsap.fromTo('.topbar, .rail, .hud', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 1, delay: 0, stagger: 0.1 })
+  }
   setTimeout(() => cookies.maybeShow(), 2200)
 }
 
-// ---------- jumping between stops (with a page transition) ----------
+// ---------- continuous travel between stops ----------
 function goTo(index) {
+  stops.visit(index,scene?.position()??scroll.u())
+  journey.setStop(null)
+  scroll.start()
   audio.sfx.click()
-  transition(() => {
-    scroll.scrollTo(scroll.offsetFor(index), true)
-    scene?.jump(STOPS[index])
-    ScrollTrigger.update()
-  })
+  const duration = Math.max(1.8, Math.abs(STOPS[index] - (scene?.position() ?? scroll.u())) / 0.065)
+  scroll.scrollTo(scroll.offsetFor(index), reduced, duration)
+  if (reduced) scene?.jump(STOPS[index])
+  ScrollTrigger.update()
 }
 $$('[data-nav]').forEach((el) =>
   el.addEventListener('click', (e) => {
@@ -175,16 +215,19 @@ $$('[data-nav]').forEach((el) =>
 // ---------- HUD: which stop and what time of day ----------
 let lastHud = ''
 function updateHud(u) {
-  let nearest = 0
-  STOPS.forEach((s, i) => Math.abs(s - u) < Math.abs(STOPS[nearest] - u) && (nearest = i))
+  const nearest = chapterAt(u)
   const phase = scene ? scene.phase() : 'noon'
   const key = `${nearest}:${phase}:${getLang()}`
   $('.rail-fill').style.transform = `scaleY(${Math.min(1, u)})`
   if (key === lastHud) return
   lastHud = key
-  $('.hud-stop').textContent = `${t('hud.stop')} ${nearest + 1}/5 · ${t('nav.' + STOP_IDS[nearest])}`
+  $('.hud-stop').textContent = `${t('hud.stop')} ${nearest + 1}/${STOPS.length} · ${t('nav.' + STOP_IDS[nearest])}`
   $('.hud-phase').textContent = t('phase.' + phase)
-  $$('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === nearest))
+  $$('.nav-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === nearest)
+    if(i===nearest)d.setAttribute('aria-current','step')
+    else d.removeAttribute('aria-current')
+  })
 }
 window.addEventListener('langchange', () => {
   lastHud = ''
@@ -195,6 +238,7 @@ window.addEventListener('langchange', () => {
 const game = createGame({
   onOpen: () => {
     gameOpen = true
+    journey.close()
     scroll.stop()
     scene?.setPaused(true)
   },
@@ -205,32 +249,77 @@ const game = createGame({
   },
 })
 for (const id of ['#play-btn', '#play-btn-2'])
-  $(id).addEventListener('click', () => {
+  $(id).addEventListener('click', (event) => {
     if (!audio.isStarted()) audio.unlock()
     audio.sfx.click()
-    game.open()
+    game.open(event.currentTarget)
   })
 
 // ---------- mouse parallax ----------
 window.addEventListener('pointermove', (e) => scene?.setMouse((e.clientX / innerWidth) * 2 - 1, (e.clientY / innerHeight) * 2 - 1))
 window.addEventListener('resize', () => scene?.resize())
+motionPreference.addEventListener('change', (event) => {
+  reduced = event.matches
+  scene?.setReducedMotion(reduced)
+  typing.setReducedMotion(reduced)
+})
+$('#gl').addEventListener('webglcontextlost', (event) => {
+  event.preventDefault()
+  scene?.setPaused(true)
+  scene = null
+  journey.setWorldMode(false)
+  document.body.classList.add('no-3d')
+  scroll.measure()
+  $('.no-webgl').hidden = false
+  $('.no-webgl').tabIndex=-1
+  $('.no-webgl').focus({preventScroll:true})
+})
 
 // ---------- one loop for scrolling, the scene and the engine sound ----------
 gsap.ticker.lagSmoothing(0)
 let running = false
 gsap.ticker.add((time, deltaMs) => {
+  if (document.hidden) return
   scroll.raf(time)
   const u = scroll.u()
   // the 3D world only renders once the visitor has pressed Start
   if (scene && running) {
-    scene.setTarget(u)
+    const held=stops.state().held
+    if(held!==null && scroll.leftStop(held)){stops.release(scroll.directionLeaving(held));journey.setStop(null)}
+    scene.setTarget(stops.target(u,scene.position()))
     scene.frame(deltaMs / 1000)
+    const arrival=stops.arrive(scene.position())
+    if(arrival!==null) {
+      scroll.settle(arrival,stops.state().direction)
+      scene.jump(STOPS[arrival])
+      scene.frame(0)
+      journey.setStop(arrival)
+      audio.setEngine(0)
+    }
+    const reading=scroll.readingAt(scene.position())
+    journey.setStop(reading<0?null:reading)
+    journey.setReadingProgress(reading<0?0:scroll.readingProgress(reading))
     if (!gameOpen) audio.setEngine(scene.motion().speed)
   }
   updateHud(scene ? scene.position() : u)
+  journey.update(scene ? scene.position() : u, scene?.story())
 })
 
 document.documentElement.classList.toggle('lite', quality.low)
 // ?debug exposes the trip position for automated checks
-if (new URLSearchParams(location.search).has('debug')) window.__trip = { u: () => scene?.position() ?? 0, y: () => scroll.lenis.scroll }
+if (new URLSearchParams(location.search).has('debug')) window.__trip = { u: () => scene?.position() ?? 0, profile:()=>scene?.profile(), effects:settings=>scene?.setEffects(settings), y: () => scroll.lenis.scroll, metrics: () => scene?.metrics() ?? null, story: () => scene?.story(), stop:()=>stops.state(), scrollState:()=>scroll.diagnostics(), continue:departStop, exhibits: () => scene?.exhibits(), goTo,
+  inspect(u) {
+    if (!scene) return false
+    running = false
+    scroll.stop()
+    scene.setPaused(false)
+    scene.jump(u)
+    scene.frame(0)
+    updateHud(u)
+    journey.update(u, scene.story())
+    return scene.metrics()
+  },
+  resume() { running = true; scroll.start() },
+  sampleFrame(delta) { if(!scene||running)return false;scene.frame(delta);return scene.metrics() },
+}
 boot()

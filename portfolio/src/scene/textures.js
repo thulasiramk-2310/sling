@@ -3,6 +3,7 @@
 import * as THREE from 'three'
 import { quality } from './quality.js'
 import { rng } from './util.js'
+import { bakeCloud } from './cloud-density.js'
 
 function canvas(w, h) {
   const c = document.createElement('canvas')
@@ -38,16 +39,24 @@ function speckle(ctx, w, h, amount, rand, dark = '0,0,0', light = '255,255,255')
 
 export const roadTexture = () =>
   once('road', () => {
-    const { c, ctx, w, h } = canvas(128, 512)
+    const { c, ctx, w, h } = canvas(1024, 1024)
     const r = rng(3)
-    ctx.fillStyle = '#5b5560'
+    ctx.fillStyle = '#383b3b'
     ctx.fillRect(0, 0, w, h)
-    speckle(ctx, w, h, 1400, r)
-    ctx.fillStyle = '#e9e4d4'
-    ctx.fillRect(w * 0.05, 0, 3, h)
-    ctx.fillRect(w * 0.95 - 3, 0, 3, h)
-    ctx.fillStyle = '#f2ead0'
-    ctx.fillRect(w / 2 - 2, 0, 4, h * 0.38)
+    // Fine aggregate and subtle wheel wear; no oversized white gravel pixels.
+    for(let i=0;i<48000;i++) {
+      ctx.fillStyle=`rgba(${r()>.5?'0,0,0':'185,184,175'},${.03+r()*.09})`
+      ctx.fillRect(r()*w,r()*h,.5+r(),.5+r())
+    }
+    for(const lane of [.25,.75]) {
+      const wear=ctx.createLinearGradient((lane-.10)*w,0,(lane+.10)*w,0)
+      wear.addColorStop(0,'rgba(10,12,12,0)');wear.addColorStop(.5,'rgba(10,12,12,.13)');wear.addColorStop(1,'rgba(10,12,12,0)')
+      ctx.fillStyle=wear;ctx.fillRect((lane-.1)*w,0,w*.2,h)
+    }
+    ctx.fillStyle = '#d6d4c7'
+    const line=w*.014
+    ctx.fillRect(w*.055,0,line,h);ctx.fillRect(w*.945-line,0,line,h)
+    ctx.fillRect(w/2-line/2,0,line,h*.25)
     return toTexture(c)
   })
 
@@ -153,49 +162,6 @@ export function tierTextures(name, palette, seed) {
   })
 }
 
-// Wall of carved rock: elephants and figures, drawn as shallow relief.
-export const carveTexture = () =>
-  once('carve', () => {
-    const { c, ctx, w, h } = canvas(512, 256)
-    const r = rng(21)
-    ctx.fillStyle = '#9c8a72'
-    ctx.fillRect(0, 0, w, h)
-    speckle(ctx, w, h, 2500, r)
-    const elephant = (x, y, s) => {
-      ctx.save()
-      ctx.translate(x, y)
-      ctx.scale(s, s)
-      ctx.fillStyle = 'rgba(70,52,34,.38)'
-      ctx.strokeStyle = 'rgba(40,28,18,.6)'
-      ctx.lineWidth = 1.6
-      ctx.beginPath()
-      ctx.ellipse(0, 0, 34, 20, 0, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.stroke()
-      ctx.beginPath()
-      ctx.ellipse(36, -8, 14, 12, 0, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.stroke()
-      ctx.beginPath()
-      ctx.moveTo(46, -2)
-      ctx.quadraticCurveTo(58, 14, 48, 28)
-      ctx.stroke()
-      for (const lx of [-22, -8, 10, 24]) ctx.fillRect(lx - 4, 14, 8, 24)
-      ctx.restore()
-    }
-    for (let i = 0; i < 5; i++) elephant(60 + i * 100, 150 + r() * 30, 0.8 + r() * 0.5)
-    // standing figures along the top
-    for (let i = 0; i < 12; i++) {
-      const x = 20 + i * 42
-      ctx.fillStyle = 'rgba(70,52,34,.33)'
-      ctx.beginPath()
-      ctx.arc(x, 40, 7, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.fillRect(x - 6, 48, 12, 34 + r() * 14)
-    }
-    return toTexture(c)
-  })
-
 export const clockTexture = () =>
   once('clock', () => {
     const { c, ctx, w, h } = canvas(128, 128)
@@ -260,13 +226,14 @@ export function windowTextures() {
 // Tileable bumps for the sea surface (made from whole-number sine waves so it repeats cleanly).
 export const seaNormalTexture = () =>
   once('sea', () => {
-    const n = quality.low ? 64 : 128
+    const n = quality.low ? 128 : 256
     const height = new Float32Array(n * n)
     const waves = [
       [2, 1, 0.3, 1],
       [1, 3, 1.7, 0.7],
       [4, 2, 2.9, 0.5],
       [3, 5, 4.1, 0.35],
+      [7, 3, 1.2, 0.22], [5, 11, 3.8, 0.16], [13, 7, 2.1, 0.09], [19, 17, 4.7, 0.05],
     ]
     for (let y = 0; y < n; y++)
       for (let x = 0; x < n; x++) {
@@ -279,16 +246,18 @@ export const seaNormalTexture = () =>
       for (let x = 0; x < n; x++) {
         const dx = height[y * n + ((x + 1) % n)] - height[y * n + ((x + n - 1) % n)]
         const dy = height[((y + 1) % n) * n + x] - height[((y + n - 1) % n) * n + x]
-        const len = Math.hypot(dx, dy, 1)
+        const len = Math.hypot(dx*.25, dy*.25, 1)
         const i = (y * n + x) * 4
-        data[i] = ((-dx / len) * 0.5 + 0.5) * 255
-        data[i + 1] = ((-dy / len) * 0.5 + 0.5) * 255
+        data[i] = ((-dx*.25 / len) * 0.5 + 0.5) * 255
+        data[i + 1] = ((-dy*.25 / len) * 0.5 + 0.5) * 255
         data[i + 2] = ((1 / len) * 0.5 + 0.5) * 255
         data[i + 3] = 255
       }
     const t = new THREE.DataTexture(data, n, n)
     t.wrapS = t.wrapT = THREE.RepeatWrapping
-    t.magFilter = t.minFilter = THREE.LinearFilter
+    t.magFilter = THREE.LinearFilter
+    t.minFilter = THREE.LinearMipmapLinearFilter
+    t.generateMipmaps = true
     t.needsUpdate = true
     return t
   })
@@ -329,18 +298,9 @@ export const moonTexture = () =>
 
 export const cloudTexture = () =>
   once('cloud', () => {
-    const { c, ctx, w, h } = canvas(256, 128)
-    const r = rng(17)
-    for (let i = 0; i < 16; i++) {
-      const x = 50 + r() * (w - 100)
-      const y = h / 2 + (r() - 0.5) * 24
-      const rad = 22 + r() * 30
-      const g = ctx.createRadialGradient(x, y, 0, x, y, rad)
-      g.addColorStop(0, 'rgba(255,255,255,.55)')
-      g.addColorStop(1, 'rgba(255,255,255,0)')
-      ctx.fillStyle = g
-      ctx.fillRect(x - rad, y - rad, rad * 2, rad * 2)
-    }
+    const { c, ctx } = canvas(512, 256)
+    const data=bakeCloud(c.width,c.height,quality.low?16:24)
+    ctx.putImageData(new ImageData(data,c.width,c.height),0,0)
     return toTexture(c, { repeat: false })
   })
 
@@ -415,18 +375,7 @@ export const vimanaWallTexture = (base = '#b89a76') =>
       ctx.fillStyle = 'rgba(255,238,212,.2)'
       ctx.fillRect(x + 32, 44, 64, 8)
       ctx.fillRect(x + 32, 202, 64, 6)
-      // deity figure in the niche
-      ctx.fillStyle = 'rgba(178,150,116,.95)'
-      ctx.beginPath()
-      ctx.arc(x + 64, 86, 10, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.beginPath()
-      ctx.moveTo(x + 50, 196)
-      ctx.lineTo(x + 54, 100)
-      ctx.lineTo(x + 74, 100)
-      ctx.lineTo(x + 78, 196)
-      ctx.fill()
-      ctx.fillRect(x + 44, 108, 40, 6)
+      // Sculptures are geometry now; this texture only describes the stone niche.
     }
     // mouldings top and bottom
     ctx.fillStyle = 'rgba(255,238,212,.22)'

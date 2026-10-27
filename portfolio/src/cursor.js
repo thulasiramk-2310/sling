@@ -5,7 +5,7 @@ const HOVER = 'a, button, [data-hover], .card, .nav-dot, input[type="range"]'
 
 export function initCursor() {
   const fine = window.matchMedia('(pointer: fine)').matches
-  if (!fine) return
+  if (!fine || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   document.documentElement.classList.add('has-cursor')
   const dot = document.querySelector('.cursor-dot')
   const ring = document.querySelector('.cursor-ring')
@@ -36,6 +36,7 @@ export function initCursor() {
 
 // Buttons lift and lean toward the pointer; cards lift and tilt a little.
 export function initHover() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   const fine = window.matchMedia('(pointer: fine)').matches
   const lift = (el, y, scale) => gsap.to(el, { y, scale, duration: 0.45, ease: 'power3.out', overwrite: 'auto' })
   document.addEventListener('pointerover', (e) => {
