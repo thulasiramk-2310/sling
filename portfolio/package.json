@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "lint": "oxlint",
+    "lint": "oxlint src tests scripts vite.config.js",
     "check:scene": "node tests/scene.node.mjs",
     "export:elephant": "node scripts/export-elephant.mjs"
   },
