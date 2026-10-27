@@ -1,0 +1,67 @@
+{
+  "blender": "4.5.9 LTS",
+  "input": "/home/Ram/Downloads/tamil-nadu-to-world/review-assets/poet-pipeline/2026-10-27-drapery-v6/poet-source-low.glb",
+  "output": "/home/Ram/Downloads/tamil-nadu-to-world/review-assets/poet-pipeline/2026-10-27-drapery-v6/poet-finished-low.glb",
+  "voxel": 0.025,
+  "smooth": 0.2,
+  "iterations": 2,
+  "targetTriangles": 55000,
+  "normalCreaseDegrees": 60,
+  "sourceTopologyNote": "Source GLB is nonindexed triangle soup; raw before-edge counts do not test spatially welded closure.",
+  "before": {
+    "vertices": 189030,
+    "triangles": 63010,
+    "nonfinite": 0,
+    "boundaryEdges": 189030,
+    "nonmanifoldEdges": 189030,
+    "minimum": [
+      -4.441317558288574,
+      -2.735167980194092,
+      0.03000001236796379
+    ],
+    "maximum": [
+      4.434603214263916,
+      1.4805928468704224,
+      28.048826217651367
+    ],
+    "height": 28.018826205283403
+  },
+  "afterRemesh": {
+    "vertices": 1170582,
+    "triangles": 2341160,
+    "nonfinite": 0,
+    "boundaryEdges": 0,
+    "nonmanifoldEdges": 0,
+    "minimum": [
+      -4.437103748321533,
+      -2.727846622467041,
+      0.03111848048865795
+    ],
+    "maximum": [
+      4.431939125061035,
+      1.4768472909927368,
+      28.047208786010742
+    ],
+    "height": 28.016090305522084
+  },
+  "after": {
+    "vertices": 27364,
+    "triangles": 54724,
+    "nonfinite": 0,
+    "boundaryEdges": 0,
+    "nonmanifoldEdges": 0,
+    "minimum": [
+      -4.438541889190674,
+      -2.7302074432373047,
+      0.03022959642112255
+    ],
+    "maximum": [
+      4.4319868087768555,
+      1.4774789810180664,
+      28.04671287536621
+    ],
+    "height": 28.01648327894509
+  },
+  "visualApproval": false,
+  "origin": "Original project geometry only"
+}

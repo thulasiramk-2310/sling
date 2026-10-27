@@ -13,7 +13,7 @@ import { createGame } from './game.js'
 import { apply, getLang, initLang, setLang, t } from './i18n.js'
 import { kolamSvg } from './kolam.js'
 import { createLoader } from './loader.js'
-import { detectQuality, hasWebGL } from './scene/quality.js'
+import { detectQuality, hasWebGL, shouldOfferReadable } from './scene/quality.js'
 import { STORY_STOPS as STOPS } from './scene/stops.js'
 import { chapterAt } from './scene/story.js'
 import { createScroll, setupReveals } from './scroll.js'
@@ -132,6 +132,7 @@ function departStop() {
 }
 const journey = createJourneyUI({
   onContinue:departStop,
+  onReadable:()=>showReadable(true),
   onOpen: () => { scroll.stop(); scene?.setPaused(true); audio.setEngine(0) },
   onClose: () => {
     if (gameOpen) return false
@@ -263,21 +264,33 @@ motionPreference.addEventListener('change', (event) => {
   scene?.setReducedMotion(reduced)
   typing.setReducedMotion(reduced)
 })
-$('#gl').addEventListener('webglcontextlost', (event) => {
-  event.preventDefault()
+function showReadable(requested=false) {
   scene?.setPaused(true)
   scene = null
+  audio.setEngine(0)
   journey.setWorldMode(false)
+  document.body.classList.remove('clean-journey')
   document.body.classList.add('no-3d')
+  scroll.start()
   scroll.measure()
-  $('.no-webgl').hidden = false
-  $('.no-webgl').tabIndex=-1
-  $('.no-webgl').focus({preventScroll:true})
+  const notice=$('.no-webgl')
+  if(requested){
+    for(const [selector,key] of [['strong','readable.title'],['p','readable.body']]){
+      const element=notice.querySelector(selector);element.dataset.i18n=key;element.textContent=t(key)
+    }
+    scroll.scrollTo(0,true)
+  }
+  notice.hidden=false;notice.tabIndex=-1;notice.focus({preventScroll:true})
+}
+$('#gl').addEventListener('webglcontextlost', (event) => {
+  event.preventDefault()
+  showReadable()
 })
 
 // ---------- one loop for scrolling, the scene and the engine sound ----------
 gsap.ticker.lagSmoothing(0)
 let running = false
+let qualityCheckedAt=0
 gsap.ticker.add((time, deltaMs) => {
   if (document.hidden) return
   scroll.raf(time)
@@ -288,6 +301,10 @@ gsap.ticker.add((time, deltaMs) => {
     if(held!==null && scroll.leftStop(held)){stops.release(scroll.directionLeaving(held));journey.setStop(null)}
     scene.setTarget(stops.target(u,scene.position()))
     scene.frame(deltaMs / 1000)
+    if(time-qualityCheckedAt>=2){
+      qualityCheckedAt=time
+      journey.setReadableAvailable(shouldOfferReadable(scene.metrics(),quality.adaptive))
+    }
     const arrival=stops.arrive(scene.position())
     if(arrival!==null) {
       scroll.settle(arrival,stops.state().direction)

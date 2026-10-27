@@ -62,7 +62,7 @@ no-JavaScript content are integrated. There are no required API keys or backend.
 
 ## Verification
 
-The source is installed using `npm ci` from its real lockfile. **118 tests in 26
+The source is installed using `npm ci` from its real lockfile. **120 tests in 26
 files pass**, oxlint reports no warnings, and Vite's production build succeeds.
 The native production input suite passes **21 checks at each width (42 total)**,
 including both modal handoffs. Browser checks serve the
@@ -79,6 +79,7 @@ Current evidence is saved beside the checkout:
 | --- | --- |
 | `review-madurai/desktop-interactions.json` | Native wheel, all six arrivals and reverse revisits, keyboard skills/language/sound, project details/media/pagination, seven pointer raycasts, modal handoffs, game focus and actual context loss |
 | `review-madurai/phone-interactions.json` | Same route with touch exhibit activation and 390px layout |
+| `review-product/performance-readable-results.json` | Actual low-frame-rate detection after adaptation, native keyboard selection, stopped renderer, live readable content and restored scrolling |
 | `review-product/readable-fallback-results.json` | No JavaScript and no WebGL at 1440px and 390px; real links, project reader and no horizontal overflow |
 | `review-sculpture/desktop-results.json` | Loader plus eleven authored camera poses; high-quality shaders, accepted GLBs and current sky-lighting checks |
 | `review-sculpture/phone-results.json` | Same portrait route with lighter geometry/materials and low-cost water |
@@ -88,11 +89,16 @@ The interaction route uses reduced motion to make native input checks practical
 on software rendering. Static inspections do not prove scroll smoothness or FPS.
 Motion continuity and drive acceleration are additionally covered by source tests.
 
-A real 20-second cadence sample rendered 21 frames: about **1.05 FPS on
-SwiftShader** at the statue view. Adaptation reduced DPR from 1 to .75 and disabled
-AO, reflections, bloom and shadows. This proves the degradation path runs; it
-**does not** establish the requested 60 FPS on a capable GPU. The engine's final
-recent-window estimate is not used as the average for that sample.
+The latest fixed-pose sample rendered 18 frames over 20.52 seconds,
+**0.88 FPS on SwiftShader**. This remains below a usable interactive rate.
+Adaptive quality lowers DPR to .75 and disables AO, reflections, bloom and
+shadows. If the measured rate still remains below 12 FPS after those reductions,
+an optional “Read portfolio” button exposes the compact profile and stops 3D
+rendering. This is a visitor choice; GPU-capable visits retain the normal journey.
+The exact latest normal-motion sample and its renderer identity are bundled in
+`verification/software-cadence.json`. The engine's recent-window FPS estimate
+is not treated as the average over that sample. This host's SwiftShader result
+**does not** establish the requested 60 FPS on a capable GPU.
 
 ## Asset provenance and art limits
 
@@ -100,8 +106,8 @@ World geometry, surface textures, character, auto and synthesized sound are
 original code. Elephant and poet meshes are original GLBs; the latter are finished
 through the reproducible Blender pipeline in `scripts/export-poet.mjs` and
 `scripts/finish-poet.py`. Four figure-module hashes and output hashes are recorded
-in `public/models/poet-provenance.json`. The latest material adjustment changes
-only the runtime finish, not that geometry provenance.
+in `public/models/poet-provenance.json`. The [latest sculpture revision](poet-v6-review.md) rebuilds both original GLBs,
+records their updated source/output hashes and adds a matching island terrace.
 
 Project image sources and licenses are bundled in `public/projects/`; UI fonts
 retain their licenses, and `public/fonts/LICENSE` covers the bundled Optimer font.

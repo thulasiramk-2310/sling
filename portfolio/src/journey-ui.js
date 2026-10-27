@@ -4,7 +4,7 @@ import { sample } from './scene/timeline.js'
 import { getLang, t } from './i18n.js'
 import { paintProjectDetails } from './project-details.js'
 
-export function createJourneyUI({onOpen,onClose,onContinue}) {
+export function createJourneyUI({onOpen,onClose,onContinue,onReadable}) {
   const root=document.createElement('aside');root.className='journey-caption';root.hidden=true;root.setAttribute('data-lenis-prevent','')
   root.innerHTML='<p class="journey-eyebrow mono"></p><h1 class="journey-heading"></h1><p class="journey-subtitle"></p><div class="story-intro-copy"><p></p><p class="story-education mono"></p><dl class="story-stats"></dl></div><div class="story-skills" aria-live="polite"><p class="story-score mono"></p><div class="story-skill-list"></div></div><button class="journey-read" type="button" aria-controls="stop-detail"></button>'
   const skillFocus=document.createElement('div');skillFocus.className='story-skill-focus';root.querySelector('.story-skills').prepend(skillFocus)
@@ -19,6 +19,8 @@ export function createJourneyUI({onOpen,onClose,onContinue}) {
   continueButton.addEventListener('click',()=>onContinue?.());root.append(continueButton)
   const direction=document.createElement('p');direction.className='journey-direction mono';direction.hidden=true
   const hideButton=document.createElement('button');hideButton.type='button';hideButton.className='journey-clean';hideButton.hidden=true;hideButton.setAttribute('aria-pressed','false')
+  const readableButton=document.createElement('button');readableButton.type='button';readableButton.className='journey-readable';readableButton.hidden=true
+  readableButton.addEventListener('click',()=>onReadable?.())
   const dialog=document.createElement('dialog');dialog.id='stop-detail';dialog.className='stop-detail';dialog.setAttribute('aria-labelledby','stop-detail-title');dialog.setAttribute('data-lenis-prevent','')
   dialog.innerHTML='<header class="detail-header"><span class="mono" id="stop-detail-title"></span><button class="detail-close" type="button"></button></header><div class="detail-content"></div>'
   const projectDialog=document.createElement('dialog');projectDialog.className='stop-detail project-detail';projectDialog.setAttribute('aria-labelledby','project-title');projectDialog.setAttribute('data-lenis-prevent','')
@@ -31,7 +33,7 @@ export function createJourneyUI({onOpen,onClose,onContinue}) {
     if(!href.startsWith('mailto:')){link.target='_blank';link.rel='noopener'}
     contactList.append(link)
   }
-  document.body.append(root,direction,hideButton,dialog,projectDialog,connections)
+  document.body.append(root,direction,hideButton,readableButton,dialog,projectDialog,connections)
   const sections=STOP_IDS.map(id=>document.getElementById(id)),panels=sections.map(section=>section.querySelector('.panel'))
   let active=0,world=false,clean=false,reading=null,restoreFocus=null,projectIndex=null
   let current=storyAt(0),discovered=[],parked=null,selectedSkill=null
@@ -90,6 +92,7 @@ export function createJourneyUI({onOpen,onClose,onContinue}) {
     }
     paintSkill()
     hideButton.textContent=t(clean?'journey.showUI':'journey.hideUI')
+    readableButton.textContent=t('journey.readable')+' ↗'
     dialog.querySelector('.detail-close').textContent=t('journey.close')+' ×'
     if(projectIndex===null)projectDialog.querySelector('.detail-close').textContent=t('journey.close')+' ×'
     if(reading!==null) dialog.querySelector('#stop-detail-title').textContent=t(current.stage==='introduction'?'about.title':'nav.'+STOP_IDS[reading])
@@ -127,8 +130,9 @@ export function createJourneyUI({onOpen,onClose,onContinue}) {
   const api={
     setStop(index){if(parked===index)return;parked=index;selectedSkill=null;paint()},
     setReadingProgress(progress){root.style.setProperty('--reading-progress',progress)},
+    setReadableAvailable(value){readableButton.hidden=!world||!value},
     setWorldMode(value){
-      if(!value){close();connections.hidden=true;document.body.classList.remove('connections-visible')}
+      if(!value){close();connections.hidden=true;readableButton.hidden=true;document.body.classList.remove('connections-visible')}
       world=value;document.body.classList.toggle('world-first',value);root.hidden=hideButton.hidden=direction.hidden=!value;panels.forEach(panel=>{panel.inert=value})
     },
     update(progress,narrative){

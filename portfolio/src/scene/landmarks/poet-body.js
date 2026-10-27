@@ -133,14 +133,17 @@ function chestBand(along,across,layer=0) {
 // Their common field keeps the drapery continuous across both cloth masses.
 function lowerClothRelief(x,y) {
   const folds=[
-    [1.7,.40,.22,.14,.14,0,3.4],[3.9,.48,.28,.21,.10,-.8,2.5],
-    [6.2,.50,.32,.34,.13,.8,2.5],[8.7,.50,.30,.29,.10,1.1,2.2],
-    [11.3,.54,.26,.35,.08,.4,2.7],[13.7,.50,.22,.36,.12,-.2,2.8],
+    // Broad, unequal cloth rolls survive voxel finishing and the coastal
+    // establishing distance. Curvature and taper keep them from reading as
+    // equally spaced horizontal rings around an otherwise flat column.
+    [1.65,.48,.37,.10,.14,-.35,3.5],[3.85,.55,.47,.19,.11,-1.0,2.7],
+    [6.15,.58,.54,.32,.11,.55,2.8],[8.65,.57,.50,.24,.10,1.15,2.5],
+    [11.25,.60,.44,.39,.075,.20,3.0],[13.65,.56,.37,.33,.105,-.35,3.0],
   ]
   let relief=0
   for(const [height,width,amplitude,slope,bowl,center,spread] of folds) {
     const local=x-center,seam=height+slope*local+bowl*local*local
-    relief+=(amplitude*bell(y-seam,width)-amplitude*.35*bell(y-seam+width*1.4,width))
+    relief+=(amplitude*bell(y-seam,width)-amplitude*.44*bell(y-seam+width*1.35,width*.92))
       *bell(local,spread)
   }
   return relief
@@ -158,9 +161,11 @@ function lowerGarment(low) {
   return loft(profile,low?88:112,low?40:52,(v,angle)=>{
     const front=Math.max(0,Math.sin(angle))**2
     const relief=lowerClothRelief(v.x,v.y)
-    const knee=.45*bell(v.x-1.25,.95)*bell(v.y-9.1,2.1)
-    const supportingThigh=-.18*bell(v.x+1.25,.9)*bell(v.y-7,3)
-    const crease=-.10*bell(v.x-(.25+.025*v.y),.26)*bell(v.y-7,6)
+    const knee=.58*bell(v.x-1.35,1.08)*bell(v.y-9.35,2.35)
+    const supportingThigh=-.28*bell(v.x+1.20,1.12)*bell(v.y-7.5,3.5)
+    // A broad turning plane separates the weighted and relaxed legs; a sharp
+    // vertical groove here previously made the wrap resemble a thin seam.
+    const crease=-.12*bell(v.x-(.18+.025*v.y),.43)*bell(v.y-7,6)
     v.z+=(relief+knee+supportingThigh+crease)*front*(1-THREE.MathUtils.smoothstep(v.y,14,16.2))
   })
 }
@@ -185,7 +190,7 @@ export function poetBodyGeometry(low=false) {
     const hemFade=1-THREE.MathUtils.smoothstep(y,13.2,18.4)
     v.y+=(.50*v.x+.22*Math.sin(v.x*.7)+.10*Math.sin(v.x*1.3))*hemFade
     const crest=.17*bell(y-(14.05+.08*v.x),.65)+.075*bell(y-(15.2+.12*v.x),.48)
-    v.z+=crest*front*(1-THREE.MathUtils.smoothstep(y,17,18.4))
+    v.z+=(crest+lowerClothRelief(v.x,v.y)*.75)*front*(1-THREE.MathUtils.smoothstep(y,17,18.4))
   }))
   // A shallow rear drape meets the outer robe while the shared front surface
   // preserves the knee and supporting-thigh depth without an open leg valley.
@@ -213,8 +218,8 @@ export function poetBodyGeometry(low=false) {
   parts.push(loft([
     // A continuous overlapping cloth fall crosses the supporting leg and
     // gathers onto the projecting knee; it is not a thin vertical seam.
-    [1.0,.44,.28,.26,1.19],[2.6,.58,.34,.30,1.29],[6,.72,.39,.40,1.44],
-    [9,.83,.42,.66,1.65],[12.2,1.00,.36,1.00,1.39],[15.6,.74,.27,.54,1.27],
+    [1.0,.55,.27,.20,1.24],[2.6,.72,.32,.26,1.35],[6,.92,.37,.42,1.52],
+    [9,1.04,.40,.72,1.75],[12.2,1.10,.34,1.00,1.47],[15.6,.82,.26,.54,1.30],
   ],low?60:76,low?10:12,(v,angle)=>{
     if(Math.sin(angle)>0) {
       v.z+=lowerClothRelief(v.x,v.y)*Math.sin(angle)**2

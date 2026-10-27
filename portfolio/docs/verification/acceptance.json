@@ -1,7 +1,7 @@
 {
   "date": "2026-10-27",
   "unitTests": {
-    "passed": 118,
+    "passed": 120,
     "failed": 0,
     "files": 26
   },
@@ -13,7 +13,7 @@
   "build": {
     "tool": "Vite",
     "exitCode": 0,
-    "entrySha256": "cbd086eccf4e7c14d660c6826ec2ab96ff2ed15a327e4a905f10456c18d02759"
+    "entrySha256": "03dffd13bff60a6479264a36f4581600f70e94643a255a393371da21142047d1"
   },
   "nativeInput": {
     "desktop": 21,
@@ -21,5 +21,6 @@
   },
   "visualQualityGoal": "Above 9/10 remains unestablished; see product-readiness.md",
   "hardwareGpuFps": "Unverified; software rendering only",
-  "note": "Native input covers final interaction logic. Subsequent art-only changes have separate final production rendering and fallback checks."
+  "note": "Final native input checks serve the release build. Full-route static captures cover the adopted v6 geometry. The measured-performance reading handoff has an additional native keyboard check.",
+  "performanceReadable": "Actual slow rendering after adaptation: keyboard selection, focused notice, seven live project entries, active scrolling, no overflow and no further 3D renderer."
 }

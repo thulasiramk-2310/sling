@@ -55,3 +55,10 @@ export function hasWebGL() {
     return false
   }
 }
+
+// Offer an accessible reading path only after the available effect/resolution
+// reductions have been exhausted and measured rendering is still unusable.
+export function shouldOfferReadable(metrics,adaptive) {
+  return !!(adaptive && metrics?.fps>0 && metrics.fps<12 && metrics.dpr<=.76
+    && !metrics.ao && !metrics.reflections && !metrics.bloom && !metrics.shadows)
+}

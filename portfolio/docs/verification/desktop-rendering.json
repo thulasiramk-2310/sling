@@ -1,7 +1,7 @@
 {
   "mode": "desktop",
   "errors": [],
-  "credits": "3D models: Original stone elephant study \u00b7 generated in code \u00b7 Original Thiruvalluvar study \u00b7 code-authored and finished in Blender",
+  "credits": "3D models: Original stone elephant study · generated in code · Original Thiruvalluvar study · code-authored and finished in Blender",
   "assets": [
     {
       "url": "http://127.0.0.1:5174/models/models.json",
@@ -31,8 +31,8 @@
             0.5395632636089066
           ]
         },
-        "drawCalls": 2153,
-        "triangles": 7870951,
+        "drawCalls": 2155,
+        "triangles": 7873159,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -61,7 +61,7 @@
         ],
         "largest": [
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 342,
             "geometryTriangles": 262,
@@ -75,35 +75,35 @@
             "triangles": 78568
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 238,
             "geometryTriangles": 262,
             "triangles": 62356
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 232,
             "geometryTriangles": 262,
             "triangles": 60784
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 194,
             "geometryTriangles": 262,
             "triangles": 50828
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Madurai \u2014 low terrace and shop neighborhood / Madurai neighborhood wood",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
             "geometry": "BufferGeometry",
             "instances": 43,
             "geometryTriangles": 1176,
             "triangles": 50568
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study",
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
             "geometry": "ExtrudeGeometry",
             "instances": 68,
             "geometryTriangles": 644,
@@ -124,14 +124,14 @@
             "triangles": 37708
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Madurai \u2014 granite pedestrian approach",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach",
             "geometry": "BoxGeometry",
             "instances": 3024,
             "geometryTriangles": 12,
             "triangles": 36288
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study",
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
             "geometry": "ExtrudeGeometry",
             "instances": 50,
             "geometryTriangles": 644,
@@ -152,7 +152,7 @@
             "triangles": 32016
           },
           {
-            "name": "Original Chennai coastal arch bridge \u2014 cinematic entrance",
+            "name": "Original Chennai coastal arch bridge — cinematic entrance",
             "geometry": "ExtrudeGeometry",
             "instances": 228,
             "geometryTriangles": 140,
@@ -166,7 +166,7 @@
             "triangles": 29920
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study",
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
             "geometry": "ExtrudeGeometry",
             "instances": 46,
             "geometryTriangles": 644,
@@ -217,8 +217,8 @@
             0.5395632636089066
           ]
         },
-        "drawCalls": 1905,
-        "triangles": 7716099,
+        "drawCalls": 1907,
+        "triangles": 7718307,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -247,7 +247,7 @@
         ],
         "largest": [
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 342,
             "geometryTriangles": 262,
@@ -261,35 +261,35 @@
             "triangles": 78568
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 238,
             "geometryTriangles": 262,
             "triangles": 62356
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 232,
             "geometryTriangles": 262,
             "triangles": 60784
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 194,
             "geometryTriangles": 262,
             "triangles": 50828
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Madurai \u2014 low terrace and shop neighborhood / Madurai neighborhood wood",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
             "geometry": "BufferGeometry",
             "instances": 43,
             "geometryTriangles": 1176,
             "triangles": 50568
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study",
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
             "geometry": "ExtrudeGeometry",
             "instances": 68,
             "geometryTriangles": 644,
@@ -310,14 +310,14 @@
             "triangles": 37708
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Madurai \u2014 granite pedestrian approach",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach",
             "geometry": "BoxGeometry",
             "instances": 3024,
             "geometryTriangles": 12,
             "triangles": 36288
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study",
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
             "geometry": "ExtrudeGeometry",
             "instances": 50,
             "geometryTriangles": 644,
@@ -338,7 +338,7 @@
             "triangles": 32016
           },
           {
-            "name": "Original Chennai coastal arch bridge \u2014 cinematic entrance",
+            "name": "Original Chennai coastal arch bridge — cinematic entrance",
             "geometry": "ExtrudeGeometry",
             "instances": 228,
             "geometryTriangles": 140,
@@ -352,7 +352,7 @@
             "triangles": 29920
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study",
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
             "geometry": "ExtrudeGeometry",
             "instances": 46,
             "geometryTriangles": 644,
@@ -731,21 +731,21 @@
             "triangles": 7728
           },
           {
-            "name": "Pancha Rathas \u2014 five distinct architectural studies / Arjuna \u2014 two-storey square shrine",
+            "name": "Pancha Rathas — five distinct architectural studies / Arjuna — two-storey square shrine",
             "geometry": "ExtrudeGeometry",
             "instances": 12,
             "geometryTriangles": 644,
             "triangles": 7728
           },
           {
-            "name": "Pancha Rathas \u2014 five distinct architectural studies / Dharmaraja \u2014 three-storey vimana",
+            "name": "Pancha Rathas — five distinct architectural studies / Dharmaraja — three-storey vimana",
             "geometry": "ExtrudeGeometry",
             "instances": 12,
             "geometryTriangles": 644,
             "triangles": 7728
           },
           {
-            "name": "Mamallapuram \u2014 granite monument garden approach / Granite paving and low garden kerbs",
+            "name": "Mamallapuram — granite monument garden approach / Granite paving and low garden kerbs",
             "geometry": "BoxGeometry",
             "instances": 522,
             "geometryTriangles": 12,
@@ -812,7 +812,7 @@
             "triangles": 78568
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Madurai \u2014 low terrace and shop neighborhood / Madurai neighborhood wood",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
             "geometry": "BufferGeometry",
             "instances": 43,
             "geometryTriangles": 1176,
@@ -840,135 +840,135 @@
             "triangles": 28224
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Madurai \u2014 low terrace and shop neighborhood / Madurai neighborhood trim",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
             "geometry": "BufferGeometry",
             "instances": 43,
             "geometryTriangles": 540,
             "triangles": 23220
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Madurai \u2014 low terrace and shop neighborhood / Madurai neighborhood wood",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
             "geometry": "BufferGeometry",
             "instances": 25,
             "geometryTriangles": 816,
             "triangles": 20400
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 0:0",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 0:0",
             "geometry": "BufferGeometry",
             "instances": 15,
             "geometryTriangles": 1116,
             "triangles": 16740,
             "detailLevel": 1,
-            "pixels": 23.84587870634189
+            "pixels": 23.84587853136469
           },
           {
-            "name": "Thanjavur \u2014 granite vimana / Original modeled architectural figures \u2014 three poses / Guardian facade 15708:2",
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 15708:2",
             "geometry": "BufferGeometry",
             "instances": 14,
             "geometryTriangles": 1116,
             "triangles": 15624,
             "detailLevel": 1,
-            "pixels": 28.832239316472357
+            "pixels": 28.832237795751126
           },
           {
-            "name": "Thanjavur \u2014 granite vimana / Original modeled architectural figures \u2014 three poses / Guardian facade 31416:1",
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 31416:1",
             "geometry": "BufferGeometry",
             "instances": 14,
             "geometryTriangles": 1116,
             "triangles": 15624,
             "detailLevel": 1,
-            "pixels": 25.901100302500826
+            "pixels": 25.90109927185018
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 0:2",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 0:2",
             "geometry": "BufferGeometry",
             "instances": 14,
             "geometryTriangles": 1116,
             "triangles": 15624,
             "detailLevel": 1,
-            "pixels": 23.875780853899112
+            "pixels": 23.875780602375407
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 31416:0",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 31416:0",
             "geometry": "BufferGeometry",
             "instances": 14,
             "geometryTriangles": 1116,
             "triangles": 15624,
             "detailLevel": 1,
-            "pixels": 24.15277345544051
+            "pixels": 24.152773285762827
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 31416:1",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 31416:1",
             "geometry": "BufferGeometry",
             "instances": 14,
             "geometryTriangles": 1116,
             "triangles": 15624,
             "detailLevel": 1,
-            "pixels": 24.3747977499219
+            "pixels": 24.37479731966371
           },
           {
-            "name": "Thanjavur \u2014 granite vimana / Original modeled architectural figures \u2014 three poses / Guardian facade 0:0",
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:0",
             "geometry": "BufferGeometry",
             "instances": 13,
             "geometryTriangles": 1116,
             "triangles": 14508,
             "detailLevel": 1,
-            "pixels": 26.005029738567533
+            "pixels": 26.00502898878179
           },
           {
-            "name": "Thanjavur \u2014 granite vimana / Original modeled architectural figures \u2014 three poses / Guardian facade 0:1",
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:1",
             "geometry": "BufferGeometry",
             "instances": 13,
             "geometryTriangles": 1116,
             "triangles": 14508,
             "detailLevel": 1,
-            "pixels": 25.41757156132158
+            "pixels": 25.41757072642003
           },
           {
-            "name": "Thanjavur \u2014 granite vimana / Original modeled architectural figures \u2014 three poses / Guardian facade 0:2",
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:2",
             "geometry": "BufferGeometry",
             "instances": 13,
             "geometryTriangles": 1116,
             "triangles": 14508,
             "detailLevel": 1,
-            "pixels": 25.22623079541656
+            "pixels": 25.226229722871253
           },
           {
-            "name": "Thanjavur \u2014 granite vimana / Original modeled architectural figures \u2014 three poses / Guardian facade 15708:0",
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 15708:0",
             "geometry": "BufferGeometry",
             "instances": 13,
             "geometryTriangles": 1116,
             "triangles": 14508,
             "detailLevel": 1,
-            "pixels": 28.566372366161662
+            "pixels": 28.5663706461617
           },
           {
-            "name": "Thanjavur \u2014 granite vimana / Original modeled architectural figures \u2014 three poses / Guardian facade 31416:0",
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 31416:0",
             "geometry": "BufferGeometry",
             "instances": 13,
             "geometryTriangles": 1116,
             "triangles": 14508,
             "detailLevel": 1,
-            "pixels": 25.726110464658277
+            "pixels": 25.72610946273976
           },
           {
-            "name": "Thanjavur \u2014 granite vimana / Original modeled architectural figures \u2014 three poses / Guardian facade -15708:0",
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade -15708:0",
             "geometry": "BufferGeometry",
             "instances": 13,
             "geometryTriangles": 1116,
             "triangles": 14508,
             "detailLevel": 1,
-            "pixels": 23.222115704426322
+            "pixels": 23.22211542222763
           },
           {
-            "name": "Thanjavur \u2014 granite vimana / Original modeled architectural figures \u2014 three poses / Guardian facade -15708:1",
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade -15708:1",
             "geometry": "BufferGeometry",
             "instances": 13,
             "geometryTriangles": 1116,
             "triangles": 14508,
             "detailLevel": 1,
-            "pixels": 23.2358561748101
+            "pixels": 23.235855730451743
           }
         ]
       }
@@ -1017,110 +1017,110 @@
         ],
         "largest": [
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 342,
             "geometryTriangles": 262,
             "triangles": 89604
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 238,
             "geometryTriangles": 262,
             "triangles": 62356
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 232,
             "geometryTriangles": 262,
             "triangles": 60784
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
             "geometry": "BufferGeometry",
             "instances": 194,
             "geometryTriangles": 262,
             "triangles": 50828
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Madurai \u2014 low terrace and shop neighborhood / Madurai neighborhood wood",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
             "geometry": "BufferGeometry",
             "instances": 43,
             "geometryTriangles": 1176,
             "triangles": 50568
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study",
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
             "geometry": "ExtrudeGeometry",
             "instances": 68,
             "geometryTriangles": 644,
             "triangles": 43792
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Original modeled architectural figures \u2014 three poses / Guardian facade 0:1",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
             "geometry": "BufferGeometry",
             "instances": 36,
             "geometryTriangles": 1116,
             "triangles": 40176,
             "detailLevel": 1,
-            "pixels": 27.130442083093243
+            "pixels": 27.130439777889638
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Original modeled architectural figures \u2014 three poses / Guardian facade 0:0",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
             "geometry": "BufferGeometry",
             "instances": 35,
             "geometryTriangles": 1116,
             "triangles": 39060,
             "detailLevel": 1,
-            "pixels": 27.083014880748152
+            "pixels": 27.083012534174156
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Original modeled architectural figures \u2014 three poses / Guardian facade 31416:0",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:0",
             "geometry": "BufferGeometry",
             "instances": 35,
             "geometryTriangles": 1116,
             "triangles": 39060,
             "detailLevel": 1,
-            "pixels": 23.581109032514888
+            "pixels": 23.581107534170982
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Original modeled architectural figures \u2014 three poses / Guardian facade 31416:1",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
             "geometry": "BufferGeometry",
             "instances": 35,
             "geometryTriangles": 1116,
             "triangles": 39060,
             "detailLevel": 1,
-            "pixels": 23.595892873677933
+            "pixels": 23.595891392068104
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Original modeled architectural figures \u2014 three poses / Guardian facade 31416:2",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:2",
             "geometry": "BufferGeometry",
             "instances": 34,
             "geometryTriangles": 1116,
             "triangles": 37944,
             "detailLevel": 1,
-            "pixels": 23.567196322557326
+            "pixels": 23.567194777848766
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Original modeled architectural figures \u2014 three poses / Guardian facade 0:2",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
             "geometry": "BufferGeometry",
             "instances": 33,
             "geometryTriangles": 1116,
             "triangles": 36828,
             "detailLevel": 1,
-            "pixels": 27.01983781229182
+            "pixels": 27.019835404734906
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Madurai \u2014 granite pedestrian approach",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach",
             "geometry": "BoxGeometry",
             "instances": 3024,
             "geometryTriangles": 12,
             "triangles": 36288
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study",
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
             "geometry": "ExtrudeGeometry",
             "instances": 50,
             "geometryTriangles": 644,
@@ -1134,29 +1134,29 @@
             "triangles": 32016
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study",
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
             "geometry": "ExtrudeGeometry",
             "instances": 46,
             "geometryTriangles": 644,
             "triangles": 29624
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Original modeled architectural figures \u2014 three poses / Guardian facade 31416:1",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
             "geometry": "BufferGeometry",
             "instances": 26,
             "geometryTriangles": 1116,
             "triangles": 29016,
             "detailLevel": 1,
-            "pixels": 13.225229783553877
+            "pixels": 13.225229987887058
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Original modeled architectural figures \u2014 three poses / Guardian facade 31416:2",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:2",
             "geometry": "BufferGeometry",
             "instances": 26,
             "geometryTriangles": 1116,
             "triangles": 29016,
             "detailLevel": 1,
-            "pixels": 19.024625436829403
+            "pixels": 19.024625151552076
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -1166,13 +1166,13 @@
             "triangles": 28224
           },
           {
-            "name": "Madurai \u2014 Meenakshi Amman Temple architectural study / Original modeled architectural figures \u2014 three poses / Guardian facade 0:0",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
             "geometry": "BufferGeometry",
             "instances": 25,
             "geometryTriangles": 1116,
             "triangles": 27900,
             "detailLevel": 1,
-            "pixels": 12.375419799534733
+            "pixels": 12.375420053037542
           }
         ]
       }
@@ -1191,8 +1191,8 @@
             0.02796686267051217
           ]
         },
-        "drawCalls": 749,
-        "triangles": 3124393,
+        "drawCalls": 755,
+        "triangles": 3131017,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -1200,8 +1200,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 572978,
-        "meshes": 152,
+        "primaryPassTriangles": 575186,
+        "meshes": 154,
         "detailLevels": [
           {
             "level": 0,
@@ -1228,119 +1228,119 @@
             "triangles": 118496
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original poet figure / Scene / Original_poet_carving_\u2014_Blender_union_experiment",
+            "name": "Kanyakumari — the meeting of three seas / Original poet figure / Scene / Original_poet_carving_—_Blender_union_experiment",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 109450,
             "triangles": 109450
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 0:1",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 0:1",
             "geometry": "BufferGeometry",
             "instances": 21,
             "geometryTriangles": 1116,
             "triangles": 23436,
             "detailLevel": 1,
-            "pixels": 17.35467312594219
+            "pixels": 17.354671407934088
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 31416:2",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 31416:2",
             "geometry": "BufferGeometry",
             "instances": 21,
             "geometryTriangles": 1116,
             "triangles": 23436,
             "detailLevel": 1,
-            "pixels": 16.302080835591664
+            "pixels": 16.30207928621938
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 31416:0",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 31416:0",
             "geometry": "BufferGeometry",
             "instances": 20,
             "geometryTriangles": 1116,
             "triangles": 22320,
             "detailLevel": 1,
-            "pixels": 16.30187598276073
+            "pixels": 16.301874438457133
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 0:0",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 0:0",
             "geometry": "BufferGeometry",
             "instances": 19,
             "geometryTriangles": 1116,
             "triangles": 21204,
             "detailLevel": 1,
-            "pixels": 17.357194153107635
+            "pixels": 17.357192434914708
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 0:2",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 0:2",
             "geometry": "BufferGeometry",
             "instances": 18,
             "geometryTriangles": 1116,
             "triangles": 20088,
             "detailLevel": 1,
-            "pixels": 17.345303144898054
+            "pixels": 17.34530132533161
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 31416:1",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 31416:1",
             "geometry": "BufferGeometry",
             "instances": 17,
             "geometryTriangles": 1116,
             "triangles": 18972,
             "detailLevel": 1,
-            "pixels": 16.320983911580655
+            "pixels": 16.320982250959933
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 15708:1",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 15708:1",
             "geometry": "BufferGeometry",
             "instances": 12,
             "geometryTriangles": 1116,
             "triangles": 13392,
             "detailLevel": 1,
-            "pixels": 16.73380341822033
+            "pixels": 16.733801524457448
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade -15708:0",
+            "name": "Original modeled architectural figures — three poses / Guardian facade -15708:0",
             "geometry": "BufferGeometry",
             "instances": 12,
             "geometryTriangles": 1116,
             "triangles": 13392,
             "detailLevel": 1,
-            "pixels": 16.854009074133625
+            "pixels": 16.854007174164675
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 15708:2",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 15708:2",
             "geometry": "BufferGeometry",
             "instances": 11,
             "geometryTriangles": 1116,
             "triangles": 12276,
             "detailLevel": 1,
-            "pixels": 16.86576296295477
+            "pixels": 16.865761013112206
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade 15708:0",
+            "name": "Original modeled architectural figures — three poses / Guardian facade 15708:0",
             "geometry": "BufferGeometry",
             "instances": 11,
             "geometryTriangles": 1116,
             "triangles": 12276,
             "detailLevel": 1,
-            "pixels": 16.832076714277534
+            "pixels": 16.83207480166012
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade -15708:1",
+            "name": "Original modeled architectural figures — three poses / Guardian facade -15708:1",
             "geometry": "BufferGeometry",
             "instances": 11,
             "geometryTriangles": 1116,
             "triangles": 12276,
             "detailLevel": 1,
-            "pixels": 16.781993983926476
+            "pixels": 16.78199207929752
           },
           {
-            "name": "Original modeled architectural figures \u2014 three poses / Guardian facade -15708:2",
+            "name": "Original modeled architectural figures — three poses / Guardian facade -15708:2",
             "geometry": "BufferGeometry",
             "instances": 11,
             "geometryTriangles": 1116,
             "triangles": 12276,
             "detailLevel": 1,
-            "pixels": 16.884813450358763
+            "pixels": 16.88481153438396
           },
           {
             "name": "Mesh",
@@ -1364,21 +1364,21 @@
             "triangles": 7168
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Original fractured coastal granite \u2014 memorial / Dry granite shelves",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Dry granite shelves",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 6861,
             "triangles": 6861
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study",
             "geometry": "BufferGeometry",
             "instances": 24,
             "geometryTriangles": 280,
             "triangles": 6720
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Thiruvalluvar \u2014 solid carved pedestal / Carved pedestal masonry",
+            "name": "Kanyakumari — the meeting of three seas / Thiruvalluvar — solid carved pedestal / Carved pedestal masonry",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 5652,
@@ -1401,8 +1401,8 @@
             0.26635560480286247
           ]
         },
-        "drawCalls": 609,
-        "triangles": 1301847,
+        "drawCalls": 619,
+        "triangles": 1312887,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -1410,8 +1410,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 215794,
-        "meshes": 109,
+        "primaryPassTriangles": 218002,
+        "meshes": 111,
         "detailLevels": [
           {
             "level": 0,
@@ -1431,7 +1431,7 @@
         ],
         "largest": [
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original poet figure / Scene / Original_poet_carving_\u2014_Blender_union_experiment",
+            "name": "Kanyakumari — the meeting of three seas / Original poet figure / Scene / Original_poet_carving_—_Blender_union_experiment",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 109450,
@@ -1445,28 +1445,28 @@
             "triangles": 11016
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Original fractured coastal granite \u2014 memorial / Dry granite shelves",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Dry granite shelves",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 6861,
             "triangles": 6861
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study",
             "geometry": "BufferGeometry",
             "instances": 24,
             "geometryTriangles": 280,
             "triangles": 6720
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Thiruvalluvar \u2014 solid carved pedestal / Carved pedestal masonry",
+            "name": "Kanyakumari — the meeting of three seas / Thiruvalluvar — solid carved pedestal / Carved pedestal masonry",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 5652,
             "triangles": 5652
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original fractured coastal granite \u2014 statue / Dry granite shelves",
+            "name": "Kanyakumari — the meeting of three seas / Original fractured coastal granite — statue / Dry granite shelves",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 5647,
@@ -1480,56 +1480,56 @@
             "triangles": 4280
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3808,
             "triangles": 3808
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3808,
             "triangles": 3808
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3808,
             "triangles": 3808
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3808,
             "triangles": 3808
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3808,
             "triangles": 3808
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3808,
             "triangles": 3808
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original fractured coastal granite \u2014 statue / Wet intertidal granite",
+            "name": "Kanyakumari — the meeting of three seas / Original fractured coastal granite — statue / Wet intertidal granite",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3377,
             "triangles": 3377
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3300,
@@ -1557,14 +1557,14 @@
             "triangles": 2632
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 2264,
             "triangles": 2264
           },
           {
-            "name": "Ram \u2014 seated driver / Static architecture batch",
+            "name": "Ram — seated driver / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 2196,
@@ -1587,8 +1587,8 @@
             0.26635560480286247
           ]
         },
-        "drawCalls": 174,
-        "triangles": 902081,
+        "drawCalls": 194,
+        "triangles": 934385,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -1596,8 +1596,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 158138,
-        "meshes": 17,
+        "primaryPassTriangles": 165910,
+        "meshes": 21,
         "detailLevels": [
           {
             "level": 0,
@@ -1617,7 +1617,7 @@
         ],
         "largest": [
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original poet figure / Scene / Original_poet_carving_\u2014_Blender_union_experiment",
+            "name": "Kanyakumari — the meeting of three seas / Original poet figure / Scene / Original_poet_carving_—_Blender_union_experiment",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 109450,
@@ -1631,39 +1631,46 @@
             "triangles": 11016
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Original fractured coastal granite \u2014 memorial / Dry granite shelves",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Dry granite shelves",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 6861,
             "triangles": 6861
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study",
             "geometry": "BufferGeometry",
             "instances": 24,
             "geometryTriangles": 280,
             "triangles": 6720
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Thiruvalluvar \u2014 solid carved pedestal / Carved pedestal masonry",
+            "name": "Kanyakumari — the meeting of three seas / Thiruvalluvar — solid carved pedestal / Carved pedestal masonry",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 5652,
             "triangles": 5652
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original fractured coastal granite \u2014 statue / Dry granite shelves",
+            "name": "Kanyakumari — the meeting of three seas / Original fractured coastal granite — statue / Dry granite shelves",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 5647,
             "triangles": 5647
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original fractured coastal granite \u2014 statue / Wet intertidal granite",
+            "name": "Kanyakumari — the meeting of three seas / Original fractured coastal granite — statue / Wet intertidal granite",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3377,
             "triangles": 3377
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 3300,
+            "triangles": 3300
           },
           {
             "name": "Static architecture batch",
@@ -1673,6 +1680,20 @@
             "triangles": 2720
           },
           {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2264,
+            "triangles": 2264
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Thiruvalluvar island — retaining terrace and balustrade / Pale stone terrace rails and paving joints",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2100,
+            "triangles": 2100
+          },
+          {
             "name": "Mesh",
             "geometry": "BufferGeometry",
             "instances": 1,
@@ -1680,7 +1701,7 @@
             "triangles": 1798
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Original fractured coastal granite \u2014 memorial / Wet intertidal granite",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Wet intertidal granite",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 1683,
@@ -1701,39 +1722,39 @@
             "triangles": 624
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original fractured coastal granite \u2014 statue / Broken shoreline wash",
+            "name": "Kanyakumari — the meeting of three seas / Original fractured coastal granite — statue / Broken shoreline wash",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 460,
             "triangles": 460
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Original fractured coastal granite \u2014 memorial / Broken shoreline wash",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Broken shoreline wash",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 400,
             "triangles": 400
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 348,
             "triangles": 348
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Thiruvalluvar \u2014 solid carved pedestal / Recessed window and doorway backs",
+            "name": "Kanyakumari — the meeting of three seas / Thiruvalluvar — solid carved pedestal / Recessed window and doorway backs",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 156,
             "triangles": 156
           },
           {
-            "name": "Mesh",
-            "geometry": "PlaneGeometry",
+            "name": "Kanyakumari — the meeting of three seas / Thiruvalluvar island — retaining terrace and balustrade / Solid island retaining courses",
+            "geometry": "BufferGeometry",
             "instances": 1,
-            "geometryTriangles": 2,
-            "triangles": 2
+            "geometryTriangles": 108,
+            "triangles": 108
           }
         ]
       }
@@ -1752,8 +1773,8 @@
             0.26635560480286247
           ]
         },
-        "drawCalls": 295,
-        "triangles": 1051037,
+        "drawCalls": 305,
+        "triangles": 1062077,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -1761,8 +1782,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 189344,
-        "meshes": 27,
+        "primaryPassTriangles": 191552,
+        "meshes": 29,
         "detailLevels": [
           {
             "level": 0,
@@ -1782,7 +1803,7 @@
         ],
         "largest": [
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original poet figure / Scene / Original_poet_carving_\u2014_Blender_union_experiment",
+            "name": "Kanyakumari — the meeting of three seas / Original poet figure / Scene / Original_poet_carving_—_Blender_union_experiment",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 109450,
@@ -1803,63 +1824,63 @@
             "triangles": 11016
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Original fractured coastal granite \u2014 memorial / Dry granite shelves",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Dry granite shelves",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 6861,
             "triangles": 6861
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study",
             "geometry": "BufferGeometry",
             "instances": 24,
             "geometryTriangles": 280,
             "triangles": 6720
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Thiruvalluvar \u2014 solid carved pedestal / Carved pedestal masonry",
+            "name": "Kanyakumari — the meeting of three seas / Thiruvalluvar — solid carved pedestal / Carved pedestal masonry",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 5652,
             "triangles": 5652
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original fractured coastal granite \u2014 statue / Dry granite shelves",
+            "name": "Kanyakumari — the meeting of three seas / Original fractured coastal granite — statue / Dry granite shelves",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 5647,
             "triangles": 5647
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3808,
             "triangles": 3808
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3808,
             "triangles": 3808
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3808,
             "triangles": 3808
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original fractured coastal granite \u2014 statue / Wet intertidal granite",
+            "name": "Kanyakumari — the meeting of three seas / Original fractured coastal granite — statue / Wet intertidal granite",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3377,
             "triangles": 3377
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 3300,
@@ -1873,6 +1894,13 @@
             "triangles": 2720
           },
           {
+            "name": "Kanyakumari — the meeting of three seas / Thiruvalluvar island — retaining terrace and balustrade / Pale stone terrace rails and paving joints",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2100,
+            "triangles": 2100
+          },
+          {
             "name": "Mesh",
             "geometry": "BufferGeometry",
             "instances": 1,
@@ -1880,7 +1908,7 @@
             "triangles": 1798
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Original fractured coastal granite \u2014 memorial / Wet intertidal granite",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Wet intertidal granite",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 1683,
@@ -1901,25 +1929,18 @@
             "triangles": 624
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Original fractured coastal granite \u2014 statue / Broken shoreline wash",
+            "name": "Kanyakumari — the meeting of three seas / Original fractured coastal granite — statue / Broken shoreline wash",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 460,
             "triangles": 460
           },
           {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Original fractured coastal granite \u2014 memorial / Broken shoreline wash",
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Broken shoreline wash",
             "geometry": "BufferGeometry",
             "instances": 1,
             "geometryTriangles": 400,
             "triangles": 400
-          },
-          {
-            "name": "Kanyakumari \u2014 the meeting of three seas / Vivekananda Rock Memorial \u2014 architectural study / Static architecture batch",
-            "geometry": "BufferGeometry",
-            "instances": 1,
-            "geometryTriangles": 348,
-            "triangles": 348
           }
         ]
       }
@@ -1938,8 +1959,8 @@
             0.26635560480286247
           ]
         },
-        "drawCalls": 247,
-        "triangles": 713617,
+        "drawCalls": 251,
+        "triangles": 718033,
         "dpr": 1,
         "ao": true,
         "reflections": true,

@@ -126,7 +126,7 @@ export function createJourneyCamera(route) {
     {range:[.408,.435,.444,.458],eye:landmarkPoint(.23,42,[7,4.8,14]),target:landmarkPoint(.23,42,[0,2.2,2])},
     {range:[.451,.469,.474,.488],eye:landmarkPoint(.27,52,[30,18,53]),phoneEye:landmarkPoint(.27,52,[15,16,94]),target:landmarkPoint(.27,52,[-2,5,0])},
     {range:[.585,.610,.615,.632],eye:landmarkPoint(.47,100,[14,4.8,45],-Math.PI/2),target:landmarkPoint(.47,100,[0,4,58],-Math.PI/2),lift:16},
-    {range:POET_VISIT,eye:landmarkPoint(.976,96,[18,29,47],0,.96),target:landmarkPoint(.976,96,[0,26,0],0,.96)},
+    {range:POET_VISIT,eye:landmarkPoint(.976,96,[21,31,57],0,.96),target:landmarkPoint(.976,96,[0,21,0],0,.96)},
   ]
   return {
     sample(progress,aspect=1.6) {
@@ -187,5 +187,5 @@ export function journeyLens(aspect,progress,speed=0) {
   const poet=THREE.MathUtils.smootherstep(progress,a,b)*(1-THREE.MathUtils.smootherstep(progress,c,d))
   const portraitTemples=12*smooth(.625,.635,progress)*(1-smooth(.64,.675,progress))
     +18*smooth(.675,.71,progress)*(1-smooth(.73,.755,progress))
-  return (aspect<.8?66+portraitTemples+18*smooth(.86,.915,progress)-27*poet:52+templeLens+8*smooth(.195,.235,progress)*(1-smooth(.285,.335,progress)))+speed*2
+  return (aspect<.8?66+portraitTemples+18*smooth(.86,.915,progress)-30*poet:52+templeLens-6*poet+8*smooth(.195,.235,progress)*(1-smooth(.285,.335,progress)))+speed*2
 }

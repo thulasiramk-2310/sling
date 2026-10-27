@@ -3,6 +3,7 @@ import { faceRoad } from '../route.js'
 import { block, surface } from '../util.js'
 import { coastalRock } from './coastal-rock.js'
 import { poetPedestal } from './poet-pedestal.js'
+import { poetIslandTerrace } from './poet-terrace.js'
 import { rockMemorial } from './rock-memorial.js'
 import { poetStatue, poetStoneMaterial } from './poet-statue.js'
 import { quality } from '../quality.js'
@@ -18,6 +19,7 @@ export function buildKanyakumari({scene,route,u}) {
   place(memorial,-.005,85)
   const statueGroup=new THREE.Group()
   const island=coastalRock({rx:22,rz:19,seed:88,low:quality.low});statueGroup.add(island)
+  statueGroup.add(poetIslandTerrace(poetGranite,surface({color:0xb9bbad,roughness:.92})))
   statueGroup.add(poetPedestal(poetGranite,shadow,quality.low))
   const statue=new THREE.Group();statue.name='Original poet figure';statue.position.y=12;statueGroup.add(statue)
   const figureSlot={name:'poet-figure',group:statue,material:poetStoneMaterial(poetGranite,quality.low),fallback:()=>poetStatue(poetGranite,quality.low)}

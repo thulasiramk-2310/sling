@@ -5,6 +5,20 @@ import {PROJECTS} from '../src/content.js'
 import * as THREE from 'three'
 import {roundedNoseGeometry,frontFasciaGeometry,canopyValanceGeometry} from '../src/scene/auto-panels.js'
 
+it('keeps shipped statue binaries and runtime generators aligned with their provenance',async()=>{
+  const provenance=JSON.parse(await readFile(new URL('../public/models/poet-provenance.json',import.meta.url)))
+  for(const asset of provenance.files){
+    const bytes=await readFile(new URL('../public/models/'+asset.file,import.meta.url))
+    expect(bytes.subarray(0,4).toString()).toBe('glTF')
+    expect(bytes.length).toBe(asset.bytes)
+    expect(createHash('sha256').update(bytes).digest('hex')).toBe(asset.sha256)
+  }
+  for(const [file,sha] of Object.entries(provenance.runtimeGeneratorHashes)){
+    const source=await readFile(new URL('../src/scene/landmarks/'+file,import.meta.url))
+    expect(createHash('sha256').update(source).digest('hex')).toBe(sha)
+  }
+})
+
 it('ships the configured real project screenshots with intact source records',async()=>{
   const records=JSON.parse(await readFile(new URL('../public/projects/sources.json',import.meta.url)))
   const ids=PROJECTS.map(project=>project.id)

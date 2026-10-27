@@ -52,4 +52,19 @@ const result=await evaluate(`new Promise(resolve=>{
   },20000)
 })`)
 await evaluate('window.__trip.inspect(window.__trip.u());true')
-console.log(JSON.stringify({result,errors}));await fs.writeFile(new URL('../../../review-sculpture/normal-motion-'+(phone?'phone':'desktop')+'-after.json',import.meta.url),JSON.stringify({result,errors},null,2));ws.close()
+console.log(JSON.stringify({result,errors}));await fs.writeFile(new URL('../../../review-sculpture/normal-motion-'+(phone?'phone':'desktop')+'-after.json',import.meta.url),JSON.stringify({result,errors},null,2))
+if(process.argv.includes('--readable')){
+  // The cadence probe held the camera, so return to ordinary navigation only
+  // after recording its measurements. The real sampled rate drives the offer.
+  await evaluate('window.__trip.resume();true')
+  await until('!document.querySelector(".journey-readable").hidden',60000)
+  await evaluate('document.querySelector(".journey-readable").focus()')
+  await call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r'})
+  await call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13})
+  await until('document.body.classList.contains("no-3d")')
+  const fallback=await evaluate('({title:document.querySelector(".no-webgl strong").textContent,focused:document.activeElement===document.querySelector(".no-webgl"),projects:document.querySelectorAll("#projects .card").length,panelsReady:[...document.querySelectorAll("main .panel")].every(p=>!p.inert),stopped:window.__trip.scrollState().stopped,scene:window.__trip.metrics(),overflow:document.documentElement.scrollWidth>innerWidth})')
+  if(fallback.title!=='A lighter visit'||!fallback.focused||fallback.projects!==7||!fallback.panelsReady||fallback.stopped||fallback.scene!==null||fallback.overflow)throw new Error('Readable handoff failed: '+JSON.stringify(fallback))
+  await fs.writeFile(new URL('../../../review-product/performance-readable-results.json',import.meta.url),JSON.stringify({fallback,errors},null,2))
+  console.log('PASS Measured poor rendering offers a keyboard-accessible readable portfolio')
+}
+ws.close()

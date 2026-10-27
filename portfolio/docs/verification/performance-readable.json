@@ -1,0 +1,12 @@
+{
+  "fallback": {
+    "title": "A lighter visit",
+    "focused": true,
+    "projects": 7,
+    "panelsReady": true,
+    "stopped": false,
+    "scene": null,
+    "overflow": false
+  },
+  "errors": []
+}

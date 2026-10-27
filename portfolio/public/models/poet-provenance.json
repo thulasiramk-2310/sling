@@ -1,5 +1,5 @@
 {
-  "revision": "2026-10-26-silhouette-v5",
+  "revision": "2026-10-27-drapery-v6",
   "source": "Original repository sculpture fields; no downloaded model or photographic texture",
   "pipeline": [
     "scripts/export-poet.mjs",
@@ -8,8 +8,8 @@
   "files": [
     {
       "file": "poet-carving.glb",
-      "sha256": "5d2ef593b6d064cc757c586e717d92320301bdd89373d8742db086315dc72b15",
-      "bytes": 1978680,
+      "sha256": "64f5b6a9367d01f3899300b94031959d4a43172ca69ac38a1bdc51fcb6937f4a",
+      "bytes": 1979832,
       "triangles": 109450,
       "fingerBands": 3,
       "minimumSampledFingerGap": 0.14175000000000001,
@@ -20,8 +20,8 @@
     },
     {
       "file": "poet-carving-low.glb",
-      "sha256": "a856d5ba345b9eb87eab8f9760c87d8276f6f4387b42beaf99e974742a7a102f",
-      "bytes": 993320,
+      "sha256": "99ebed9c6e21771575dc85a2d046886165fc849a75b778ef1c1e59907b81a260",
+      "bytes": 995292,
       "triangles": 54724,
       "fingerBands": 3,
       "minimumSampledFingerGap": 0.14175000000000001,
@@ -33,26 +33,26 @@
   ],
   "sourceSnapshot": {
     "poet-statue.js": "46d7467be0bc7a2086c914b6958ef04085346b60068e17bcd13f9772e9a52173",
-    "poet-body.js": "b44e8b48a1d9097b141670b55c9b9dbff8c0df2053e91a3d82be99557496234c",
-    "poet-head.js": "307a212b78138a6af48d457d93ad02a5a138fc2f8d74d3238d4bb92095dcb98d",
+    "poet-body.js": "a93d05158e46978040c42768980720b60d489901d6769bb2c04001db777d41b0",
+    "poet-head.js": "e24cd33cb05068fd31175c34f4f6be0508a83912ce74c5ea0ac708b64762482d",
     "poet-limbs.js": "c81ea4110ba21da2dbafcb88b97e7afc2a02b18674541e6744fca87003232f51"
   },
   "runtimeGeneratorHashes": {
     "poet-statue.js": "46d7467be0bc7a2086c914b6958ef04085346b60068e17bcd13f9772e9a52173",
-    "poet-body.js": "b44e8b48a1d9097b141670b55c9b9dbff8c0df2053e91a3d82be99557496234c",
-    "poet-head.js": "307a212b78138a6af48d457d93ad02a5a138fc2f8d74d3238d4bb92095dcb98d",
+    "poet-body.js": "a93d05158e46978040c42768980720b60d489901d6769bb2c04001db777d41b0",
+    "poet-head.js": "e24cd33cb05068fd31175c34f4f6be0508a83912ce74c5ea0ac708b64762482d",
     "poet-limbs.js": "c81ea4110ba21da2dbafcb88b97e7afc2a02b18674541e6744fca87003232f51"
   },
   "rawSourceModels": [
     {
       "file": "poet-source.glb",
-      "sha256": "9944721d010869207ab17a6f92159292bc435db16ac2ae3c8bccb782c01b4b8b",
-      "triangles": 121824
+      "sha256": "7c843334d75aa0e7b6f0226ec255b4bc62b020bdc1d78a3e73e3839301a6d083",
+      "triangles": 121472
     },
     {
       "file": "poet-source-low.glb",
-      "sha256": "209ee55a819f39c1cd2dc915a117202cb3a97e66af68e92148d3cec6c2b158f1",
-      "triangles": 63109
+      "sha256": "41917317b315a2d279ca11d0c675d8a955b9bcd9b5ecb2d246650b566e10319b",
+      "triangles": 63010
     }
   ],
   "visualLimit": "Stylized original study. Local shape and continuity improvements do not establish realistic likeness or the portfolio quality goal.",
@@ -97,6 +97,41 @@
       "poet-statue.js": "159298c3fe3da432b00338c27581601854ed5d00b7fec7bae53921fd91f1e349",
       "poet-body.js": "e55bb44032bbbb5f58a8c5289a4a57ffda8a4c2d075a966a7ec5d330f447defc",
       "poet-head.js": "6b821e399a6ed8f3e44905f82ff15648662e0d2facf04c8eacd1526618958b4d",
+      "poet-limbs.js": "c81ea4110ba21da2dbafcb88b97e7afc2a02b18674541e6744fca87003232f51"
+    }
+  },
+  "previousCheckpoint": {
+    "revision": "2026-10-26-silhouette-v5",
+    "files": [
+      {
+        "file": "poet-carving.glb",
+        "sha256": "5d2ef593b6d064cc757c586e717d92320301bdd89373d8742db086315dc72b15",
+        "bytes": 1978680,
+        "triangles": 109450,
+        "fingerBands": 3,
+        "minimumSampledFingerGap": 0.14175000000000001,
+        "voxel": 0.025,
+        "normalCreaseDegrees": 60,
+        "blender": "4.5.9 LTS",
+        "closedManifold": true
+      },
+      {
+        "file": "poet-carving-low.glb",
+        "sha256": "a856d5ba345b9eb87eab8f9760c87d8276f6f4387b42beaf99e974742a7a102f",
+        "bytes": 993320,
+        "triangles": 54724,
+        "fingerBands": 3,
+        "minimumSampledFingerGap": 0.14175000000000001,
+        "voxel": 0.025,
+        "normalCreaseDegrees": 60,
+        "blender": "4.5.9 LTS",
+        "closedManifold": true
+      }
+    ],
+    "sourceSnapshot": {
+      "poet-statue.js": "46d7467be0bc7a2086c914b6958ef04085346b60068e17bcd13f9772e9a52173",
+      "poet-body.js": "b44e8b48a1d9097b141670b55c9b9dbff8c0df2053e91a3d82be99557496234c",
+      "poet-head.js": "307a212b78138a6af48d457d93ad02a5a138fc2f8d74d3238d4bb92095dcb98d",
       "poet-limbs.js": "c81ea4110ba21da2dbafcb88b97e7afc2a02b18674541e6744fca87003232f51"
     }
   }

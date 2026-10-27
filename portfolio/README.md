@@ -80,7 +80,9 @@ spatial culling and projected-size ornament LODs.
 
 Desktop uses physically based materials, sky lighting, AO, shadows, water
 reflection and bloom. Phones use lighter materials, geometry and effects. Slow
-frames progressively reduce effects and DPR. `?quality=low` / `?quality=high`
+frames progressively reduce effects and DPR. If the measured rate remains below
+12 FPS after those reductions, an optional “Read portfolio” control switches to
+the compact readable version and stops the 3D renderer. `?quality=low` / `?quality=high`
 override selection; `?fixed` disables adaptation for controlled comparisons.
 Unsupported WebGL or actual context loss exposes a compact readable portfolio.
 Without JavaScript, a minimal real profile and project/contact links remain usable.
@@ -107,7 +109,9 @@ replacement assets before adding them to the manifest.
 [Product readiness and evidence](docs/product-readiness.md) records the current
 unit tests, native desktop/touch checks, actual WebGL captures and performance
 limits. [The reference audit](docs/reference-audit.md) and later sculpture reviews
-record the art comparison and historical checkpoints.
+record the art comparison and historical checkpoints. The [latest statue and
+island review](docs/poet-v6-review.md) records the adopted Blender revision and
+remaining likeness limits.
 
 The scenes are original procedural architectural interpretations. They are not
 scans, exact historical reconstructions or proven reference-level craftsmanship.

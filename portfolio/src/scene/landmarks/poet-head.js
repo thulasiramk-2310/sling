@@ -11,12 +11,12 @@ const ellipsoid=(x,y,z,cx,cy,cz,rx,ry,rz)=>{
   const a=(x-cx)/rx,b=(y-cy)/ry,c=(z-cz)/rz
   return (Math.sqrt(a*a+b*b+c*c)-1)*Math.min(rx,ry,rz)
 }
-// Unequal broad locks share the beard envelope. They change its carved planes,
-// rather than adding strands or regularly spaced incisions to a round ball.
+// Unequal swept ridges deform one beard fan. They are front-surface relief,
+// rather than rounded strands unioned mostly inside a flat backing.
 const beardLocks=[
-  [-.84,23.04,.22,.57,.17],[-.51,22.99,.23,.65,.20],
-  [-.17,22.97,.22,.68,.18],[.18,23.00,.23,.64,.21],
-  [.53,23.04,.22,.61,.18],[.84,23.10,.21,.52,.16],
+  [-.78,23.08,.14,.48,.12,-.045],[-.39,22.98,.17,.65,.18,.075],
+  [.04,22.92,.15,.64,.145,-.05],[.43,23.02,.18,.59,.17,-.08],
+  [.81,23.13,.13,.44,.13,.035],
 ]
 
 // Original implicit stone study: all facial features share one sampled surface.
@@ -63,14 +63,23 @@ export function poetHeadGeometry(low=false) {
     const beardWidth=.70+.40*THREE.MathUtils.smoothstep(y,22.25,23.62)
     const bx=Math.abs(x)-beardWidth+.16
     const by=Math.abs(y-22.98)-.73+.16
-    const bz=Math.abs(z-.66)-.34+.16
+    let beardRelief=0
+    if(y>22.25 && y<23.7 && z>.70)for(const [cx,cy,width,length,height,curve] of beardLocks) {
+      const splay=.80+.20*THREE.MathUtils.smoothstep(y,22.25,23.55)
+      const sweep=curve*Math.sin((y-cy)*2.5)+.025*Math.sin((y-cy)*4.1+cx*2)
+      const across=(x-cx*splay-sweep)/width
+      const ends=THREE.MathUtils.smoothstep(y,cy-length-.05,cy-length+.20)
+        *(1-THREE.MathUtils.smoothstep(y,cy+length-.16,cy+length+.08))
+      beardRelief+=height*Math.exp(-across*across)*ends
+    }
+    // Keep the rear volume and silhouette coherent. Only the front is pushed
+    // into broad asymmetric ridges, which taper into the common lower edge.
+    const edgeFade=THREE.MathUtils.smoothstep(y,22.25,22.46)
+      *(1-THREE.MathUtils.smoothstep(y,23.50,23.70))
+    const bz=Math.abs(z-.70)-.35+.16
+      -beardRelief*edgeFade*THREE.MathUtils.smoothstep(z,.75,1.02)
     let beard=Math.hypot(Math.max(bx,0),Math.max(by,0),Math.max(bz,0))
       +Math.min(Math.max(bx,by,bz),0)-.16
-    if(y>22 && y<23.85 && z>.4)for(const [cx,cy,rx,ry,rz] of beardLocks) {
-      const splay=.78+.22*THREE.MathUtils.smoothstep(y,22.25,23.55)
-      const sweep=.045*Math.sin((y-cy)*2.6+cx*2)
-      beard=union(beard,e(cx*splay+sweep,cy,1.06,rx,ry,rz),.075)
-    }
     d=union(d,beard,.16)
     d=union(d,e(0,23.45,.53,.93,.31,.45),.12)
     // Hair grows into the skull; its rounded knot is swept slightly backwards.
@@ -107,19 +116,20 @@ export function poetHeadGeometry(low=false) {
       // Carve sockets and conchas before adding eyes rooted inside the socket floor.
       for(const side of [-1,1]) {
         const eyeX=(x-side*.59)/.34
-        d=Math.max(d,-e(side*.59,24.80+.035*(1-eyeX*eyeX),.96,.34,.16,.23))
+        d=Math.max(d,-e(side*.59,24.80+.035*(1-eyeX*eyeX),.97,.34,.16,.20))
         d=Math.max(d,-e(side*1.5,24.48,.29,.13,.57,.2))
       }
       for(const side of [-1,1]) {
-        // Recess the eye plane and retain a thin upper/lower lid, avoiding the
-        // projecting pale eye plates beneath a single deep brow trench.
-        d=union(d,e(side*.59,24.79,.69,.23,.072,.075),.03)
-        d=union(d,e(side*.59,24.93,.76,.30,.052,.105),.05)
-        d=union(d,e(side*.59,24.68,.72,.285,.038,.075),.045)
+        // A shallow convex plane grows from the socket floor beneath the brow.
+        // Its height spans both sampling grids, rather than disappearing into
+        // a deep empty recess on the phone mesh.
+        d=union(d,e(side*.59,24.80,.78,.25,.095,.11),.04)
+        d=union(d,e(side*.59,24.93,.80,.30,.052,.10),.05)
+        d=union(d,e(side*.59,24.68,.77,.285,.038,.08),.045)
       }
-      // A shallow carved pupil breaks the blank eye plane. Its width spans four
-      // desktop cells; omit this small recess on the coarser phone grid.
-      if(!low)for(const side of [-1,1])d=Math.max(d,-e(side*.59,24.80,.765,.075,.065,.07))
+      // The small pupil is an open, shallow depression, not an enclosed cavity.
+      // Its diameter survives both grids and the later Blender voxel union.
+      for(const side of [-1,1])d=Math.max(d,-e(side*.59,24.80,.90,.085,.085,.065))
       // Connected moustache lobes merge into the upper beard and nose wings.
       // Their outer ends slope down and taper, instead of forming a straight
       // cross-face bar. Mirrored local coordinates retain one fused surface.

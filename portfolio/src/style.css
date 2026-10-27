@@ -1758,3 +1758,6 @@ body.no-3d .topbar .ctl,body.no-3d .topbar button { color:#25382f; text-shadow:n
 body.no-3d .brand-en { color:#25382f; }
 body.no-3d .portrait figcaption { color:#62725f; }
 body.no-3d .hero-role { letter-spacing:.10em; font-size:14px; line-height:1.6; }
+
+.journey-readable { position:fixed; right:var(--gutter); bottom:98px; z-index:25; min-height:44px; padding:10px 16px; color:#25382f; background:#f2efe5; border:0; border-bottom:1px solid #71816c; border-radius:0; font:12px var(--body); cursor:pointer; }
+.journey-readable:focus-visible { outline:2px solid #b1944c; outline-offset:4px; }
