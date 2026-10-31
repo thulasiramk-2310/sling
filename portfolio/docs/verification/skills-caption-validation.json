@@ -1,0 +1,12 @@
+{
+  "scope": "Skills-caption CSS and targeted review selector only",
+  "tests": 130,
+  "testFiles": 28,
+  "lint": "passed",
+  "build": "passed",
+  "productionViews": 6,
+  "browserErrors": [],
+  "buildEntrySha256": "4680a5a3bf5dd0d89d04488a97fd5bbdc7204a8594ba7a39904d0d8e3603662d",
+  "previousFullSuiteCommit": "54a94c0db7be8dafa29f984bb8c15d463c58e851",
+  "note": "Full-route and native-input reports describe the prior Madurai revision. This CSS-only patch was checked at three skills positions per width."
+}

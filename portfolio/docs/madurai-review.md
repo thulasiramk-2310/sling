@@ -116,3 +116,8 @@ The normal-motion sample renders 23 frames over 20.0005 seconds (1.15 FPS on
 SwiftShader), so it does not meet the interactive target on this host. The
 requested hardware-GPU 60 FPS remains unverified. Source/build hashes and
 actual reports are bundled in `verification/`.
+
+The subsequent skills-caption patch resolves the supporting-text/read-link
+contrast defect with a stronger edge wash. The roadside sign remains in the
+scene; arranging it outside the caption would further improve composition.
+Six production views were checked across desktop and phone widths.

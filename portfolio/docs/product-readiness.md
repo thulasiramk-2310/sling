@@ -62,6 +62,11 @@ no-JavaScript content are integrated. There are no required API keys or backend.
 
 ## Verification
 
+The subsequent skills-caption CSS patch strengthens the reading backdrop behind
+passing signs. It passes 130 tests, lint/build and six targeted production views.
+`verification/skills-caption-validation.json` records its build; the full-route
+and native-input reports below describe commit `54a94c0`.
+
 The source is installed using `npm ci` from its real lockfile. **130 tests in 28
 files pass**, oxlint reports no warnings, and Vite's production build succeeds.
 The native production input suite passes **21 checks at each width (42 total)**,
