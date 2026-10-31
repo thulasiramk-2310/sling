@@ -19,10 +19,13 @@ export function buildMadurai({scene,route,u}) {
   const main=makeGopuram({tiers:9,baseW:30,baseD:18,tierH:5.4,palette:'madurai',seed:2,podiumH:7})
   main.scale.setScalar(52/main.userData.height)
   main.position.z=52
-  complex.add(main,templeForecourt(),createMaduraiTown())
-  const gates=[[0,-56,Math.PI,7,24],[52,0,Math.PI/2,7,25],[-52,0,-Math.PI/2,6,22]]
-  for(const [x,z,rotation,tiers,width] of gates) {
-    const gate=makeGopuram({tiers,baseW:width,baseD:15,tierH:5,palette:'madurai',seed:tiers+4,podiumH:6})
+  complex.add(main,templeForecourt(route,u),createMaduraiTown())
+  // All four outer gateways have nine registers. Heights/spacing are compressed
+  // for this authored world; these are not survey dimensions of the compound.
+  const gates=[[0,-56,Math.PI,24,49],[52,0,Math.PI/2,25,48],[-52,0,-Math.PI/2,22,50]]
+  for(const [x,z,rotation,width,height] of gates) {
+    const gate=makeGopuram({tiers:9,baseW:width,baseD:15,tierH:4.8,palette:'madurai',seed:width,podiumH:6})
+    gate.scale.setScalar(height/gate.userData.height)
     gate.position.set(x,0,z);gate.rotation.y=rotation;complex.add(gate)
   }
   // Split each wall at its gate. No full-width wall fills the open passages.

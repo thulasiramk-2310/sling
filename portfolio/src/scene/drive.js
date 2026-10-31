@@ -23,4 +23,4 @@ export function advanceDrive(state, target, delta, reduced = false) {
 }
 
 // Give each skill time to be identified instead of racing through twelve labels.
-export const journeyPace=(progress)=>progress>=.18 && progress<.242?.24:progress>=.32 && progress<.49?.14:progress>=.55 && progress<.635?.12:progress>=.92 && progress<.97?.2:1
+export const journeyPace=(progress)=>progress>=.18 && progress<.242?.24:progress>=.32 && progress<.49?.14:progress>=.55 && progress<.635?.12:progress>=.685 && progress<.73?.14:progress>=.92 && progress<.97?.2:1

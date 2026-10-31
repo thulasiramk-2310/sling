@@ -1,4 +1,4 @@
-// Every texture in the world is painted here on a canvas, so the site ships no image files.
+// Original procedural surface textures for the 3D world, painted on canvases.
 // Sizes are small (and halved on phones) to keep memory and download low.
 import * as THREE from 'three'
 import { quality } from './quality.js'
@@ -67,6 +67,26 @@ export const grainTexture = () =>
     ctx.fillStyle = '#d6d6d6'
     ctx.fillRect(0, 0, w, h)
     speckle(ctx, w, h, 5200, r, '0,0,0', '255,255,255')
+    return toTexture(c)
+  })
+
+// A paint finish only: sheltered cornice grime, faint rain tracks and fine
+// aggregate. Architectural recesses and sculpture remain actual geometry.
+export const stuccoTexture = () =>
+  once('painted-stucco',()=>{
+    const {c,ctx,w,h}=canvas(512,512),random=rng(531)
+    ctx.fillStyle='#e8e5db';ctx.fillRect(0,0,w,h)
+    for(let i=0;i<55;i++){
+      const x=random()*w,width=1+random()*6,length=h*(.12+random()*.68)
+      const rain=ctx.createLinearGradient(0,0,0,length)
+      rain.addColorStop(0,'rgba(48,55,41,.065)');rain.addColorStop(1,'rgba(48,55,41,0)')
+      ctx.fillStyle=rain;ctx.fillRect(x,0,width,length)
+    }
+    const shelter=ctx.createLinearGradient(0,0,0,h)
+    shelter.addColorStop(0,'rgba(51,49,39,.055)');shelter.addColorStop(.18,'rgba(51,49,39,0)')
+    shelter.addColorStop(.8,'rgba(51,49,39,0)');shelter.addColorStop(1,'rgba(51,49,39,.03)')
+    ctx.fillStyle=shelter;ctx.fillRect(0,0,w,h)
+    speckle(ctx,w,h,16000,random,'64,65,53','255,253,242')
     return toTexture(c)
   })
 

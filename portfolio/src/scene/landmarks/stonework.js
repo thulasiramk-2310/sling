@@ -36,20 +36,40 @@ export function barrelVaultGeometry(length=12,width=6,rise=3) {
   return geometry
 }
 
-export function kuduGeometry() {
+export function kuduGeometry(detail=0) {
   const frame=new THREE.Shape()
-  frame.moveTo(-.36,0)
-  frame.lineTo(-.36,.55)
-  frame.bezierCurveTo(-.38,.92,-.18,1.05,0,1.1)
-  frame.bezierCurveTo(.18,1.05,.38,.92,.36,.55)
-  frame.lineTo(.36,0)
-  frame.lineTo(.25,0)
+  if(detail===2){
+    // A solid extruded arch remains legible below eight CSS pixels. Match
+    // the full carving's outer bevel envelope; retain its actual open centre.
+    frame.moveTo(-.38556343,-.025)
+    frame.lineTo(-.38556343,.55)
+    frame.lineTo(-.30,.91)
+    frame.lineTo(-.16,1.075)
+    frame.lineTo(0,1.12621045)
+    frame.lineTo(.16,1.075)
+    frame.lineTo(.30,.91)
+    frame.lineTo(.38556343,.55)
+    frame.lineTo(.38556343,-.025)
+    frame.lineTo(.25,-.025)
+  }else{
+    frame.moveTo(-.36,0)
+    frame.lineTo(-.36,.55)
+    frame.bezierCurveTo(-.38,.92,-.18,1.05,0,1.1)
+    frame.bezierCurveTo(.18,1.05,.38,.92,.36,.55)
+    frame.lineTo(.36,0)
+    frame.lineTo(.25,0)
+  }
   frame.lineTo(.25,.55)
   frame.bezierCurveTo(.26,.8,.13,.92,0,.96)
   frame.bezierCurveTo(-.13,.92,-.26,.8,-.25,.55)
-  frame.lineTo(-.25,0)
+  frame.lineTo(-.25,detail===2?-.025:0)
   frame.closePath()
-  return new THREE.ExtrudeGeometry(frame,{depth:.16,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:2,curveSegments:12})
+  const geometry=new THREE.ExtrudeGeometry(frame,detail===2?
+    {depth:.21,bevelEnabled:false,curveSegments:3}:
+    {depth:.16,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:detail===1?1:2,curveSegments:detail===1?4:12})
+  if(detail===2)geometry.translate(0,0,-.025)
+  geometry.computeBoundingBox();geometry.computeBoundingSphere()
+  return geometry
 }
 
 export function taperedStoneCourse(width,depth,height,shrink=.93) {

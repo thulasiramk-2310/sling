@@ -12,7 +12,7 @@ export function guardianGeometry(low = false, variant = 0, polychrome = false) {
   if (cache.has(key)) return cache.get(key)
   const parts = []
   const segments = low ? 6 : 10
-  const colors = { skin: ['#cba281','#82aabd','#80a08a'][variant%3], garment: ['#9b4945','#b79b4c','#7b607e'][variant%3], gold:'#c7a258', hair:'#353936', eye:'#333e3d', stone:'#ffffff' }
+  const colors = { skin: ['#bba47a','#648999','#84a08d'][variant%3], garment: ['#ad5348','#cb9b4a','#496f87'][variant%3], gold:'#c7a258', hair:'#353936', eye:'#333e3d', stone:'#ffffff' }
   let finish = 'stone'
   const add = (geometry, position) => {
     if (polychrome) {
@@ -99,7 +99,7 @@ export function guardianGeometry(low = false, variant = 0, polychrome = false) {
 export function guardianProxyGeometry(variant=0,polychrome=false,medium=false) {
   const key=`proxy:${variant}:${polychrome}:${medium}`
   if(cache.has(key))return cache.get(key)
-  const parts=[],colors={stone:'#ffffff',skin:['#cba281','#82aabd','#80a08a'][variant%3],garment:['#9b4945','#b79b4c','#7b607e'][variant%3],gold:'#c7a258'}
+  const parts=[],colors={stone:'#ffffff',skin:['#bba47a','#648999','#84a08d'][variant%3],garment:['#ad5348','#cb9b4a','#496f87'][variant%3],gold:'#c7a258'}
   const add=(geometry,position,finish='skin')=>{
     geometry.translate(...position)
     if(polychrome){
@@ -116,22 +116,21 @@ export function guardianProxyGeometry(variant=0,polychrome=false,medium=false) {
     add(geometry,start.add(end).multiplyScalar(.5).toArray())
   }
   add(new THREE.CylinderGeometry(.22,.25,.075,medium?6:4),[0,.0375,0],'stone')
-  add(medium?loftGeometry([[.43,.105,.07,0],[.48,.09,.065,0],[.55,.135,.082,0],[.62,.17,.083,0],[.67,.135,.07,0],[.70,.05,.043,0]],6):new THREE.CylinderGeometry(.16,.105,.23,4),medium?[0,0,0]:[0,.555,0])
+  const chest=medium?new THREE.LatheGeometry([[.105,.43],[.09,.48],[.135,.55],[.17,.62],[.135,.67],[.05,.70]].map(p=>new THREE.Vector2(...p)),6):new THREE.CylinderGeometry(.16,.105,.23,4)
+  if(medium)chest.scale(1,1,.5)
+  add(chest,medium?[0,0,0]:[0,.555,0])
   add(new THREE.CylinderGeometry(.045,.05,.065,3,1,true),[0,.695,0])
   add(medium?new THREE.LatheGeometry([[.08,.19],[.14,.20],[.17,.28],[.13,.43],[.12,.47]].map(([x,y])=>new THREE.Vector2(x,y)),6):new THREE.ConeGeometry(.18,.28,4),medium?[0,0,0]:[0,.33,0],'garment')
   const head=medium?new THREE.SphereGeometry(1,6,4):new THREE.OctahedronGeometry(1);head.scale(.066,.09,.062)
   add(head,[0,.79,0])
-  add(medium?new THREE.LatheGeometry([[0,.85],[.085,.85],[.095,.875],[.07,.90],[.075,.925],[.052,.96],[.045,.995],[.015,1.045],[0,1.06]].map(([x,y])=>new THREE.Vector2(x,y)),6):new THREE.ConeGeometry(.085,.21,4),medium?[0,0,0]:[0,.955,0],'gold')
-  if(medium)for(const [radius,y] of [[.12,.46],[.075,.707]]){
-    const ring=new THREE.TorusGeometry(radius,.01,3,6);ring.rotateX(Math.PI/2);add(ring,[0,y,0],'gold')
-  }
+  add(medium?new THREE.LatheGeometry([[0,.85],[.09,.85],[.072,.91],[.045,.98],[0,1.06]].map(([x,y])=>new THREE.Vector2(x,y)),6):new THREE.ConeGeometry(.085,.21,4),medium?[0,0,0]:[0,.955,0],'gold')
   for(const side of [-1,1]){
     limb([side*.075,.27,0],[side*(variant===2?.17:.085),variant===2?.2:.09,.015],.038,.026)
     const foot=new THREE.BoxGeometry(.072,.043,.144);add(foot,[side*.085,.09,.042])
     const elbow=[side*.23,variant===1&&side>0?.78:.51,.02]
     const hand=[side*(variant===2?.05:.15),variant===1&&side>0?.94:variant===2?.57:.43,.10]
     limb([side*.145,.65,0],elbow,.045,.032);limb(elbow,hand,.032,.022)
-    const palm=medium?new THREE.SphereGeometry(.032,6,3):new THREE.OctahedronGeometry(.032);palm.scale(.7,1.15,.7);add(palm,hand)
+    const palm=new THREE.OctahedronGeometry(.032);palm.scale(.7,1.15,.7);add(palm,hand)
   }
   const normalized=parts.map(part=>part.index?part.toNonIndexed():part.clone()),geometry=mergeGeometries(normalized)
   for(const part of [...parts,...normalized])part.dispose()
@@ -174,7 +173,9 @@ export function createSculptureInstances(low = false, { polychrome = false } = {
         mesh.castShadow=mesh.receiveShadow=!low
         mesh.computeBoundingSphere()
         group.add(mesh)
-        registerDetailLod(mesh,{levels,center:mesh.boundingSphere.center,height:Math.max(...subset.map(p=>p.height))})
+        // Finger, jewelry and facial topology only read once the complete
+        // figure occupies enough CSS pixels; the middle mesh retains its pose.
+        registerDetailLod(mesh,{levels,center:mesh.boundingSphere.center,height:Math.max(...subset.map(p=>p.height)),thresholds:low?[64,10]:[48,8]})
       }
       return group
     },

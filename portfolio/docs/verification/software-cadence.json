@@ -1,13 +1,13 @@
 {
   "result": {
-    "elapsed": 20.000400000000372,
+    "elapsed": 20.0005,
     "pose": 0.947,
-    "renderedFrames": 24,
-    "renderedRate": 1.199976000479968,
-    "rafIntervals": 24,
-    "observedRafRate": 1.199976000479968,
-    "maximumIntervalMs": 2170.5,
-    "intervalsOver1000ms": 5,
+    "renderedFrames": 23,
+    "renderedRate": 1.149971250718732,
+    "rafIntervals": 23,
+    "observedRafRate": 1.149971250718732,
+    "maximumIntervalMs": 3070.800000000745,
+    "intervalsOver1000ms": 6,
     "before": {
       "frames": 3,
       "fps": null,
@@ -20,7 +20,7 @@
         ]
       },
       "drawCalls": 200,
-      "triangles": 934397,
+      "triangles": 939905,
       "dpr": 1,
       "ao": true,
       "reflections": true,
@@ -28,8 +28,8 @@
       "shadows": true
     },
     "after": {
-      "frames": 27,
-      "fps": 2.101355374216507,
+      "frames": 26,
+      "fps": 1.4882059677075807,
       "environment": {
         "road": 0.96,
         "top": [
@@ -39,7 +39,7 @@
         ]
       },
       "drawCalls": 39,
-      "triangles": 166778,
+      "triangles": 168614,
       "dpr": 0.75,
       "ao": false,
       "reflections": false,

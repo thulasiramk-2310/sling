@@ -1407,7 +1407,7 @@ body.world-first .cookie { right: auto; bottom: 65px; left: var(--gutter); max-w
 
 /* Daylight type must remain readable against the pale coastal horizon. */
 body.world-first:not(.trip-night) .journey-caption { color: #182e31; text-shadow: none; }
-body.world-first:not(.trip-night) .journey-eyebrow { color: #5d4c2b; }
+body.world-first:not(.trip-night) .journey-eyebrow { color: #182e31; }
 body.world-first:not(.trip-night) .journey-subtitle { color: #263c40; }
 body.world-first:not(.trip-night) .journey-read { border-color: #4b5d5b; }
 body.world-first:not(.trip-night) .topbar,
@@ -1718,7 +1718,7 @@ body.world-first .journey-runway { display:block; height:var(--journey-runway-he
    left:18px; top:102px; width:min(290px,calc(100vw - 76px)); max-height:28dvh; padding:0; border:0;
    background:none; overscroll-behavior:contain; scrollbar-width:thin;
  }
- .journey-caption .journey-eyebrow { font-size:8px; margin-bottom:7px; }
+ .journey-caption .journey-eyebrow { font-size:10px; margin-bottom:7px; }
  .journey-caption .journey-heading { font-size:25px; line-height:1.12; }
  .journey-caption.at-stop .journey-subtitle { display:none; }
  .journey-caption .journey-subtitle { margin:8px 0; font-size:11px; }
@@ -1764,3 +1764,15 @@ body.no-3d .hero-role { letter-spacing:.10em; font-size:14px; line-height:1.6; }
 
 .journey-readable { position:fixed; right:var(--gutter); bottom:98px; z-index:25; min-height:44px; padding:10px 16px; color:#25382f; background:#f2efe5; border:0; border-bottom:1px solid #71816c; border-radius:0; font:12px var(--body); cursor:pointer; }
 .journey-readable:focus-visible { outline:2px solid #b1944c; outline-offset:4px; }
+
+/* Portrait Madurai captions sit against the purple upper sky. Keep the header's
+   daylight treatment, but give this copy a restrained subtitle-style outline. */
+@media(max-width:700px) {
+  body.world-first[data-story-stage='experience'] .journey-caption {
+    color:#fffbed;
+    text-shadow:0 1px 3px rgba(10,19,29,.94),0 0 9px rgba(10,19,29,.65);
+  }
+  body.world-first[data-story-stage='experience'] .journey-caption .journey-eyebrow,
+  body.world-first[data-story-stage='experience'] .journey-caption .journey-subtitle {color:inherit;text-shadow:inherit;}
+  body.world-first[data-story-stage='experience'] .journey-caption .journey-read {border-color:rgba(255,251,237,.7);}
+}

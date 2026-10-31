@@ -1,0 +1,112 @@
+{
+  "bridgeStartU": 0.6940000000000002,
+  "bridgeEndU": 0.8530000000000003,
+  "routeLength": 2524.331208155609,
+  "samples": [
+    {
+      "x": -44,
+      "z": 54,
+      "terrain": 0.0825327155665434,
+      "slabTop": 0.075,
+      "buried": true
+    },
+    {
+      "x": -44,
+      "z": 64,
+      "terrain": 0.10083982451037343,
+      "slabTop": 0.075,
+      "buried": true
+    },
+    {
+      "x": -44,
+      "z": 79,
+      "terrain": 0.027460136529739998,
+      "slabTop": 0.075,
+      "buried": false
+    },
+    {
+      "x": -44,
+      "z": 92,
+      "terrain": 0,
+      "slabTop": 0.075,
+      "buried": false
+    },
+    {
+      "x": -44,
+      "z": 98,
+      "terrain": 0,
+      "slabTop": 0.075,
+      "buried": false
+    },
+    {
+      "x": 0,
+      "z": 54,
+      "terrain": 0.6577634325716275,
+      "slabTop": 0.075,
+      "buried": true
+    },
+    {
+      "x": 0,
+      "z": 64,
+      "terrain": 0.3977273627435345,
+      "slabTop": 0.075,
+      "buried": true
+    },
+    {
+      "x": 0,
+      "z": 79,
+      "terrain": 0.13076280807174,
+      "slabTop": 0.075,
+      "buried": true
+    },
+    {
+      "x": 0,
+      "z": 92,
+      "terrain": 0,
+      "slabTop": 0.075,
+      "buried": false
+    },
+    {
+      "x": 0,
+      "z": 98,
+      "terrain": 0,
+      "slabTop": 0.075,
+      "buried": false
+    },
+    {
+      "x": 44,
+      "z": 54,
+      "terrain": 0.9709027821486913,
+      "slabTop": 0.075,
+      "buried": true
+    },
+    {
+      "x": 44,
+      "z": 64,
+      "terrain": 0.4224687679631849,
+      "slabTop": 0.075,
+      "buried": true
+    },
+    {
+      "x": 44,
+      "z": 79,
+      "terrain": 0.14268815993021278,
+      "slabTop": 0.075,
+      "buried": true
+    },
+    {
+      "x": 44,
+      "z": 92,
+      "terrain": -3.552713678800501e-15,
+      "slabTop": 0.075,
+      "buried": false
+    },
+    {
+      "x": 44,
+      "z": 98,
+      "terrain": 0,
+      "slabTop": 0.075,
+      "buried": false
+    }
+  ]
+}

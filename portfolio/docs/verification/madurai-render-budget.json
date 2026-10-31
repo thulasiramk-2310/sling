@@ -1,0 +1,13 @@
+{
+  "scope": "Madurai phone reading view, p.725 at390x844; the entire new nine-register assembly is measured, not a pure isolated LOD benchmark",
+  "before": {
+    "primaryPassTriangles": 1115556,
+    "drawCalls": 234
+  },
+  "after": {
+    "primaryPassTriangles": 777450,
+    "drawCalls": 302
+  },
+  "note": "Fewer submitted triangles, more draws. This does not establish an FPS gain.",
+  "primaryTriangleReductionPercent": 30.30829469789056
+}

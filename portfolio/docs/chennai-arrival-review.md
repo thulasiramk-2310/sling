@@ -67,8 +67,11 @@ the under-bridge frame differs by 1.68. These pixel comparisons are corroboratio
 not a substitute for visual inspection. The full paired submission report is
 `verification/phone-distance-comparison.json`.
 
-Madurai's phone reading pose still submits about 1.12 million primary triangles.
-Its visible ornament budget needs further work. Hardware-GPU FPS is unverified.
+At this arrival pass, Madurai's phone reading pose submitted about 1.12 million
+primary triangles. The later [Madurai revision](madurai-review.md) reduces that
+to about 777,450 while adding nine-register gateways and crest ornament. Draw
+submissions rise from 234 to 302; this is not evidence of an FPS gain. Hardware-GPU
+performance remains unverified.
 
 ## Remaining art work
 

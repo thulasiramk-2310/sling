@@ -1,9 +1,9 @@
 {
-  "date": "2026-10-31",
+  "date": "2026-11-01",
   "unitTests": {
-    "passed": 125,
+    "passed": 130,
     "failed": 0,
-    "files": 27
+    "files": 28
   },
   "lint": {
     "tool": "oxlint",
@@ -13,7 +13,7 @@
   "build": {
     "tool": "Vite",
     "exitCode": 0,
-    "entrySha256": "8ce587a58a39a1bd4b540c4f8299e43c94a86781a95e7951d4d44f2a9c82a96d"
+    "entrySha256": "8023b77fa0226516ba7ae47551ab9ef2c0347fb1e83caf710dc33987280136ef"
   },
   "nativeInput": {
     "desktop": 21,
@@ -21,13 +21,13 @@
   },
   "staticViews": {
     "desktop": {
-      "cameraPoses": 20,
+      "cameraPoses": 29,
       "loader": true,
       "width": 1440,
       "overflow": false
     },
     "phone": {
-      "cameraPoses": 20,
+      "cameraPoses": 29,
       "loader": true,
       "width": 390,
       "overflow": false
@@ -40,8 +40,13 @@
     "maximumIndependentGapCm": 1.788,
     "testLimitCm": 2
   },
-  "visualQualityGoal": "Above 9/10 remains unmet. Independent opening review approximately 6.5/10; see chennai-arrival-review.md.",
+  "visualQualityGoal": "Above 9/10 remains unmet. Independent opening review approximately 6.5/10; final Madurai review 7.3/10, sculpture craft 6.3/10. See madurai-review.md.",
   "hardwareGpuFps": "Unverified; software rendering only",
-  "note": "All reports serve the integrated dist build. Static frames do not establish real-time motion or hardware-GPU performance. The initial disconnected phone attempt was not reproduced by an isolated seven-touch probe and the final complete 21-check rerun.",
-  "performanceReadable": "Actual poor rendering after adaptation: native Enter selection, focused notice, seven live projects, active scrolling and stopped 3D renderer."
+  "note": "All current reports serve the frozen production build. Twenty-nine poses include sculpture entry transitions. Native input checks use reduced motion; static frames do not establish motion cadence or hardware-GPU performance.",
+  "performanceReadable": "Actual poor rendering after adaptation: native Enter selection, focused notice, seven live projects, active scrolling and stopped 3D renderer.",
+  "maduraiGround": {
+    "sampledPoints": 819,
+    "maximumTerrainY": -0.07500000298021803,
+    "bridgeSeabedPreserved": true
+  }
 }

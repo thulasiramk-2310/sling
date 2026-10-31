@@ -5,11 +5,11 @@ import { streetGeometry } from './architecture.js'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import { glowTexture, grainTexture, roadTexture, seaNormalTexture, trunkTexture } from './textures.js'
 import { quality } from './quality.js'
-import { isReserved, ROAD_DECK_HEIGHT } from './route.js'
+import { isReserved, ROAD_DECK_HEIGHT, STOPS } from './route.js'
 import { clamp, glow, lambert, lerp, rng, smooth, surface } from './util.js'
 
 // Distances from the road centre where the ground mesh has a row of points.
-const COLUMNS = [-320, -140, -60, -26, -8, 8, 26, 50, 80, 110, 150, 220, 320]
+const COLUMNS = [-320, -140, -60, -26, -8, 8, 26, 50, 80, 110, 150, 160, 165, 220, 320]
 
 // Ground colours along the trip: city and beach, coastal scrub, green paddy, dry plain.
 const GROUND = [
@@ -39,6 +39,7 @@ export function buildGround(scene, route) {
   const c = new THREE.Color()
   const seaFrom = route.bridgeU - 0.012
   const seaTo = route.bridgeU + 0.02
+  const madurai=route.at(STOPS[3]),templeOrigin=route.side(STOPS[3],112)
   const s = route.sample()
   for (let i = 0; i < rows; i++) {
     const u = i / (rows - 1)
@@ -56,6 +57,19 @@ export function buildGround(scene, route) {
       y += smooth(30, 120, edge) * (Math.sin(u * 80 + lat * 0.03) * 1.6 + Math.sin(u * 31 + lat * 0.011) * 2.4) * (1 - sea)
       const forecourt=smooth(.025,.045,u)*(1-smooth(.108,.125,u))*smooth(8,20,-lat)*(1-smooth(160,200,-lat))
       y=lerp(y,0,forecourt)
+      const inland=smooth(.32,.38,u)*(1-smooth(route.bridgeU-.03,route.bridgeU+.005,u))
+      const outer=smooth(150,320,edge)
+      const terrainLat=lat+Math.sign(lat)*outer*1400*inland
+      const p = s.pos.clone().addScaledVector(s.right, terrainLat)
+      // Grade the actual oriented temple parcel beneath its paving. Keep the
+      // town outside this footprint: it extends into the later bridge coast.
+      // Extra columns at 160/165 bound the rear courtyard before the much
+      // wider horizon triangles, which otherwise slope through its floor.
+      const dx=p.x-templeOrigin.x,dz=p.z-templeOrigin.z
+      const localX=-dx*madurai.tan.x-dz*madurai.tan.z
+      const localZ=-dx*madurai.right.x-dz*madurai.right.z
+      const temple=(1-smooth(64,82,Math.abs(localX)))*smooth(-92,-72,localZ)*(1-smooth(110,124,localZ))
+      y=lerp(y,-.075,temple)
       y = lerp(y, -6, sea)
       // Beyond the final promenade, the sea must surround both rock islands.
       // Apply after hills so a terrain ridge cannot join the memorial to shore.
@@ -64,11 +78,7 @@ export function buildGround(scene, route) {
       const k = (i * COLUMNS.length + j) * 3
       // Thanjavur and Madurai are inland. Extend their land to the horizon
       // instead of exposing the shared ocean plane behind the temple compounds.
-      const inland=smooth(.32,.38,u)*(1-smooth(route.bridgeU-.03,route.bridgeU+.005,u))
-      const outer=smooth(150,320,edge)
-      const terrainLat=lat+Math.sign(lat)*outer*1400*inland
-      y += outer*inland*(8+Math.pow(Math.sin(u*22+lat*.009),2)*20)
-      const p = s.pos.clone().addScaledVector(s.right, terrainLat)
+      y += outer*inland*(8+Math.pow(Math.sin(u*22+lat*.009),2)*20)*(1-temple)
       pos[k] = p.x
       pos[k + 1] = y
       pos[k + 2] = p.z

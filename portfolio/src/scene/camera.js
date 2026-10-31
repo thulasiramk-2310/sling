@@ -132,6 +132,7 @@ export function createJourneyCamera(route) {
     {range:[.408,.435,.444,.458],eye:landmarkPoint(.23,42,[7,4.8,14]),target:landmarkPoint(.23,42,[0,2.2,2])},
     {range:[.451,.469,.474,.488],eye:landmarkPoint(.27,52,[30,18,53]),phoneEye:landmarkPoint(.27,52,[15,16,94]),target:landmarkPoint(.27,52,[-2,5,0])},
     {range:[.585,.610,.615,.632],eye:landmarkPoint(.47,100,[14,4.8,45],-Math.PI/2),target:landmarkPoint(.47,100,[0,4,58],-Math.PI/2),lift:16},
+    {range:[.692,.708,.718,.725],eye:landmarkPoint(.64,112,[14,13,118]),phoneEye:landmarkPoint(.64,112,[10,13,134]),target:landmarkPoint(.64,112,[0,25,58]),lift:12,lookLead:.62},
     {range:POET_VISIT,eye:landmarkPoint(.976,96,[21,31,57],0,.96),target:landmarkPoint(.976,96,[0,21,0],0,.96)},
   ]
   return {
@@ -158,7 +159,9 @@ export function createJourneyCamera(route) {
         eye.lerp(aspect<.8 && visit.phoneEye?visit.phoneEye:visit.eye,weight)
         // Clear the cloister during entry/exit before settling below its roof.
         eye.y+=(visit.lift||0)*Math.sin(Math.PI*weight)
-        target.lerp(visit.target,weight)
+        // Look into Madurai's gateway before the lateral dolly arrives, so
+        // the tower enters the open frame rather than the reading column.
+        target.lerp(visit.target,visit.lookLead?THREE.MathUtils.smootherstep(weight,0,visit.lookLead):weight)
         visitWeight=Math.max(visitWeight,weight)
       }
       const frameWeight=smooth(.20,.235,p)*(1-smooth(.92,.95,p))*(1-visitWeight)
@@ -174,12 +177,19 @@ export function createJourneyCamera(route) {
 
 export function frameVehicle(camera,center,width,height,progress=0,pose=null) {
   camera.clearViewOffset();camera.updateMatrixWorld(true)
+  const local=center.clone().applyMatrix4(camera.matrixWorldInverse)
   const p=center.clone().project(camera)
   const weight=pose?.frameWeight ?? 1
   const portrait=pose?.portrait ?? 0
   const x=camera.aspect<.8?.08+portrait*.12-.16*smooth(.86,.915,progress):.06+portrait*.28
   const y=camera.aspect<.8?-.54+portrait*.025:-.40+portrait*.16
-  if(weight>0) camera.setViewOffset(width,height,(p.x-x)*width/2*weight,(y-p.y)*height/2*weight,width,height)
+  // During a sculpture visit the auto can pass across the camera plane.
+  // Its perspective projection then tends to infinity; following that point
+  // swings the view away from the authored target and magnifies the road.
+  // Fade before either extreme displacement or a near/behind-camera crossing.
+  const displacement=Math.max(Math.abs(p.x-x),Math.abs(p.y-y))
+  const framing=Number.isFinite(displacement)?weight*smooth(camera.near*2,camera.near*10,-local.z)*(1-smooth(1.25,2,displacement)):0
+  if(framing>0)camera.setViewOffset(width,height,(p.x-x)*width/2*framing,(y-p.y)*height/2*framing,width,height)
 }
 
 // The phone renderer need not submit another city through nearly opaque haze.

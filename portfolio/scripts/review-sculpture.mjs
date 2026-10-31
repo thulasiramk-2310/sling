@@ -1,13 +1,13 @@
 // Run against the local Vite server and a task-owned Chrome CDP instance.
-// node scripts/review-sculpture.mjs [desktop|phone|studio]
+// node scripts/review-sculpture.mjs [desktop|phone|studio|temple]
 import fs from 'node:fs/promises'
 import assert from 'node:assert/strict'
 import {sample} from '../src/scene/timeline.js'
 import {storyAt} from '../src/scene/story.js'
-const mode=process.argv[2]||'desktop',phone=mode==='phone',studio=mode==='studio'
+const mode=process.argv[2]||'desktop',phone=mode==='phone',temple=mode==='temple',studio=mode==='studio'||temple
 const low=process.argv.includes('--low')
 const candidate=process.argv.find(arg=>arg.startsWith('--candidate='))?.slice(12)
-const clay=process.argv.includes('--clay'),pedestal=process.argv.includes('--pedestal'),intro=process.argv.includes('--intro'),all=intro&&process.argv.includes('--journey'),label=mode+(all?'-product':intro?'-intro':'')+(candidate?'-candidate':'')+(low?'-low':'')+(pedestal?'-pedestal':'')+(clay?'-clay':'')
+const clay=process.argv.includes('--clay'),pedestal=process.argv.includes('--pedestal'),intro=process.argv.includes('--intro'),madurai=process.argv.includes('--madurai'),all=intro&&process.argv.includes('--journey'),label=mode+(madurai?'-madurai':all?'-product':intro?'-intro':'')+(candidate?'-candidate':'')+(low?'-low':'')+(pedestal?'-pedestal':'')+(clay?'-clay':'')
 if(candidate && (!studio || pedestal))throw new Error('Candidate geometry requires the figure studio')
 const visits=process.argv.includes('--visits')
 const targets=await (await fetch('http://127.0.0.1:9224/json/list')).json()
@@ -50,7 +50,33 @@ if(!studio) {
   await evaluate('document.querySelector(".loader-start").click()')
   for(let i=0;i<100;i++){if(await evaluate('document.getElementById("loader").hidden'))break;await new Promise(r=>setTimeout(r,100))}
 }
-if(mode==='studio'){
+if(temple){
+  const result=await evaluate(`(async()=>{
+    const THREE=await import('/node_modules/.vite/deps/three.js');
+    const {quality}=await import('/src/scene/quality.js');quality.low=${low};quality.tex=${low}?.5:1;
+    const {makeGopuram}=await import('/src/scene/landmarks/gopuram.js');
+    const {updateDetailLods}=await import('/src/scene/detail-lod.js');
+    const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setSize(1440,900);renderer.setPixelRatio(1);renderer.toneMapping=THREE.ACESFilmicToneMapping;
+    renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;
+    renderer.domElement.style.cssText='position:fixed;inset:0;z-index:999999';document.body.append(renderer.domElement);document.title='Madurai neutral geometry review';
+    const scene=new THREE.Scene();scene.background=new THREE.Color('#ced2cc');scene.add(new THREE.HemisphereLight(0xeaf0f5,0x5e6559,1.1));
+    const light=new THREE.DirectionalLight(0xfff4e4,3);light.position.set(-60,100,90);light.target.position.set(0,25,0);light.castShadow=true;
+    light.shadow.mapSize.set(2048,2048);Object.assign(light.shadow.camera,{left:-48,right:48,top:48,bottom:-48,near:1,far:220});light.shadow.normalBias=.01;
+    scene.add(light,light.target);light.target.updateMatrixWorld();
+    const room=new THREE.Scene();room.background=new THREE.Color('#c0c5c4');const generator=new THREE.PMREMGenerator(renderer),environment=generator.fromScene(room,0,.1,10,{size:64});generator.dispose();scene.environment=environment.texture;scene.environmentIntensity=.35;
+    const figure=makeGopuram({tiers:9,baseW:30,baseD:18,tierH:5.4,palette:'madurai',seed:2,podiumH:7});figure.scale.setScalar(52/figure.userData.height);scene.add(figure);
+    if(${clay})figure.traverse(object=>{if(object.isMesh){object.material=new THREE.MeshStandardMaterial({color:0xa5a79b,roughness:.93});object.instanceColor=null;}});
+    const floor=new THREE.Mesh(new THREE.PlaneGeometry(180,180),new THREE.MeshStandardMaterial({color:0xaeb4aa,roughness:.96}));floor.rotation.x=-Math.PI/2;floor.position.y=-.1;floor.receiveShadow=true;scene.add(floor);
+    scene.traverse(object=>{if(object.isMesh){object.castShadow=object!==floor;object.receiveShadow=true;}});
+    const camera=new THREE.PerspectiveCamera(35,1440/900,.1,500);camera.position.set(54,30,110);camera.lookAt(0,25,0);updateDetailLods(scene,camera,900);renderer.render(scene,camera);
+    window.__templeStudio={renderer,scene,camera,updateDetailLods};return {calls:renderer.info.render.calls,triangles:renderer.info.render.triangles};
+  })()`)
+  console.log(JSON.stringify(result));await capture('neutral')
+  for(const [name,eye,look] of [['front',[0,30,122],[0,25,0]],['crown',[30,47,35],[0,47,0]],['register',[12,11,32],[0,10,8]]]){
+    await evaluate(`(()=>{const {renderer,scene,camera,updateDetailLods}=window.__templeStudio;camera.position.set(${eye.join(',')});camera.lookAt(${look.join(',')});updateDetailLods(scene,camera,900);renderer.render(scene,camera)})()`)
+    await capture('neutral-'+name)
+  }
+}else if(mode==='studio'){
   const result=await evaluate(`(async()=>{
     const THREE=await import('/node_modules/.vite/deps/three.js');
     const {poetStatue}=await import('/src/scene/landmarks/poet-statue.js');
@@ -85,8 +111,8 @@ if(mode==='studio'){
 }else{
   const ending=[[.915,'kanyakumari'],[.947,'poet-visit'],...((process.argv.includes('--ending')||process.argv.includes('--journey'))?[[.973,'poet-exit'],[.987,'sky-farewell']]:[])]
   const introduction=[[.205,'arrival-start'],[.225,'arrival-walk'],[.237,'arrival-turn'],[.245,'introduction'],[.292,'boarding-start'],[.315,'boarding-seat'],[.33,'departure'],[.342,'driveway-crossing'],[.3705,'road-merge'],[.38,'riding-start']]
-  const journey=[[.02,'opening-sky'],[.172,'under-bridge'],[.245,'introduction'],[.49,'mamallapuram'],[.635,'thanjavur'],[.725,'madurai'],[.815,'rameswaram'],...ending]
-  const positions=all?[...journey,...introduction].sort((a,b)=>a[0]-b[0]).filter((value,index,list)=>index===0||value[0]!==list[index-1][0]):intro?introduction:process.argv.includes('--water-audit')?[[.973,'water-default',{shadows:true,reflections:true,ao:true,bloom:true}],[.973,'water-no-shadow',{shadows:false,reflections:true,ao:true,bloom:true}],[.973,'water-no-reflection',{shadows:true,reflections:false,ao:true,bloom:true}],[.973,'water-no-ao',{shadows:true,reflections:true,ao:false,bloom:true}],[.973,'water-no-bloom',{shadows:true,reflections:true,ao:true,bloom:false}],[.973,'water-minimal',{shadows:false,reflections:false,ao:false,bloom:false}]]:process.argv.includes('--journey')?journey:visits?[[.44,'elephant-visit'],[.471,'rathas-visit'],[.612,'nandi-visit'],[.49,'mamallapuram-return'],[.635,'thanjavur-return']]:(process.argv.includes('--poet-only')||process.argv.includes('--ending'))?ending:[[.49,'mamallapuram'],[.59,'thanjavur-approach'],[.635,'thanjavur'],[.725,'madurai'],...ending]
+  const journey=[[.02,'opening-sky'],[.172,'under-bridge'],[.245,'introduction'],[.414,'elephant-entry'],[.44,'elephant-visit'],[.457,'rathas-entry'],[.471,'rathas-visit'],[.49,'mamallapuram'],[.589,'nandi-entry'],[.612,'nandi-visit'],[.635,'thanjavur'],[.700,'madurai-approach'],[.715,'madurai-detail'],[.725,'madurai'],[.815,'rameswaram'],[.935,'poet-entry'],...ending]
+  const positions=madurai?[[.700,'approach'],[.715,'detail'],[.725,'reading'],[.735,'return']]:all?[...journey,...introduction].sort((a,b)=>a[0]-b[0]).filter((value,index,list)=>index===0||value[0]!==list[index-1][0]):intro?introduction:process.argv.includes('--water-audit')?[[.973,'water-default',{shadows:true,reflections:true,ao:true,bloom:true}],[.973,'water-no-shadow',{shadows:false,reflections:true,ao:true,bloom:true}],[.973,'water-no-reflection',{shadows:true,reflections:false,ao:true,bloom:true}],[.973,'water-no-ao',{shadows:true,reflections:true,ao:false,bloom:true}],[.973,'water-no-bloom',{shadows:true,reflections:true,ao:true,bloom:false}],[.973,'water-minimal',{shadows:false,reflections:false,ao:false,bloom:false}]]:process.argv.includes('--journey')?journey:visits?[[.44,'elephant-visit'],[.471,'rathas-visit'],[.612,'nandi-visit'],[.49,'mamallapuram-return'],[.635,'thanjavur-return']]:(process.argv.includes('--poet-only')||process.argv.includes('--ending'))?ending:[[.49,'mamallapuram'],[.59,'thanjavur-approach'],[.635,'thanjavur'],[.715,'madurai-detail'],[.725,'madurai'],...ending]
   for(const [u,name,effects] of positions){
     if(effects)await evaluate('window.__trip.effects('+JSON.stringify(effects)+')')
     const metrics=await evaluate('window.__trip.inspect('+u+')');posesRendered.push({progress:u,name,metrics,...(process.argv.includes('--profile')?{profile:await evaluate('window.__trip.profile()')}:{})});

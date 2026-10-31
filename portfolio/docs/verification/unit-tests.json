@@ -1,0 +1,6 @@
+{
+  "passed": 130,
+  "failed": 0,
+  "files": 28,
+  "command": "npm test -- --reporter=json --outputFile=../../review-product/vitest-results.json"
+}

@@ -31,8 +31,8 @@
             0.5395632636089066
           ]
         },
-        "drawCalls": 2204,
-        "triangles": 8526097,
+        "drawCalls": 2444,
+        "triangles": 7472275,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -40,8 +40,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 2418992,
-        "meshes": 554,
+        "primaryPassTriangles": 2103046,
+        "meshes": 633,
         "detailLevels": [
           {
             "level": 0,
@@ -55,25 +55,11 @@
           },
           {
             "level": 2,
-            "meshes": 102,
-            "instances": 1467
+            "meshes": 166,
+            "instances": 3609
           }
         ],
         "largest": [
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 342,
-            "geometryTriangles": 262,
-            "triangles": 89604
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 122,
-            "geometryTriangles": 644,
-            "triangles": 78568
-          },
           {
             "name": "Chennai arrival forecourt / Station forecourt shade trees / Individual pointed leaves in open branching crowns",
             "geometry": "BufferGeometry",
@@ -82,46 +68,11 @@
             "triangles": 70656
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 238,
-            "geometryTriangles": 262,
-            "triangles": 62356
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 232,
-            "geometryTriangles": 262,
-            "triangles": 60784
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 194,
-            "geometryTriangles": 262,
-            "triangles": 50828
-          },
-          {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
             "geometry": "BufferGeometry",
             "instances": 43,
             "geometryTriangles": 1176,
             "triangles": 50568
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 68,
-            "geometryTriangles": 644,
-            "triangles": 43792
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 64,
-            "geometryTriangles": 644,
-            "triangles": 41216
           },
           {
             "name": "Mesh",
@@ -131,18 +82,11 @@
             "triangles": 37708
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
             "geometry": "BoxGeometry",
             "instances": 3024,
             "geometryTriangles": 12,
             "triangles": 36288
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 50,
-            "geometryTriangles": 644,
-            "triangles": 32200
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -171,192 +115,6 @@
             "instances": 17,
             "geometryTriangles": 1760,
             "triangles": 29920
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 46,
-            "geometryTriangles": 644,
-            "triangles": 29624
-          },
-          {
-            "name": "Tamil terrace street frontage / wood",
-            "geometry": "BufferGeometry",
-            "instances": 24,
-            "geometryTriangles": 1176,
-            "triangles": 28224
-          },
-          {
-            "name": "Tamil terrace street frontage / wood",
-            "geometry": "BufferGeometry",
-            "instances": 24,
-            "geometryTriangles": 1176,
-            "triangles": 28224
-          },
-          {
-            "name": "Spatial palm crowns / Palm crowns -1:-8",
-            "geometry": "BufferGeometry",
-            "instances": 16,
-            "geometryTriangles": 1760,
-            "triangles": 28160
-          }
-        ]
-      }
-    },
-    {
-      "progress": 0.172,
-      "name": "under-bridge",
-      "metrics": {
-        "frames": 6,
-        "fps": null,
-        "environment": {
-          "road": 0.07,
-          "top": [
-            0.19644975434549738,
-            0.2836189857997913,
-            0.5395632636089066
-          ]
-        },
-        "drawCalls": 1923,
-        "triangles": 8004633,
-        "dpr": 1,
-        "ao": true,
-        "reflections": true,
-        "bloom": true,
-        "shadows": true
-      },
-      "profile": {
-        "primaryPassTriangles": 2252920,
-        "meshes": 457,
-        "detailLevels": [
-          {
-            "level": 0,
-            "meshes": 0,
-            "instances": 0
-          },
-          {
-            "level": 1,
-            "meshes": 0,
-            "instances": 0
-          },
-          {
-            "level": 2,
-            "meshes": 102,
-            "instances": 1467
-          }
-        ],
-        "largest": [
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 342,
-            "geometryTriangles": 262,
-            "triangles": 89604
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 122,
-            "geometryTriangles": 644,
-            "triangles": 78568
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 238,
-            "geometryTriangles": 262,
-            "triangles": 62356
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 232,
-            "geometryTriangles": 262,
-            "triangles": 60784
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 194,
-            "geometryTriangles": 262,
-            "triangles": 50828
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
-            "geometry": "BufferGeometry",
-            "instances": 43,
-            "geometryTriangles": 1176,
-            "triangles": 50568
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 68,
-            "geometryTriangles": 644,
-            "triangles": 43792
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 64,
-            "geometryTriangles": 644,
-            "triangles": 41216
-          },
-          {
-            "name": "Mesh",
-            "geometry": "BufferGeometry",
-            "instances": 11,
-            "geometryTriangles": 3428,
-            "triangles": 37708
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach",
-            "geometry": "BoxGeometry",
-            "instances": 3024,
-            "geometryTriangles": 12,
-            "triangles": 36288
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 50,
-            "geometryTriangles": 644,
-            "triangles": 32200
-          },
-          {
-            "name": "Tamil terrace street frontage / wood",
-            "geometry": "BufferGeometry",
-            "instances": 23,
-            "geometryTriangles": 1392,
-            "triangles": 32016
-          },
-          {
-            "name": "Tamil terrace street frontage / wood",
-            "geometry": "BufferGeometry",
-            "instances": 23,
-            "geometryTriangles": 1392,
-            "triangles": 32016
-          },
-          {
-            "name": "Original Chennai coastal arch bridge — cinematic entrance",
-            "geometry": "ExtrudeGeometry",
-            "instances": 228,
-            "geometryTriangles": 140,
-            "triangles": 31920
-          },
-          {
-            "name": "Spatial palm crowns / Palm crowns -1:-9",
-            "geometry": "BufferGeometry",
-            "instances": 17,
-            "geometryTriangles": 1760,
-            "triangles": 29920
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 46,
-            "geometryTriangles": 644,
-            "triangles": 29624
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -385,6 +143,248 @@
             "instances": 15,
             "geometryTriangles": 1760,
             "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-20",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-11",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 540,
+            "triangles": 23220
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-4",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1760,
+            "triangles": 21120
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 816,
+            "triangles": 20400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-7",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 1760,
+            "triangles": 19360
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 64,
+            "geometryTriangles": 280,
+            "triangles": 17920
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-13",
+            "geometry": "BufferGeometry",
+            "instances": 10,
+            "geometryTriangles": 1760,
+            "triangles": 17600
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.172,
+      "name": "under-bridge",
+      "metrics": {
+        "frames": 6,
+        "fps": null,
+        "environment": {
+          "road": 0.07,
+          "top": [
+            0.19644975434549738,
+            0.2836189857997913,
+            0.5395632636089066
+          ]
+        },
+        "drawCalls": 2163,
+        "triangles": 6950811,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      },
+      "profile": {
+        "primaryPassTriangles": 1936974,
+        "meshes": 536,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 166,
+            "instances": 3609
+          }
+        ],
+        "largest": [
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 1176,
+            "triangles": 50568
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 3428,
+            "triangles": 37708
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
+            "geometry": "BoxGeometry",
+            "instances": 3024,
+            "geometryTriangles": 12,
+            "triangles": 36288
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Original Chennai coastal arch bridge — cinematic entrance",
+            "geometry": "ExtrudeGeometry",
+            "instances": 228,
+            "geometryTriangles": 140,
+            "triangles": 31920
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-9",
+            "geometry": "BufferGeometry",
+            "instances": 17,
+            "geometryTriangles": 1760,
+            "triangles": 29920
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-8",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 1760,
+            "triangles": 28160
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-12",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-20",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-11",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 540,
+            "triangles": 23220
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-4",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1760,
+            "triangles": 21120
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 816,
+            "triangles": 20400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-7",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 1760,
+            "triangles": 19360
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 64,
+            "geometryTriangles": 280,
+            "triangles": 17920
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-13",
+            "geometry": "BufferGeometry",
+            "instances": 10,
+            "geometryTriangles": 1760,
+            "triangles": 17600
+          },
+          {
+            "name": "Original three-dimensional stone elephant / AuxScene / Original_three-dimensional_stone_elephant / mesh_0",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 16232,
+            "triangles": 16232
           }
         ]
       }
@@ -404,7 +404,7 @@
           ]
         },
         "drawCalls": 1107,
-        "triangles": 3308561,
+        "triangles": 3314069,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -412,7 +412,7 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 680996,
+        "primaryPassTriangles": 682832,
         "meshes": 213,
         "detailLevels": [
           {
@@ -538,6 +538,13 @@
             "triangles": 12960
           },
           {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
             "name": "Spatial palm crowns / Palm crowns -3:-5",
             "geometry": "BufferGeometry",
             "instances": 7,
@@ -557,13 +564,6 @@
             "instances": 1,
             "geometryTriangles": 11264,
             "triangles": 11264
-          },
-          {
-            "name": "Mesh",
-            "geometry": "BufferGeometry",
-            "instances": 1,
-            "geometryTriangles": 11016,
-            "triangles": 11016
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -590,7 +590,7 @@
           ]
         },
         "drawCalls": 889,
-        "triangles": 2702785,
+        "triangles": 2708293,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -598,7 +598,7 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 570076,
+        "primaryPassTriangles": 571912,
         "meshes": 190,
         "detailLevels": [
           {
@@ -703,6 +703,13 @@
             "triangles": 12960
           },
           {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
             "name": "Spatial palm crowns / Palm crowns -3:-5",
             "geometry": "BufferGeometry",
             "instances": 7,
@@ -722,13 +729,6 @@
             "instances": 1,
             "geometryTriangles": 11264,
             "triangles": 11264
-          },
-          {
-            "name": "Mesh",
-            "geometry": "BufferGeometry",
-            "instances": 1,
-            "geometryTriangles": 11016,
-            "triangles": 11016
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -776,7 +776,7 @@
           ]
         },
         "drawCalls": 880,
-        "triangles": 2699059,
+        "triangles": 2704567,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -784,7 +784,7 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 563884,
+        "primaryPassTriangles": 565720,
         "meshes": 191,
         "detailLevels": [
           {
@@ -889,6 +889,13 @@
             "triangles": 12960
           },
           {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
             "name": "Tamil terrace street frontage / wood",
             "geometry": "BufferGeometry",
             "instances": 6,
@@ -901,13 +908,6 @@
             "instances": 1,
             "geometryTriangles": 11264,
             "triangles": 11264
-          },
-          {
-            "name": "Mesh",
-            "geometry": "BufferGeometry",
-            "instances": 1,
-            "geometryTriangles": 11016,
-            "triangles": 11016
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -962,7 +962,7 @@
           ]
         },
         "drawCalls": 880,
-        "triangles": 2699059,
+        "triangles": 2704567,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -970,7 +970,7 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 563884,
+        "primaryPassTriangles": 565720,
         "meshes": 191,
         "detailLevels": [
           {
@@ -1075,6 +1075,13 @@
             "triangles": 12960
           },
           {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
             "name": "Tamil terrace street frontage / wood",
             "geometry": "BufferGeometry",
             "instances": 6,
@@ -1087,13 +1094,6 @@
             "instances": 1,
             "geometryTriangles": 11264,
             "triangles": 11264
-          },
-          {
-            "name": "Mesh",
-            "geometry": "BufferGeometry",
-            "instances": 1,
-            "geometryTriangles": 11016,
-            "triangles": 11016
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -1148,7 +1148,7 @@
           ]
         },
         "drawCalls": 895,
-        "triangles": 2792999,
+        "triangles": 2798507,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -1156,7 +1156,7 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 599692,
+        "primaryPassTriangles": 601528,
         "meshes": 198,
         "detailLevels": [
           {
@@ -1261,6 +1261,13 @@
             "triangles": 12960
           },
           {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
             "name": "Spatial palm crowns / Palm crowns -3:-5",
             "geometry": "BufferGeometry",
             "instances": 7,
@@ -1280,13 +1287,6 @@
             "instances": 1,
             "geometryTriangles": 11264,
             "triangles": 11264
-          },
-          {
-            "name": "Mesh",
-            "geometry": "BufferGeometry",
-            "instances": 1,
-            "geometryTriangles": 11016,
-            "triangles": 11016
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -1333,8 +1333,8 @@
             0.5395632636089066
           ]
         },
-        "drawCalls": 2286,
-        "triangles": 8260155,
+        "drawCalls": 2526,
+        "triangles": 7206333,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -1342,8 +1342,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 2333910,
-        "meshes": 568,
+        "primaryPassTriangles": 2017964,
+        "meshes": 647,
         "detailLevels": [
           {
             "level": 0,
@@ -1357,52 +1357,17 @@
           },
           {
             "level": 2,
-            "meshes": 102,
-            "instances": 1467
+            "meshes": 166,
+            "instances": 3609
           }
         ],
         "largest": [
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 342,
-            "geometryTriangles": 262,
-            "triangles": 89604
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 122,
-            "geometryTriangles": 644,
-            "triangles": 78568
-          },
           {
             "name": "Chennai arrival forecourt / Station forecourt shade trees / Individual pointed leaves in open branching crowns",
             "geometry": "BufferGeometry",
             "instances": 384,
             "geometryTriangles": 184,
             "triangles": 70656
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 238,
-            "geometryTriangles": 262,
-            "triangles": 62356
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 232,
-            "geometryTriangles": 262,
-            "triangles": 60784
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 194,
-            "geometryTriangles": 262,
-            "triangles": 50828
           },
           {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
@@ -1412,20 +1377,6 @@
             "triangles": 50568
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 68,
-            "geometryTriangles": 644,
-            "triangles": 43792
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 64,
-            "geometryTriangles": 644,
-            "triangles": 41216
-          },
-          {
             "name": "Mesh",
             "geometry": "BufferGeometry",
             "instances": 11,
@@ -1433,18 +1384,11 @@
             "triangles": 37708
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
             "geometry": "BoxGeometry",
             "instances": 3024,
             "geometryTriangles": 12,
             "triangles": 36288
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 50,
-            "geometryTriangles": 644,
-            "triangles": 32200
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -1466,13 +1410,6 @@
             "instances": 17,
             "geometryTriangles": 1760,
             "triangles": 29920
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 46,
-            "geometryTriangles": 644,
-            "triangles": 29624
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -1501,6 +1438,69 @@
             "instances": 15,
             "geometryTriangles": 1760,
             "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-20",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-11",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 540,
+            "triangles": 23220
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-4",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1760,
+            "triangles": 21120
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 816,
+            "triangles": 20400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-7",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 1760,
+            "triangles": 19360
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 64,
+            "geometryTriangles": 280,
+            "triangles": 17920
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-13",
+            "geometry": "BufferGeometry",
+            "instances": 10,
+            "geometryTriangles": 1760,
+            "triangles": 17600
+          },
+          {
+            "name": "Original three-dimensional stone elephant / AuxScene / Original_three-dimensional_stone_elephant / mesh_0",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 16232,
+            "triangles": 16232
           }
         ]
       }
@@ -1519,8 +1519,8 @@
             0.5398803825443176
           ]
         },
-        "drawCalls": 2305,
-        "triangles": 8293859,
+        "drawCalls": 2545,
+        "triangles": 7240037,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -1528,8 +1528,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 2308926,
-        "meshes": 561,
+        "primaryPassTriangles": 1992980,
+        "meshes": 640,
         "detailLevels": [
           {
             "level": 0,
@@ -1543,52 +1543,17 @@
           },
           {
             "level": 2,
-            "meshes": 102,
-            "instances": 1467
+            "meshes": 166,
+            "instances": 3609
           }
         ],
         "largest": [
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 342,
-            "geometryTriangles": 262,
-            "triangles": 89604
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 122,
-            "geometryTriangles": 644,
-            "triangles": 78568
-          },
           {
             "name": "Chennai arrival forecourt / Station forecourt shade trees / Individual pointed leaves in open branching crowns",
             "geometry": "BufferGeometry",
             "instances": 384,
             "geometryTriangles": 184,
             "triangles": 70656
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 238,
-            "geometryTriangles": 262,
-            "triangles": 62356
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 232,
-            "geometryTriangles": 262,
-            "triangles": 60784
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 194,
-            "geometryTriangles": 262,
-            "triangles": 50828
           },
           {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
@@ -1598,20 +1563,6 @@
             "triangles": 50568
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 68,
-            "geometryTriangles": 644,
-            "triangles": 43792
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 64,
-            "geometryTriangles": 644,
-            "triangles": 41216
-          },
-          {
             "name": "Mesh",
             "geometry": "BufferGeometry",
             "instances": 11,
@@ -1619,18 +1570,11 @@
             "triangles": 37708
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
             "geometry": "BoxGeometry",
             "instances": 3024,
             "geometryTriangles": 12,
             "triangles": 36288
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 50,
-            "geometryTriangles": 644,
-            "triangles": 32200
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -1652,13 +1596,6 @@
             "instances": 17,
             "geometryTriangles": 1760,
             "triangles": 29920
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 46,
-            "geometryTriangles": 644,
-            "triangles": 29624
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -1687,6 +1624,69 @@
             "instances": 15,
             "geometryTriangles": 1760,
             "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-20",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-11",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 540,
+            "triangles": 23220
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 816,
+            "triangles": 20400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-7",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 1760,
+            "triangles": 19360
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 64,
+            "geometryTriangles": 280,
+            "triangles": 17920
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-13",
+            "geometry": "BufferGeometry",
+            "instances": 10,
+            "geometryTriangles": 1760,
+            "triangles": 17600
+          },
+          {
+            "name": "Original three-dimensional stone elephant / AuxScene / Original_three-dimensional_stone_elephant / mesh_0",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 16232,
+            "triangles": 16232
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-19",
+            "geometry": "BufferGeometry",
+            "instances": 9,
+            "geometryTriangles": 1760,
+            "triangles": 15840
           }
         ]
       }
@@ -1705,8 +1705,8 @@
             0.5410272797648777
           ]
         },
-        "drawCalls": 2331,
-        "triangles": 8347147,
+        "drawCalls": 2571,
+        "triangles": 7293325,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -1714,8 +1714,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 2348138,
-        "meshes": 575,
+        "primaryPassTriangles": 2032192,
+        "meshes": 654,
         "detailLevels": [
           {
             "level": 0,
@@ -1729,52 +1729,17 @@
           },
           {
             "level": 2,
-            "meshes": 102,
-            "instances": 1467
+            "meshes": 166,
+            "instances": 3609
           }
         ],
         "largest": [
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 342,
-            "geometryTriangles": 262,
-            "triangles": 89604
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 122,
-            "geometryTriangles": 644,
-            "triangles": 78568
-          },
           {
             "name": "Chennai arrival forecourt / Station forecourt shade trees / Individual pointed leaves in open branching crowns",
             "geometry": "BufferGeometry",
             "instances": 384,
             "geometryTriangles": 184,
             "triangles": 70656
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 238,
-            "geometryTriangles": 262,
-            "triangles": 62356
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 232,
-            "geometryTriangles": 262,
-            "triangles": 60784
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 194,
-            "geometryTriangles": 262,
-            "triangles": 50828
           },
           {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
@@ -1784,20 +1749,6 @@
             "triangles": 50568
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 68,
-            "geometryTriangles": 644,
-            "triangles": 43792
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 64,
-            "geometryTriangles": 644,
-            "triangles": 41216
-          },
-          {
             "name": "Mesh",
             "geometry": "BufferGeometry",
             "instances": 11,
@@ -1805,18 +1756,11 @@
             "triangles": 37708
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
             "geometry": "BoxGeometry",
             "instances": 3024,
             "geometryTriangles": 12,
             "triangles": 36288
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 50,
-            "geometryTriangles": 644,
-            "triangles": 32200
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -1838,13 +1782,6 @@
             "instances": 17,
             "geometryTriangles": 1760,
             "triangles": 29920
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 46,
-            "geometryTriangles": 644,
-            "triangles": 29624
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -1873,6 +1810,69 @@
             "instances": 15,
             "geometryTriangles": 1760,
             "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-20",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-11",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 540,
+            "triangles": 23220
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-4",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1760,
+            "triangles": 21120
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 816,
+            "triangles": 20400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-7",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 1760,
+            "triangles": 19360
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 64,
+            "geometryTriangles": 280,
+            "triangles": 17920
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-13",
+            "geometry": "BufferGeometry",
+            "instances": 10,
+            "geometryTriangles": 1760,
+            "triangles": 17600
+          },
+          {
+            "name": "Original three-dimensional stone elephant / AuxScene / Original_three-dimensional_stone_elephant / mesh_0",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 16232,
+            "triangles": 16232
           }
         ]
       }
@@ -1891,8 +1891,8 @@
             0.5463908327636944
           ]
         },
-        "drawCalls": 2201,
-        "triangles": 7977561,
+        "drawCalls": 2438,
+        "triangles": 6802191,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -1900,8 +1900,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 2395668,
-        "meshes": 573,
+        "primaryPassTriangles": 1973738,
+        "meshes": 655,
         "detailLevels": [
           {
             "level": 0,
@@ -1915,73 +1915,17 @@
           },
           {
             "level": 2,
-            "meshes": 108,
-            "instances": 1609
+            "meshes": 176,
+            "instances": 3935
           }
         ],
         "largest": [
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 184,
-            "geometryTriangles": 644,
-            "triangles": 118496
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 342,
-            "geometryTriangles": 262,
-            "triangles": 89604
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 122,
-            "geometryTriangles": 644,
-            "triangles": 78568
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 238,
-            "geometryTriangles": 262,
-            "triangles": 62356
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 232,
-            "geometryTriangles": 262,
-            "triangles": 60784
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 194,
-            "geometryTriangles": 262,
-            "triangles": 50828
-          },
           {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
             "geometry": "BufferGeometry",
             "instances": 43,
             "geometryTriangles": 1176,
             "triangles": 50568
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 68,
-            "geometryTriangles": 644,
-            "triangles": 43792
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 64,
-            "geometryTriangles": 644,
-            "triangles": 41216
           },
           {
             "name": "Mesh",
@@ -1991,18 +1935,11 @@
             "triangles": 37708
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
             "geometry": "BoxGeometry",
             "instances": 3024,
             "geometryTriangles": 12,
             "triangles": 36288
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 50,
-            "geometryTriangles": 644,
-            "triangles": 32200
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -2024,13 +1961,6 @@
             "instances": 17,
             "geometryTriangles": 1760,
             "triangles": 29920
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 46,
-            "geometryTriangles": 644,
-            "triangles": 29624
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -2059,6 +1989,76 @@
             "instances": 15,
             "geometryTriangles": 1760,
             "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-20",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-11",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 540,
+            "triangles": 23220
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-4",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1760,
+            "triangles": 21120
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 816,
+            "triangles": 20400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-7",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 1760,
+            "triangles": 19360
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 64,
+            "geometryTriangles": 280,
+            "triangles": 17920
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-13",
+            "geometry": "BufferGeometry",
+            "instances": 10,
+            "geometryTriangles": 1760,
+            "triangles": 17600
+          },
+          {
+            "name": "Original three-dimensional stone elephant / AuxScene / Original_three-dimensional_stone_elephant / mesh_0",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 16232,
+            "triangles": 16232
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-19",
+            "geometry": "BufferGeometry",
+            "instances": 9,
+            "geometryTriangles": 1760,
+            "triangles": 15840
           }
         ]
       }
@@ -2077,8 +2077,8 @@
             0.548784106500087
           ]
         },
-        "drawCalls": 2215,
-        "triangles": 8123539,
+        "drawCalls": 2453,
+        "triangles": 6880741,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -2086,8 +2086,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 2378036,
-        "meshes": 559,
+        "primaryPassTriangles": 1949850,
+        "meshes": 639,
         "detailLevels": [
           {
             "level": 0,
@@ -2101,73 +2101,17 @@
           },
           {
             "level": 2,
-            "meshes": 103,
-            "instances": 1525
+            "meshes": 169,
+            "instances": 3759
           }
         ],
         "largest": [
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 184,
-            "geometryTriangles": 644,
-            "triangles": 118496
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 342,
-            "geometryTriangles": 262,
-            "triangles": 89604
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 122,
-            "geometryTriangles": 644,
-            "triangles": 78568
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 238,
-            "geometryTriangles": 262,
-            "triangles": 62356
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 232,
-            "geometryTriangles": 262,
-            "triangles": 60784
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 194,
-            "geometryTriangles": 262,
-            "triangles": 50828
-          },
           {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
             "geometry": "BufferGeometry",
             "instances": 43,
             "geometryTriangles": 1176,
             "triangles": 50568
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 68,
-            "geometryTriangles": 644,
-            "triangles": 43792
-          },
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 64,
-            "geometryTriangles": 644,
-            "triangles": 41216
           },
           {
             "name": "Mesh",
@@ -2177,18 +2121,11 @@
             "triangles": 37708
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
             "geometry": "BoxGeometry",
             "instances": 3024,
             "geometryTriangles": 12,
             "triangles": 36288
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 50,
-            "geometryTriangles": 644,
-            "triangles": 32200
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -2210,13 +2147,6 @@
             "instances": 17,
             "geometryTriangles": 1760,
             "triangles": 29920
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 46,
-            "geometryTriangles": 644,
-            "triangles": 29624
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -2245,6 +2175,820 @@
             "instances": 15,
             "geometryTriangles": 1760,
             "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-20",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-11",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 540,
+            "triangles": 23220
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-4",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1760,
+            "triangles": 21120
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 816,
+            "triangles": 20400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-7",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 1760,
+            "triangles": 19360
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 64,
+            "geometryTriangles": 280,
+            "triangles": 17920
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-13",
+            "geometry": "BufferGeometry",
+            "instances": 10,
+            "geometryTriangles": 1760,
+            "triangles": 17600
+          },
+          {
+            "name": "Original three-dimensional stone elephant / AuxScene / Original_three-dimensional_stone_elephant / mesh_0",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 16232,
+            "triangles": 16232
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-19",
+            "geometry": "BufferGeometry",
+            "instances": 9,
+            "geometryTriangles": 1760,
+            "triangles": 15840
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.414,
+      "name": "elephant-entry",
+      "metrics": {
+        "frames": 17,
+        "fps": null,
+        "environment": {
+          "road": 0.1766622770919067,
+          "top": [
+            0.16772373092877868,
+            0.2927806565258724,
+            0.5520114015120001
+          ]
+        },
+        "drawCalls": 2184,
+        "triangles": 6564365,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      },
+      "profile": {
+        "primaryPassTriangles": 1815512,
+        "meshes": 538,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 166,
+            "instances": 3609
+          }
+        ],
+        "largest": [
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 1176,
+            "triangles": 50568
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 3428,
+            "triangles": 37708
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
+            "geometry": "BoxGeometry",
+            "instances": 3024,
+            "geometryTriangles": 12,
+            "triangles": 36288
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-9",
+            "geometry": "BufferGeometry",
+            "instances": 17,
+            "geometryTriangles": 1760,
+            "triangles": 29920
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-8",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 1760,
+            "triangles": 28160
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-12",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-20",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-11",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 1760,
+            "triangles": 26400
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 540,
+            "triangles": 23220
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 816,
+            "triangles": 20400
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-7",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 1760,
+            "triangles": 19360
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 64,
+            "geometryTriangles": 280,
+            "triangles": 17920
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-13",
+            "geometry": "BufferGeometry",
+            "instances": 10,
+            "geometryTriangles": 1760,
+            "triangles": 17600
+          },
+          {
+            "name": "Original three-dimensional stone elephant / AuxScene / Original_three-dimensional_stone_elephant / mesh_0",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 16232,
+            "triangles": 16232
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-19",
+            "geometry": "BufferGeometry",
+            "instances": 9,
+            "geometryTriangles": 1760,
+            "triangles": 15840
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-18",
+            "geometry": "BufferGeometry",
+            "instances": 9,
+            "geometryTriangles": 1760,
+            "triangles": 15840
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.44,
+      "name": "elephant-visit",
+      "metrics": {
+        "frames": 18,
+        "fps": null,
+        "environment": {
+          "road": 0.21814814814814815,
+          "top": [
+            0.14498255571818025,
+            0.27896798963589214,
+            0.5520114015120001
+          ]
+        },
+        "drawCalls": 383,
+        "triangles": 1922823,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      },
+      "profile": {
+        "primaryPassTriangles": 424234,
+        "meshes": 76,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 3428,
+            "triangles": 37708
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Original three-dimensional stone elephant / AuxScene / Original_three-dimensional_stone_elephant / mesh_0",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 16232,
+            "triangles": 16232
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 564,
+            "triangles": 12972
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 564,
+            "triangles": 12972
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 540,
+            "triangles": 12960
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 540,
+            "triangles": 12960
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Original three-dimensional stone elephant / AuxScene / Original_three-dimensional_stone_elephant / mesh_1",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12520,
+            "triangles": 12520
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 420,
+            "triangles": 9660
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 420,
+            "triangles": 9660
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 408,
+            "triangles": 9384
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 408,
+            "triangles": 9384
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 8640,
+            "triangles": 8640
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Dharmaraja — three-storey vimana",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.457,
+      "name": "rathas-entry",
+      "metrics": {
+        "frames": 19,
+        "fps": null,
+        "environment": {
+          "road": 0.241212414266118,
+          "top": [
+            0.13233949186201688,
+            0.27128877218575154,
+            0.5520114015120001
+          ]
+        },
+        "drawCalls": 587,
+        "triangles": 2106743,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      },
+      "profile": {
+        "primaryPassTriangles": 349694,
+        "meshes": 72,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 3428,
+            "triangles": 37708
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 564,
+            "triangles": 12972
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 564,
+            "triangles": 12972
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 540,
+            "triangles": 12960
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 540,
+            "triangles": 12960
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 1:-9",
+            "geometry": "BufferGeometry",
+            "instances": 7,
+            "geometryTriangles": 1760,
+            "triangles": 12320
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 420,
+            "triangles": 9660
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 408,
+            "triangles": 9384
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Arjuna — two-storey square shrine",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Dharmaraja — three-storey vimana",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Mamallapuram — granite monument garden approach / Granite paving and low garden kerbs",
+            "geometry": "BoxGeometry",
+            "instances": 522,
+            "geometryTriangles": 12,
+            "triangles": 6264
+          },
+          {
+            "name": "Tamil terrace street frontage / metal",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 268,
+            "triangles": 6164
+          },
+          {
+            "name": "Tamil terrace street frontage / metal",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 268,
+            "triangles": 6164
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 280,
+            "triangles": 4480
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.471,
+      "name": "rathas-visit",
+      "metrics": {
+        "frames": 20,
+        "fps": null,
+        "environment": {
+          "road": 0.25609869684499315,
+          "top": [
+            0.12417932668429313,
+            0.2663324037341077,
+            0.5520114015120001
+          ]
+        },
+        "drawCalls": 353,
+        "triangles": 1586427,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      },
+      "profile": {
+        "primaryPassTriangles": 261218,
+        "meshes": 55,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 3428,
+            "triangles": 37708
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 564,
+            "triangles": 12972
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 540,
+            "triangles": 12960
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 420,
+            "triangles": 9660
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 408,
+            "triangles": 9384
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Arjuna — two-storey square shrine",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Dharmaraja — three-storey vimana",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Mamallapuram — granite monument garden approach / Granite paving and low garden kerbs",
+            "geometry": "BoxGeometry",
+            "instances": 522,
+            "geometryTriangles": 12,
+            "triangles": 6264
+          },
+          {
+            "name": "Tamil terrace street frontage / metal",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 268,
+            "triangles": 6164
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 280,
+            "triangles": 4480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 280,
+            "triangles": 4480
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Arjuna — two-storey square shrine",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 280,
+            "triangles": 4480
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Dharmaraja — three-storey vimana",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 280,
+            "triangles": 4480
+          },
+          {
+            "name": "Tamil terrace street frontage / metal",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 180,
+            "triangles": 4320
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 3620,
+            "triangles": 3620
           }
         ]
       }
@@ -2253,7 +2997,7 @@
       "progress": 0.49,
       "name": "mamallapuram",
       "metrics": {
-        "frames": 17,
+        "frames": 21,
         "fps": null,
         "environment": {
           "road": 0.2682167352537723,
@@ -2264,7 +3008,7 @@
           ]
         },
         "drawCalls": 878,
-        "triangles": 2555551,
+        "triangles": 2561059,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -2272,7 +3016,7 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 421786,
+        "primaryPassTriangles": 423622,
         "meshes": 138,
         "detailLevels": [
           {
@@ -2359,8 +3103,8 @@
             "name": "Mesh",
             "geometry": "BufferGeometry",
             "instances": 1,
-            "geometryTriangles": 11016,
-            "triangles": 11016
+            "geometryTriangles": 12852,
+            "triangles": 12852
           },
           {
             "name": "Tamil terrace street frontage / trim",
@@ -2436,21 +3180,21 @@
       }
     },
     {
-      "progress": 0.635,
-      "name": "thanjavur",
+      "progress": 0.589,
+      "name": "nandi-entry",
       "metrics": {
-        "frames": 18,
+        "frames": 22,
         "fps": null,
         "environment": {
-          "road": 0.469252915451895,
+          "road": 0.40971443148688036,
           "top": [
-            0.07340864171647483,
-            0.2322115896334553,
+            0.07560991756924253,
+            0.23506107367449675,
             0.5520114015120001
           ]
         },
-        "drawCalls": 924,
-        "triangles": 4815115,
+        "drawCalls": 498,
+        "triangles": 2435369,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -2458,8 +3202,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 1052736,
-        "meshes": 199,
+        "primaryPassTriangles": 497300,
+        "meshes": 70,
         "detailLevels": [
           {
             "level": 0,
@@ -2468,8 +3212,8 @@
           },
           {
             "level": 1,
-            "meshes": 54,
-            "instances": 461
+            "meshes": 23,
+            "instances": 231
           },
           {
             "level": 2,
@@ -2479,11 +3223,230 @@
         ],
         "largest": [
           {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 15708:2",
+            "geometry": "BufferGeometry",
+            "instances": 14,
+            "geometryTriangles": 1236,
+            "triangles": 17304,
+            "detailLevel": 1,
+            "pixels": 24.390900051669114
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 14,
+            "geometryTriangles": 1236,
+            "triangles": 17304,
+            "detailLevel": 1,
+            "pixels": 22.99974676587418
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1236,
+            "triangles": 16068,
+            "detailLevel": 1,
+            "pixels": 22.377060652982948
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:1",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1236,
+            "triangles": 16068,
+            "detailLevel": 1,
+            "pixels": 22.10066908567706
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1236,
+            "triangles": 16068,
+            "detailLevel": 1,
+            "pixels": 22.07887708786809
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 15708:0",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1236,
+            "triangles": 16068,
+            "detailLevel": 1,
+            "pixels": 24.365935576633543
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 31416:0",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1236,
+            "triangles": 16068,
+            "detailLevel": 1,
+            "pixels": 22.89652373014594
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade -15708:0",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1236,
+            "triangles": 16068,
+            "detailLevel": 1,
+            "pixels": 20.912352335452006
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade -15708:1",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1236,
+            "triangles": 16068,
+            "detailLevel": 1,
+            "pixels": 21.01932833767225
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade -15708:2",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1236,
+            "triangles": 16068,
+            "detailLevel": 1,
+            "pixels": 21.050974773489727
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 15708:1",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1236,
+            "triangles": 14832,
+            "detailLevel": 1,
+            "pixels": 24.334313688890187
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 31416:2",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1236,
+            "triangles": 14832,
+            "detailLevel": 1,
+            "pixels": 22.81098503376271
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 564,
+            "triangles": 12972
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 540,
+            "triangles": 12960
+          },
+          {
             "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 122,
-            "geometryTriangles": 644,
-            "triangles": 78568
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12340,
+            "triangles": 12340
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 11912,
+            "triangles": 11912
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 11816,
+            "triangles": 11816
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.612,
+      "name": "nandi-visit",
+      "metrics": {
+        "frames": 23,
+        "fps": null,
+        "environment": {
+          "road": 0.44919999999999993,
+          "top": [
+            0.07415004451382834,
+            0.23317131280326434,
+            0.5520114015120001
+          ]
+        },
+        "drawCalls": 1367,
+        "triangles": 9811975,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      },
+      "profile": {
+        "primaryPassTriangles": 2566170,
+        "meshes": 359,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 30,
+            "instances": 356
+          },
+          {
+            "level": 1,
+            "meshes": 58,
+            "instances": 985
+          },
+          {
+            "level": 2,
+            "meshes": 40,
+            "instances": 1504
+          }
+        ],
+        "largest": [
+          {
+            "name": "Kanyakumari — the meeting of three seas / Original poet figure / Scene / Original_poet_carving_—_Blender_union_experiment",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 109450,
+            "triangles": 109450
+          },
+          {
+            "name": "Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "geometry": "BufferGeometry",
+            "instances": 15,
+            "geometryTriangles": 3500,
+            "triangles": 52500,
+            "detailLevel": 0,
+            "pixels": 50.33514159013252
           },
           {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
@@ -2493,11 +3456,204 @@
             "triangles": 50568
           },
           {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 64,
-            "geometryTriangles": 644,
-            "triangles": 41216
+            "name": "Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 14,
+            "geometryTriangles": 3500,
+            "triangles": 49000,
+            "detailLevel": 0,
+            "pixels": 50.620107205597876
+          },
+          {
+            "name": "Original modeled architectural figures — three poses / Guardian facade 31416:0",
+            "geometry": "BufferGeometry",
+            "instances": 14,
+            "geometryTriangles": 3500,
+            "triangles": 49000,
+            "detailLevel": 0,
+            "pixels": 60.204992388202506
+          },
+          {
+            "name": "Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 14,
+            "geometryTriangles": 3500,
+            "triangles": 49000,
+            "detailLevel": 0,
+            "pixels": 61.71161771192827
+          },
+          {
+            "name": "Original modeled architectural figures — three poses / Guardian facade 31416:2",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 3500,
+            "triangles": 45500,
+            "detailLevel": 0,
+            "pixels": 62.014409653069116
+          },
+          {
+            "name": "Original modeled architectural figures — three poses / Guardian facade 0:1",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 3500,
+            "triangles": 42000,
+            "detailLevel": 0,
+            "pixels": 50.323416537620396
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
+            "geometry": "BoxGeometry",
+            "instances": 3024,
+            "geometryTriangles": 12,
+            "triangles": 36288
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 26,
+            "geometryTriangles": 1236,
+            "triangles": 32136,
+            "detailLevel": 1,
+            "pixels": 9.321380491354564
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 1236,
+            "triangles": 30900,
+            "detailLevel": 1,
+            "pixels": 10.813489865981305
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:2",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 1236,
+            "triangles": 30900,
+            "detailLevel": 1,
+            "pixels": 14.784319199738675
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1236,
+            "triangles": 29664,
+            "detailLevel": 1,
+            "pixels": 12.897316090741153
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1236,
+            "triangles": 29664,
+            "detailLevel": 1,
+            "pixels": 15.813093627049593
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1236,
+            "triangles": 29664,
+            "detailLevel": 1,
+            "pixels": 9.058133797644965
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 14.224599464423319
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:0",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 13.289885419310536
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 12.579796865340459
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.635,
+      "name": "thanjavur",
+      "metrics": {
+        "frames": 24,
+        "fps": null,
+        "environment": {
+          "road": 0.469252915451895,
+          "top": [
+            0.07340864171647483,
+            0.2322115896334553,
+            0.5520114015120001
+          ]
+        },
+        "drawCalls": 952,
+        "triangles": 4371171,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      },
+      "profile": {
+        "primaryPassTriangles": 966780,
+        "meshes": 205,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 62,
+            "instances": 647
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 1176,
+            "triangles": 50568
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -2534,7 +3690,7 @@
             "geometryTriangles": 1236,
             "triangles": 18540,
             "detailLevel": 1,
-            "pixels": 23.848008766575646
+            "pixels": 23.848010052190602
           },
           {
             "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 15708:2",
@@ -2543,7 +3699,7 @@
             "geometryTriangles": 1236,
             "triangles": 17304,
             "detailLevel": 1,
-            "pixels": 28.835231373337926
+            "pixels": 28.835242742721693
           },
           {
             "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 31416:1",
@@ -2552,7 +3708,7 @@
             "geometryTriangles": 1236,
             "triangles": 17304,
             "detailLevel": 1,
-            "pixels": 25.903514507835673
+            "pixels": 25.90352220828033
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade 0:2",
@@ -2561,7 +3717,7 @@
             "geometryTriangles": 1236,
             "triangles": 17304,
             "detailLevel": 1,
-            "pixels": 23.87791641204825
+            "pixels": 23.877918271765537
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade 31416:0",
@@ -2570,7 +3726,7 @@
             "geometryTriangles": 1236,
             "triangles": 17304,
             "detailLevel": 1,
-            "pixels": 24.154958678775742
+            "pixels": 24.154959923942858
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade 31416:1",
@@ -2579,7 +3735,7 @@
             "geometryTriangles": 1236,
             "triangles": 17304,
             "detailLevel": 1,
-            "pixels": 24.37702385006202
+            "pixels": 24.377027049322813
           },
           {
             "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:0",
@@ -2588,7 +3744,7 @@
             "geometryTriangles": 1236,
             "triangles": 16068,
             "detailLevel": 1,
-            "pixels": 26.007462779511147
+            "pixels": 26.007468372949685
           },
           {
             "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:1",
@@ -2597,7 +3753,7 @@
             "geometryTriangles": 1236,
             "triangles": 16068,
             "detailLevel": 1,
-            "pixels": 25.4198961505884
+            "pixels": 25.41990238383083
           },
           {
             "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:2",
@@ -2606,7 +3762,7 @@
             "geometryTriangles": 1236,
             "triangles": 16068,
             "detailLevel": 1,
-            "pixels": 25.228521016737552
+            "pixels": 25.228529032967558
           },
           {
             "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 15708:0",
@@ -2615,7 +3771,7 @@
             "geometryTriangles": 1236,
             "triangles": 16068,
             "detailLevel": 1,
-            "pixels": 28.569309948585513
+            "pixels": 28.569322813460648
           },
           {
             "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 31416:0",
@@ -2624,7 +3780,7 @@
             "geometryTriangles": 1236,
             "triangles": 16068,
             "detailLevel": 1,
-            "pixels": 25.728492127861873
+            "pixels": 25.728499613189495
           },
           {
             "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade -15708:0",
@@ -2633,7 +3789,7 @@
             "geometryTriangles": 1236,
             "triangles": 16068,
             "detailLevel": 1,
-            "pixels": 23.224055216772673
+            "pixels": 23.22405730904615
           },
           {
             "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade -15708:1",
@@ -2642,27 +3798,45 @@
             "geometryTriangles": 1236,
             "triangles": 16068,
             "detailLevel": 1,
-            "pixels": 23.237798306842347
+            "pixels": 23.237801615420764
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade -15708:2",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1236,
+            "triangles": 16068,
+            "detailLevel": 1,
+            "pixels": 23.158514091897562
+          },
+          {
+            "name": "Original modeled architectural figures — three poses / Guardian facade 31416:2",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1236,
+            "triangles": 16068,
+            "detailLevel": 1,
+            "pixels": 24.48700398933736
           }
         ]
       }
     },
     {
-      "progress": 0.725,
-      "name": "madurai",
+      "progress": 0.7,
+      "name": "madurai-approach",
       "metrics": {
-        "frames": 19,
+        "frames": 25,
         "fps": null,
         "environment": {
-          "road": 0.6384842249657064,
+          "road": 0.5959259259259259,
           "top": [
-            0.14690798855210008,
-            0.10692040274118528,
-            0.27698069350130283
+            0.2249482930386721,
+            0.23828305069315775,
+            0.45900064797872603
           ]
         },
-        "drawCalls": 1263,
-        "triangles": 10338997,
+        "drawCalls": 1354,
+        "triangles": 9022559,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -2670,53 +3844,252 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 2124792,
-        "meshes": 256,
+        "primaryPassTriangles": 1990838,
+        "meshes": 273,
         "detailLevels": [
           {
             "level": 0,
-            "meshes": 0,
-            "instances": 0
+            "meshes": 6,
+            "instances": 63
           },
           {
             "level": 1,
-            "meshes": 48,
-            "instances": 1006
+            "meshes": 82,
+            "instances": 2155
           },
           {
             "level": 2,
-            "meshes": 0,
-            "instances": 0
+            "meshes": 16,
+            "instances": 744
           }
         ],
         "largest": [
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
             "geometry": "BufferGeometry",
-            "instances": 342,
-            "geometryTriangles": 262,
-            "triangles": 89604
+            "instances": 43,
+            "geometryTriangles": 1176,
+            "triangles": 50568
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
             "geometry": "BufferGeometry",
-            "instances": 238,
-            "geometryTriangles": 262,
-            "triangles": 62356
+            "instances": 30,
+            "geometryTriangles": 1236,
+            "triangles": 37080,
+            "detailLevel": 1,
+            "pixels": 32.876923449556976
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
-            "geometry": "BufferGeometry",
-            "instances": 232,
-            "geometryTriangles": 262,
-            "triangles": 60784
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
+            "geometry": "BoxGeometry",
+            "instances": 3024,
+            "geometryTriangles": 12,
+            "triangles": 36288
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Small seated stucco reliefs",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
             "geometry": "BufferGeometry",
-            "instances": 194,
-            "geometryTriangles": 262,
-            "triangles": 50828
+            "instances": 29,
+            "geometryTriangles": 1236,
+            "triangles": 35844,
+            "detailLevel": 1,
+            "pixels": 34.75475410605969
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:2",
+            "geometry": "BufferGeometry",
+            "instances": 29,
+            "geometryTriangles": 1236,
+            "triangles": 35844,
+            "detailLevel": 1,
+            "pixels": 32.088924446529845
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:0",
+            "geometry": "BufferGeometry",
+            "instances": 29,
+            "geometryTriangles": 1236,
+            "triangles": 35844,
+            "detailLevel": 1,
+            "pixels": 30.163138687397012
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 29,
+            "geometryTriangles": 1236,
+            "triangles": 35844,
+            "detailLevel": 1,
+            "pixels": 28.822413446374345
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 28,
+            "geometryTriangles": 1236,
+            "triangles": 34608,
+            "detailLevel": 1,
+            "pixels": 28.109317000704934
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 26,
+            "geometryTriangles": 1236,
+            "triangles": 32136,
+            "detailLevel": 1,
+            "pixels": 14.647789942632853
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 1236,
+            "triangles": 30900,
+            "detailLevel": 1,
+            "pixels": 16.40873173453019
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:2",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 1236,
+            "triangles": 30900,
+            "detailLevel": 1,
+            "pixels": 28.42711111749883
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1236,
+            "triangles": 29664,
+            "detailLevel": 1,
+            "pixels": 25.616335337160514
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1236,
+            "triangles": 29664,
+            "detailLevel": 1,
+            "pixels": 31.3073456198469
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1236,
+            "triangles": 29664,
+            "detailLevel": 1,
+            "pixels": 16.17257853153429
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 28.11721426074168
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:0",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 25.51975871453747
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 24.32976890043855
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "geometry": "BufferGeometry",
+            "instances": 22,
+            "geometryTriangles": 1236,
+            "triangles": 27192,
+            "detailLevel": 1,
+            "pixels": 15.543298190845043
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.715,
+      "name": "madurai-detail",
+      "metrics": {
+        "frames": 26,
+        "fps": null,
+        "environment": {
+          "road": 0.6274074074074074,
+          "top": [
+            0.16721984862394756,
+            0.14111068097526025,
+            0.3243557501461115
+          ]
+        },
+        "drawCalls": 1093,
+        "triangles": 8679039,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      },
+      "profile": {
+        "primaryPassTriangles": 2062962,
+        "meshes": 256,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 9,
+            "instances": 143
+          },
+          {
+            "level": 1,
+            "meshes": 82,
+            "instances": 2219
+          },
+          {
+            "level": 2,
+            "meshes": 13,
+            "instances": 600
+          }
+        ],
+        "largest": [
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "geometry": "BufferGeometry",
+            "instances": 29,
+            "geometryTriangles": 3500,
+            "triangles": 101500,
+            "detailLevel": 0,
+            "pixels": 48.196715320537535
           },
           {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
@@ -2728,77 +4101,54 @@
           {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
             "geometry": "BufferGeometry",
-            "instances": 36,
+            "instances": 30,
             "geometryTriangles": 1236,
-            "triangles": 44496,
+            "triangles": 37080,
             "detailLevel": 1,
-            "pixels": 27.13329594708427
+            "pixels": 45.52693462949071
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 68,
-            "geometryTriangles": 644,
-            "triangles": 43792
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
-            "geometry": "BufferGeometry",
-            "instances": 35,
-            "geometryTriangles": 1236,
-            "triangles": 43260,
-            "detailLevel": 1,
-            "pixels": 27.08585887402319
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:0",
-            "geometry": "BufferGeometry",
-            "instances": 35,
-            "geometryTriangles": 1236,
-            "triangles": 43260,
-            "detailLevel": 1,
-            "pixels": 23.583264512609713
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
-            "geometry": "BufferGeometry",
-            "instances": 35,
-            "geometryTriangles": 1236,
-            "triangles": 43260,
-            "detailLevel": 1,
-            "pixels": 23.59805102020573
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:2",
-            "geometry": "BufferGeometry",
-            "instances": 34,
-            "geometryTriangles": 1236,
-            "triangles": 42024,
-            "detailLevel": 1,
-            "pixels": 23.56934935612696
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
-            "geometry": "BufferGeometry",
-            "instances": 33,
-            "geometryTriangles": 1236,
-            "triangles": 40788,
-            "detailLevel": 1,
-            "pixels": 27.02266869573817
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
             "geometry": "BoxGeometry",
             "instances": 3024,
             "geometryTriangles": 12,
             "triangles": 36288
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study",
-            "geometry": "ExtrudeGeometry",
-            "instances": 50,
-            "geometryTriangles": 644,
-            "triangles": 32200
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:2",
+            "geometry": "BufferGeometry",
+            "instances": 29,
+            "geometryTriangles": 1236,
+            "triangles": 35844,
+            "detailLevel": 1,
+            "pixels": 39.81023777028889
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:0",
+            "geometry": "BufferGeometry",
+            "instances": 29,
+            "geometryTriangles": 1236,
+            "triangles": 35844,
+            "detailLevel": 1,
+            "pixels": 37.59999244627185
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 29,
+            "geometryTriangles": 1236,
+            "triangles": 35844,
+            "detailLevel": 1,
+            "pixels": 35.72419926124114
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 28,
+            "geometryTriangles": 1236,
+            "triangles": 34608,
+            "detailLevel": 1,
+            "pixels": 39.00160724617886
           },
           {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
@@ -2807,16 +4157,7 @@
             "geometryTriangles": 1236,
             "triangles": 32136,
             "detailLevel": 1,
-            "pixels": 13.225833649969251
-          },
-          {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:2",
-            "geometry": "BufferGeometry",
-            "instances": 26,
-            "geometryTriangles": 1236,
-            "triangles": 32136,
-            "detailLevel": 1,
-            "pixels": 19.025876465672642
+            "pixels": 13.587823109921889
           },
           {
             "name": "Tamil terrace street frontage / wood",
@@ -2826,22 +4167,222 @@
             "triangles": 32016
           },
           {
-            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
             "geometry": "BufferGeometry",
             "instances": 25,
             "geometryTriangles": 1236,
             "triangles": 30900,
             "detailLevel": 1,
-            "pixels": 12.375948403578443
+            "pixels": 14.82712087492242
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:2",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 1236,
+            "triangles": 30900,
+            "detailLevel": 1,
+            "pixels": 24.873283777782266
           },
           {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
             "geometry": "BufferGeometry",
-            "instances": 25,
+            "instances": 24,
             "geometryTriangles": 1236,
-            "triangles": 30900,
+            "triangles": 29664,
             "detailLevel": 1,
-            "pixels": 19.82344670446344
+            "pixels": 21.430698900039097
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1236,
+            "triangles": 29664,
+            "detailLevel": 1,
+            "pixels": 26.135841395900556
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1236,
+            "triangles": 29664,
+            "detailLevel": 1,
+            "pixels": 19.173980276220764
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 23.482210111762715
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:0",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 22.349277373796156
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 21.37692895486711
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "geometry": "BufferGeometry",
+            "instances": 22,
+            "geometryTriangles": 1236,
+            "triangles": 27192,
+            "detailLevel": 1,
+            "pixels": 14.045773243976743
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.725,
+      "name": "madurai",
+      "metrics": {
+        "frames": 27,
+        "fps": null,
+        "environment": {
+          "road": 0.6384842249657064,
+          "top": [
+            0.14690798855210008,
+            0.10692040274118528,
+            0.27698069350130283
+          ]
+        },
+        "drawCalls": 1539,
+        "triangles": 9590207,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      },
+      "profile": {
+        "primaryPassTriangles": 2014362,
+        "meshes": 328,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 6,
+            "instances": 108
+          },
+          {
+            "level": 1,
+            "meshes": 83,
+            "instances": 2215
+          },
+          {
+            "level": 2,
+            "meshes": 14,
+            "instances": 636
+          }
+        ],
+        "largest": [
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 43,
+            "geometryTriangles": 1176,
+            "triangles": 50568
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
+            "geometry": "BufferGeometry",
+            "instances": 30,
+            "geometryTriangles": 1236,
+            "triangles": 37080,
+            "detailLevel": 1,
+            "pixels": 33.65898034723418
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — granite pedestrian approach / Madurai forecourt granite slabs",
+            "geometry": "BoxGeometry",
+            "instances": 3024,
+            "geometryTriangles": 12,
+            "triangles": 36288
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "geometry": "BufferGeometry",
+            "instances": 29,
+            "geometryTriangles": 1236,
+            "triangles": 35844,
+            "detailLevel": 1,
+            "pixels": 35.58776135557497
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:2",
+            "geometry": "BufferGeometry",
+            "instances": 29,
+            "geometryTriangles": 1236,
+            "triangles": 35844,
+            "detailLevel": 1,
+            "pixels": 30.559740462988422
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:0",
+            "geometry": "BufferGeometry",
+            "instances": 29,
+            "geometryTriangles": 1236,
+            "triangles": 35844,
+            "detailLevel": 1,
+            "pixels": 28.907392352273295
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 29,
+            "geometryTriangles": 1236,
+            "triangles": 35844,
+            "detailLevel": 1,
+            "pixels": 27.4349352217704
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 28,
+            "geometryTriangles": 1236,
+            "triangles": 34608,
+            "detailLevel": 1,
+            "pixels": 28.84793945795554
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 26,
+            "geometryTriangles": 1236,
+            "triangles": 32136,
+            "detailLevel": 1,
+            "pixels": 11.688321932076752
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1392,
+            "triangles": 32016
           },
           {
             "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
@@ -2850,7 +4391,86 @@
             "geometryTriangles": 1236,
             "triangles": 30900,
             "detailLevel": 1,
-            "pixels": 19.695677100326836
+            "pixels": 12.828438223183397
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:2",
+            "geometry": "BufferGeometry",
+            "instances": 25,
+            "geometryTriangles": 1236,
+            "triangles": 30900,
+            "detailLevel": 1,
+            "pixels": 20.154814274836973
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1236,
+            "triangles": 29664,
+            "detailLevel": 1,
+            "pixels": 17.173020136364514
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1236,
+            "triangles": 29664,
+            "detailLevel": 1,
+            "pixels": 20.961168499423547
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1236,
+            "triangles": 29664,
+            "detailLevel": 1,
+            "pixels": 16.274269758365783
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:1",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 18.840702926868584
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:0",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 18.11661998742971
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 31416:1",
+            "geometry": "BufferGeometry",
+            "instances": 23,
+            "geometryTriangles": 1236,
+            "triangles": 28428,
+            "detailLevel": 1,
+            "pixels": 17.29583960467249
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 1176,
+            "triangles": 28224
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "geometry": "BufferGeometry",
+            "instances": 22,
+            "geometryTriangles": 1236,
+            "triangles": 27192,
+            "detailLevel": 1,
+            "pixels": 12.152506102248788
           }
         ]
       }
@@ -2859,7 +4479,7 @@
       "progress": 0.815,
       "name": "rameswaram",
       "metrics": {
-        "frames": 20,
+        "frames": 28,
         "fps": null,
         "environment": {
           "road": 0.7909389467592591,
@@ -2869,8 +4489,8 @@
             0.02796686267051217
           ]
         },
-        "drawCalls": 755,
-        "triangles": 3255881,
+        "drawCalls": 768,
+        "triangles": 2815453,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -2878,8 +4498,8 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 602922,
-        "meshes": 154,
+        "primaryPassTriangles": 517910,
+        "meshes": 157,
         "detailLevels": [
           {
             "level": 0,
@@ -2888,8 +4508,8 @@
           },
           {
             "level": 1,
-            "meshes": 12,
-            "instances": 184
+            "meshes": 16,
+            "instances": 368
           },
           {
             "level": 2,
@@ -2898,13 +4518,6 @@
           }
         ],
         "largest": [
-          {
-            "name": "Mesh",
-            "geometry": "ExtrudeGeometry",
-            "instances": 184,
-            "geometryTriangles": 644,
-            "triangles": 118496
-          },
           {
             "name": "Kanyakumari — the meeting of three seas / Original poet figure / Scene / Original_poet_carving_—_Blender_union_experiment",
             "geometry": "BufferGeometry",
@@ -2919,7 +4532,7 @@
             "geometryTriangles": 1236,
             "triangles": 25956,
             "detailLevel": 1,
-            "pixels": 17.35456828638673
+            "pixels": 17.35458114693114
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade 31416:2",
@@ -2928,7 +4541,7 @@
             "geometryTriangles": 1236,
             "triangles": 25956,
             "detailLevel": 1,
-            "pixels": 16.301988394644034
+            "pixels": 16.30199999335518
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade 31416:0",
@@ -2937,7 +4550,7 @@
             "geometryTriangles": 1236,
             "triangles": 24720,
             "detailLevel": 1,
-            "pixels": 16.301783534077156
+            "pixels": 16.301795094776374
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade 0:0",
@@ -2946,7 +4559,7 @@
             "geometryTriangles": 1236,
             "triangles": 23484,
             "detailLevel": 1,
-            "pixels": 17.35708928246223
+            "pixels": 17.357102144385326
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade 0:2",
@@ -2955,7 +4568,7 @@
             "geometryTriangles": 1236,
             "triangles": 22248,
             "detailLevel": 1,
-            "pixels": 17.345198625340647
+            "pixels": 17.34521224754734
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade 31416:1",
@@ -2964,7 +4577,7 @@
             "geometryTriangles": 1236,
             "triangles": 21012,
             "detailLevel": 1,
-            "pixels": 16.320891471430798
+            "pixels": 16.320903904400165
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade 15708:1",
@@ -2973,7 +4586,7 @@
             "geometryTriangles": 1236,
             "triangles": 14832,
             "detailLevel": 1,
-            "pixels": 16.733706538757357
+            "pixels": 16.73372071907823
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade -15708:0",
@@ -2982,7 +4595,7 @@
             "geometryTriangles": 1236,
             "triangles": 14832,
             "detailLevel": 1,
-            "pixels": 16.853910755629787
+            "pixels": 16.853924982168117
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade 15708:2",
@@ -2991,7 +4604,7 @@
             "geometryTriangles": 1236,
             "triangles": 13596,
             "detailLevel": 1,
-            "pixels": 16.86566460171281
+            "pixels": 16.865679202246096
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade 15708:0",
@@ -3000,7 +4613,7 @@
             "geometryTriangles": 1236,
             "triangles": 13596,
             "detailLevel": 1,
-            "pixels": 16.831978686672453
+            "pixels": 16.83199300812727
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade -15708:1",
@@ -3009,7 +4622,7 @@
             "geometryTriangles": 1236,
             "triangles": 13596,
             "detailLevel": 1,
-            "pixels": 16.781896545553945
+            "pixels": 16.781910807234997
           },
           {
             "name": "Original modeled architectural figures — three poses / Guardian facade -15708:2",
@@ -3018,14 +4631,32 @@
             "geometryTriangles": 1236,
             "triangles": 13596,
             "detailLevel": 1,
-            "pixels": 16.88471479023854
+            "pixels": 16.884729136729014
           },
           {
             "name": "Mesh",
             "geometry": "BufferGeometry",
             "instances": 1,
-            "geometryTriangles": 11016,
-            "triangles": 11016
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Molded deep niche frames",
+            "geometry": "ExtrudeGeometry",
+            "instances": 58,
+            "geometryTriangles": 172,
+            "triangles": 9976,
+            "detailLevel": 1,
+            "pixels": 19.1135831127741
+          },
+          {
+            "name": "Molded deep niche frames",
+            "geometry": "ExtrudeGeometry",
+            "instances": 58,
+            "geometryTriangles": 172,
+            "triangles": 9976,
+            "detailLevel": 1,
+            "pixels": 17.90603684388658
           },
           {
             "name": "Ramanathaswamy-inspired open pillared approach",
@@ -3054,13 +4685,6 @@
             "instances": 24,
             "geometryTriangles": 280,
             "triangles": 6720
-          },
-          {
-            "name": "Kanyakumari — the meeting of three seas / Thiruvalluvar — solid carved pedestal / Carved pedestal masonry",
-            "geometry": "BufferGeometry",
-            "instances": 1,
-            "geometryTriangles": 5652,
-            "triangles": 5652
           }
         ]
       }
@@ -3069,7 +4693,7 @@
       "progress": 0.915,
       "name": "kanyakumari",
       "metrics": {
-        "frames": 21,
+        "frames": 29,
         "fps": null,
         "environment": {
           "road": 0.9581049562682216,
@@ -3080,7 +4704,7 @@
           ]
         },
         "drawCalls": 626,
-        "triangles": 1341181,
+        "triangles": 1346689,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -3088,7 +4712,7 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 223658,
+        "primaryPassTriangles": 225494,
         "meshes": 111,
         "detailLevels": [
           {
@@ -3119,8 +4743,8 @@
             "name": "Mesh",
             "geometry": "BufferGeometry",
             "instances": 1,
-            "geometryTriangles": 11016,
-            "triangles": 11016
+            "geometryTriangles": 12852,
+            "triangles": 12852
           },
           {
             "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Dry granite shelves",
@@ -3252,10 +4876,196 @@
       }
     },
     {
+      "progress": 0.935,
+      "name": "poet-entry",
+      "metrics": {
+        "frames": 30,
+        "fps": null,
+        "environment": {
+          "road": 0.96,
+          "top": [
+            0.08437621154414882,
+            0.19120168274079138,
+            0.26635560480286247
+          ]
+        },
+        "drawCalls": 406,
+        "triangles": 1249093,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      },
+      "profile": {
+        "primaryPassTriangles": 193842,
+        "meshes": 40,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Kanyakumari — the meeting of three seas / Original poet figure / Scene / Original_poet_carving_—_Blender_union_experiment",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 109450,
+            "triangles": 109450
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Dry granite shelves",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 6861,
+            "triangles": 6861
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 24,
+            "geometryTriangles": 280,
+            "triangles": 6720
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Thiruvalluvar — solid carved pedestal / Carved pedestal masonry",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 5652,
+            "triangles": 5652
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Original fractured coastal granite — statue / Dry granite shelves",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 5647,
+            "triangles": 5647
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 3808,
+            "triangles": 3808
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 3808,
+            "triangles": 3808
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 3808,
+            "triangles": 3808
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 3808,
+            "triangles": 3808
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 3808,
+            "triangles": 3808
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 3808,
+            "triangles": 3808
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Original fractured coastal granite — statue / Wet intertidal granite",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 3377,
+            "triangles": 3377
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 3300,
+            "triangles": 3300
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2720,
+            "triangles": 2720
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2264,
+            "triangles": 2264
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Thiruvalluvar island — retaining terrace and balustrade / Pale stone terrace rails and paving joints",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2100,
+            "triangles": 2100
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 1798,
+            "triangles": 1798
+          },
+          {
+            "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Wet intertidal granite",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 1683,
+            "triangles": 1683
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 1224,
+            "triangles": 1224
+          }
+        ]
+      }
+    },
+    {
       "progress": 0.947,
       "name": "poet-visit",
       "metrics": {
-        "frames": 22,
+        "frames": 31,
         "fps": null,
         "environment": {
           "road": 0.96,
@@ -3266,7 +5076,7 @@
           ]
         },
         "drawCalls": 200,
-        "triangles": 934397,
+        "triangles": 939905,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -3274,7 +5084,7 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 165910,
+        "primaryPassTriangles": 167746,
         "meshes": 21,
         "detailLevels": [
           {
@@ -3305,8 +5115,8 @@
             "name": "Mesh",
             "geometry": "BufferGeometry",
             "instances": 1,
-            "geometryTriangles": 11016,
-            "triangles": 11016
+            "geometryTriangles": 12852,
+            "triangles": 12852
           },
           {
             "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Dry granite shelves",
@@ -3441,7 +5251,7 @@
       "progress": 0.973,
       "name": "poet-exit",
       "metrics": {
-        "frames": 23,
+        "frames": 32,
         "fps": null,
         "environment": {
           "road": 0.96,
@@ -3452,7 +5262,7 @@
           ]
         },
         "drawCalls": 307,
-        "triangles": 1062081,
+        "triangles": 1067589,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -3460,7 +5270,7 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 191552,
+        "primaryPassTriangles": 193388,
         "meshes": 29,
         "detailLevels": [
           {
@@ -3498,8 +5308,8 @@
             "name": "Mesh",
             "geometry": "BufferGeometry",
             "instances": 1,
-            "geometryTriangles": 11016,
-            "triangles": 11016
+            "geometryTriangles": 12852,
+            "triangles": 12852
           },
           {
             "name": "Kanyakumari — the meeting of three seas / Vivekananda Rock Memorial — architectural study / Original fractured coastal granite — memorial / Dry granite shelves",
@@ -3627,7 +5437,7 @@
       "progress": 0.987,
       "name": "sky-farewell",
       "metrics": {
-        "frames": 24,
+        "frames": 33,
         "fps": null,
         "environment": {
           "road": 0.96,
@@ -3638,7 +5448,7 @@
           ]
         },
         "drawCalls": 254,
-        "triangles": 718039,
+        "triangles": 723547,
         "dpr": 1,
         "ao": true,
         "reflections": true,
@@ -3646,7 +5456,7 @@
         "shadows": true
       },
       "profile": {
-        "primaryPassTriangles": 33182,
+        "primaryPassTriangles": 35018,
         "meshes": 8,
         "detailLevels": [
           {
@@ -3677,8 +5487,8 @@
             "name": "Mesh",
             "geometry": "BufferGeometry",
             "instances": 1,
-            "geometryTriangles": 11016,
-            "triangles": 11016
+            "geometryTriangles": 12852,
+            "triangles": 12852
           },
           {
             "name": "Static architecture batch",

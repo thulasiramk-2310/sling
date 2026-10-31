@@ -149,3 +149,6 @@ records. The second verifies a binary patch against `origin/claude/chat-session-
 and proves unrelated Sling applications are unchanged. Changes are committed
 locally under the user's configured identity without co-author trailers. Nothing
 is pushed or published automatically.
+
+The [Madurai revision review](docs/madurai-review.md) records the current gateway,
+terrain, camera and mobile geometry work, with the remaining visual defects.

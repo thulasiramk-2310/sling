@@ -2,6 +2,8 @@ import {it,expect} from 'vitest'
 import * as THREE from 'three'
 import {registerDetailLod,updateDetailLods} from '../src/scene/detail-lod.js'
 import {createSculptureInstances,guardianGeometry,guardianProxyGeometry} from '../src/scene/landmarks/sculptures.js'
+import {createTierReliefs} from '../src/scene/landmarks/temple-relief.js'
+import {kuduGeometry} from '../src/scene/landmarks/stonework.js'
 
 it('selects detail in CSS pixels with hysteresis and explicit main-camera updates',()=>{
   const levels=[1,2,3].map(()=>new THREE.BoxGeometry(1,1,1))
@@ -128,4 +130,49 @@ it('uses a painted intermediate phone figure while preserving the original close
   expect(medium.attributes.position.array.every(Number.isFinite)).toBe(true)
   camera.position.z=10;updateDetailLods(root,camera,844)
   expect(root.children[0].geometry).toBe(guardianGeometry(true,0,true))
+})
+
+it('keeps seated relief placement, paint and physical volume when its projected detail changes',()=>{
+  const reliefs=createTierReliefs(false)
+  for(let face=0;face<4;face++)for(let index=0;index<5;index++){
+    const angle=face*Math.PI/2,position=new THREE.Vector3(index-2,index*.1,5).applyAxisAngle(new THREE.Vector3(0,1,0),angle)
+    reliefs.place(position,angle,3,new THREE.Color('#92aba3'))
+  }
+  const root=reliefs.build(),camera=new THREE.PerspectiveCamera(60,1,.1,3000)
+  const snapshot=()=>root.children.flatMap(mesh=>Array.from({length:mesh.count},(_,index)=>{
+    const matrix=new THREE.Matrix4(),color=new THREE.Color();mesh.getMatrixAt(index,matrix);mesh.getColorAt(index,color)
+    return [...matrix.elements,...color.toArray()]
+  }))
+  expect(root.children.length).toBeLessThanOrEqual(4)
+  expect(root.children.reduce((total,mesh)=>total+mesh.count,0)).toBe(20)
+  const before=snapshot()
+  camera.position.z=8;updateDetailLods(root,camera,844)
+  const close=root.children.map(mesh=>mesh.geometry)
+  camera.position.z=1500;updateDetailLods(root,camera,844)
+  for(const [index,mesh] of root.children.entries()){
+    expect(mesh.geometry.attributes.position.count).toBeLessThan(close[index].attributes.position.count/2)
+    const bounds=new THREE.Box3().setFromBufferAttribute(mesh.geometry.attributes.position),size=bounds.getSize(new THREE.Vector3())
+    expect(size.y).toBeGreaterThan(.9);expect(size.z).toBeGreaterThan(.2)
+    for(const attribute of Object.values(mesh.geometry.attributes))expect(attribute.array.every(Number.isFinite)).toBe(true)
+  }
+  expect(snapshot()).toEqual(before)
+  camera.position.z=8;updateDetailLods(root,camera,844)
+  for(const [index,mesh] of root.children.entries())expect(mesh.geometry).toBe(close[index])
+  expect(snapshot()).toEqual(before)
+})
+
+it('preserves the open molded niche and its outward face at every geometry detail',()=>{
+  const front=new THREE.Vector3(0,0,-1),material=new THREE.MeshBasicMaterial()
+  let previous=Infinity
+  for(const detail of [0,1,2]){
+    const geometry=kuduGeometry(detail),mesh=new THREE.Mesh(geometry,material)
+    mesh.updateMatrixWorld(true)
+    const triangles=(geometry.index?geometry.index.count:geometry.attributes.position.count)/3
+    expect(triangles).toBeLessThan(previous);previous=triangles
+    const opening=new THREE.Raycaster(new THREE.Vector3(0,.5,2),front).intersectObject(mesh)
+    expect(opening).toHaveLength(0)
+    const frame=new THREE.Raycaster(new THREE.Vector3(.33,.5,2),front).intersectObject(mesh)
+    expect(frame.length).toBeGreaterThan(0);expect(frame[0].face.normal.z).toBeGreaterThan(0)
+    for(const attribute of Object.values(geometry.attributes))expect(attribute.array.every(Number.isFinite)).toBe(true)
+  }
 })
