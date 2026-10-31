@@ -1556,6 +1556,9 @@ body.world-first .journey-caption[data-stage='introduction'] {background:none;bo
 .journey-caption[data-stage='introduction'] .story-education {display:none;}
 .journey-caption[data-stage='introduction'].at-stop .arrival-summary {display:none;}
 .journey-caption[data-stage='introduction'] .story-intro-copy>p:first-child {margin:16px 0;}
+@media(min-width:701px) {
+  .journey-caption[data-stage='introduction'] .story-intro-copy>p:first-child {max-width:26ch;}
+}
 body.world-first:not(.trip-night) .story-connections {color:#203b3e;}
 body.world-first.connections-visible:not(.clean-journey)::after {
   height: 300px;

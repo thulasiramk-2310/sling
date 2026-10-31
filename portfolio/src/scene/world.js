@@ -5,7 +5,7 @@ import { streetGeometry } from './architecture.js'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import { glowTexture, grainTexture, roadTexture, seaNormalTexture, trunkTexture } from './textures.js'
 import { quality } from './quality.js'
-import { isReserved } from './route.js'
+import { isReserved, ROAD_DECK_HEIGHT } from './route.js'
 import { clamp, glow, lambert, lerp, rng, smooth, surface } from './util.js'
 
 // Distances from the road centre where the ground mesh has a row of points.
@@ -114,7 +114,7 @@ export function buildRoad(scene, route) {
     route.at(u, s)
     for (let j = 0; j < 2; j++) {
       const p = s.pos.clone().addScaledVector(s.right, j ? 4.2 : -4.2)
-      pos.set([p.x, p.y + 0.04, p.z], (i * 2 + j) * 3)
+      pos.set([p.x, p.y + ROAD_DECK_HEIGHT, p.z], (i * 2 + j) * 3)
       uv.set([j, (u * route.length) / 16], (i * 2 + j) * 2)
     }
   }

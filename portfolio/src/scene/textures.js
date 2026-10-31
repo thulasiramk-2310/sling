@@ -296,10 +296,13 @@ export const moonTexture = () =>
     return toTexture(c, { repeat: false })
   })
 
-export const cloudTexture = () =>
-  once('cloud', () => {
-    const { c, ctx } = canvas(512, 256)
-    const data=bakeCloud(c.width,c.height,quality.low?16:24)
+export const cloudTexture = (variant=0) =>
+  once('cloud-'+variant, () => {
+    // Three smaller original bakes together contain fewer texels and density
+    // samples than the former single 512×256 repeated silhouette.
+    const width=quality.low?192:256
+    const { c, ctx } = canvas(width,width/2)
+    const data=bakeCloud(c.width,c.height,quality.low?14:22,variant)
     ctx.putImageData(new ImageData(data,c.width,c.height),0,0)
     return toTexture(c, { repeat: false })
   })

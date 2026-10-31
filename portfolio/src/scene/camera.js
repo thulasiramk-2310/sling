@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { introFrame } from './landmarks/intro-bridge.js'
-import { storyAt } from './story.js'
 import { smooth } from './util.js'
+import { vehicleAt } from './intro-actors.js'
 
 const POET_VISIT=[.930,.943,.953,.972]
 
@@ -38,8 +38,9 @@ const DRIVING=[
 // ninety metres beside the road in frame. Offsets remain in the moving road
 // basis, so travelling and reversing still follow the same continuous route.
 const PORTRAIT_DRIVING=[
-  [.235,[-17,27,4.5],[43,-68,17]],
-  [.285,[-17,27,4.5],[43,-68,17]],
+  [.235,[-6,15,2],[10,-68,22]],
+  [.285,[-6,15,2],[10,-68,22]],
+  [.303,[-13,2,4.5],[10,1,1.6]],
   [.32,[-10,-12,5],[8,1,1.6]],
   [.38,[-14,-5,5],[16,1,2]],
   [.46,[-15,-8,5],[13,18,4]],
@@ -67,7 +68,7 @@ export function createJourneyCamera(route) {
   const car=route.sample(),eye=new THREE.Vector3(),target=new THREE.Vector3()
   const previous=new THREE.Vector3(),movement=new THREE.Vector3()
   let initialized=false
-  const park=route.at(.07).pos
+  const park=vehicleAt(route,.245).pos
   const keys=[
     [0,intro.point(6,83,122),intro.point(6,66,30)],
     [.05,intro.point(6,76,105),intro.point(6,66,30)],
@@ -76,15 +77,20 @@ export function createJourneyCamera(route) {
     [.155,intro.point(6,3.3,13),intro.point(6,3.2,-14)],
     [.18,intro.point(6,3.3,-10),intro.point(6,4,-30)],
     [.195,intro.point(6,9,-25),park.clone().add(up)],
+    [.213,park.clone().addScaledVector(route.at(.07).tan,-7).addScaledVector(route.at(.07).right,11).addScaledVector(up,2.7),park.clone().addScaledVector(route.at(.07).right,-1.3).addScaledVector(up,1.2)],
     [.235,park.clone().addScaledVector(route.at(.07).tan,-4).addScaledVector(route.at(.07).right,7).addScaledVector(up,2.4),park.clone().addScaledVector(route.at(.07).right,-1.3).addScaledVector(up,1.1)],
   ]
   const portraitKeys=keys.map(key=>[key[0],key[1].clone(),key[2].clone()])
   portraitKeys[0]=[0,intro.point(-16,85,132),intro.point(-14,30,5)]
   portraitKeys[1]=[.05,intro.point(-15,76,115),intro.point(-12,30,0)]
   portraitKeys[2]=[.09,intro.point(-6,43,70),intro.point(0,7,0)]
-  portraitKeys[7]=[.235,
-    park.clone().addScaledVector(route.at(.07).tan,-17).addScaledVector(route.at(.07).right,27).addScaledVector(up,4.5),
-    park.clone().addScaledVector(route.at(.07).tan,43).addScaledVector(route.at(.07).right,-68).addScaledVector(up,17),
+  portraitKeys[7]=[.213,
+    park.clone().addScaledVector(route.at(.07).tan,-10).addScaledVector(route.at(.07).right,20).addScaledVector(up,3),
+    park.clone().addScaledVector(route.at(.07).tan,10).addScaledVector(route.at(.07).right,-68).addScaledVector(up,22),
+  ]
+  portraitKeys[8]=[.235,
+    park.clone().addScaledVector(route.at(.07).tan,-6).addScaledVector(route.at(.07).right,15).addScaledVector(up,2),
+    park.clone().addScaledVector(route.at(.07).tan,10).addScaledVector(route.at(.07).right,-68).addScaledVector(up,22),
   ]
   // Shape-preserving cubic Hermite tangents prevent the camera from diving
   // below ground or swinging ahead of the vehicle near a parked/ride boundary.
@@ -130,8 +136,8 @@ export function createJourneyCamera(route) {
   ]
   return {
     sample(progress,aspect=1.6) {
-      const p=THREE.MathUtils.clamp(progress,0,1),story=storyAt(p)
-      route.at(story.road,car)
+      const p=THREE.MathUtils.clamp(progress,0,1)
+      vehicleAt(route,p,car)
       if(p<.235) {
         ;(aspect<.8?portraitIntroEyes:introEyes)(p,eye)
         ;(aspect<.8?portraitIntroLooks:introLooks)(p,target)
@@ -176,8 +182,10 @@ export function frameVehicle(camera,center,width,height,progress=0,pose=null) {
   if(weight>0) camera.setViewOffset(width,height,(p.x-x)*width/2*weight,(y-p.y)*height/2*weight,width,height)
 }
 
-// Portrait screens need a wider final coastal view to contain both islands.
-export const journeyFar=progress=>1600+2400*smooth(.955,.985,progress)
+// The phone renderer need not submit another city through nearly opaque haze.
+// Sky sprites remain inside its 1km view; the final ascent restores both islands
+// and the full coastal horizon on either quality setting.
+export const journeyFar=(progress,compact=false)=>THREE.MathUtils.lerp(compact?1000:1600,4000,smooth(.955,.985,progress))
 
 export function journeyLens(aspect,progress,speed=0) {
   const templeLens=12*smooth(.59,.625,progress)*(1-smooth(.64,.675,progress))+12*smooth(.69,.725,progress)*(1-smooth(.73,.755,progress))

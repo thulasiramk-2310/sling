@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-31",
+  "scope": "Actual createAuto torus geometry against actual road/apron/footway meshes; bitmap contents mocked only in the CPU test",
+  "poses": 8001,
+  "tireRays": 24003,
+  "range": [
+    0.32,
+    0.4
+  ],
+  "supportHoles": 0,
+  "maximumIndependentGapMetres": 0.0178785,
+  "toleranceMetres": 0.02,
+  "test": "tests/intro-actors.test.js",
+  "independentReview": "Read-only station_frontage agent; real torus vertices, not transformed AABB corners"
+}

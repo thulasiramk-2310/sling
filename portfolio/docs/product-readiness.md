@@ -1,4 +1,4 @@
-# Product integration review · 27 October 2026
+# Product integration review · 31 October 2026
 
 The working application lives in `portfolio/` in a real checkout of
 [`thulasiramk-2310/sling`](https://github.com/thulasiramk-2310/sling), branch
@@ -62,13 +62,13 @@ no-JavaScript content are integrated. There are no required API keys or backend.
 
 ## Verification
 
-The source is installed using `npm ci` from its real lockfile. **120 tests in 26
+The source is installed using `npm ci` from its real lockfile. **125 tests in 27
 files pass**, oxlint reports no warnings, and Vite's production build succeeds.
 The native production input suite passes **21 checks at each width (42 total)**,
 including both modal handoffs. Browser checks serve the
 actual `dist/` through Vite preview, not a screenshot mockup.
 
-The task-owned Chromium runs outside the outer syscall sandbox, which otherwise
+An isolated official Chrome for Testing runs outside the outer syscall sandbox, which otherwise
 blocks its startup socket operation. The browser uses SwiftShader because this
 host exposes no `/dev/dri` hardware renderer. Phone evidence is a 390×844 touch
 viewport in that desktop browser, not a physical phone.
@@ -81,16 +81,16 @@ Current evidence is saved beside the checkout:
 | `review-madurai/phone-interactions.json` | Same route with touch exhibit activation and 390px layout |
 | `review-product/performance-readable-results.json` | Actual low-frame-rate detection after adaptation, native keyboard selection, stopped renderer, live readable content and restored scrolling |
 | `review-product/readable-fallback-results.json` | No JavaScript and no WebGL at 1440px and 390px; real links, project reader and no horizontal overflow |
-| `review-sculpture/desktop-results.json` | Loader plus eleven authored camera poses; high-quality shaders, accepted GLBs and current sky-lighting checks |
-| `review-sculpture/phone-results.json` | Same portrait route with lighter geometry/materials and low-cost water |
+| `review-sculpture/desktop-product-results.json` | Loader plus twenty authored camera poses; high-quality shaders, accepted GLBs and current sky-lighting checks |
+| `review-sculpture/phone-product-results.json` | Same portrait route with lighter geometry/materials and low-cost water |
 | `review-sculpture/normal-motion-desktop-after.json` | Actual normal-motion software-render cadence and adaptive quality changes at a fixed authored statue pose |
 
 The interaction route uses reduced motion to make native input checks practical
 on software rendering. Static inspections do not prove scroll smoothness or FPS.
 Motion continuity and drive acceleration are additionally covered by source tests.
 
-The latest fixed-pose sample rendered 18 frames over 20.52 seconds,
-**0.88 FPS on SwiftShader**. This remains below a usable interactive rate.
+The latest fixed-pose sample rendered 24 frames over 20.00 seconds,
+**1.20 FPS on SwiftShader**. This remains below a usable interactive rate.
 Adaptive quality lowers DPR to .75 and disables AO, reflections, bloom and
 shadows. If the measured rate still remains below 12 FPS after those reductions,
 an optional “Read portfolio” button exposes the compact profile and stops 3D
@@ -113,6 +113,10 @@ Project image sources and licenses are bundled in `public/projects/`; UI fonts
 retain their licenses, and `public/fonts/LICENSE` covers the bundled Optimer font.
 The reference recording supplies pacing and composition guidance; none of its
 geometry, textures, sounds or branding is imported.
+
+The [Chennai arrival review](chennai-arrival-review.md) records the rebuilt station,
+physical driveway proof and measured phone submission reduction. Its independent
+intro visual assessment is approximately **6.5/10**, below the requested finish.
 
 The independent art reviews still identify simplified facial likeness, robe
 folds, open terrain and architectural detail. These are procedural interpretations,

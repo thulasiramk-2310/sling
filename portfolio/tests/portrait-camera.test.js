@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import {createRoute} from '../src/scene/route.js'
 import {createJourneyCamera,frameVehicle,journeyLens} from '../src/scene/camera.js'
 import {storyAt} from '../src/scene/story.js'
+import {vehicleAt} from '../src/scene/intro-actors.js'
 
 const width=390,height=844,aspect=width/height,up=new THREE.Vector3(0,1,0)
 const route=createRoute(),rig=createJourneyCamera(route)
@@ -12,7 +13,7 @@ const landmarkPoint=(u,lateral,local,quarterTurn=0,facing=u)=>new THREE.Vector3(
 
 function frame(progress) {
   const camera=new THREE.PerspectiveCamera(journeyLens(aspect,progress),aspect,.3,1600)
-  const pose=rig.sample(progress,aspect),car=route.at(storyAt(progress).road)
+  const pose=rig.sample(progress,aspect),car=vehicleAt(route,progress)
   camera.position.copy(pose.eye);camera.lookAt(pose.target);camera.updateMatrixWorld(true)
   const autoCenter=car.pos.clone().add(up).addScaledVector(car.right,.9*pose.portrait)
   frameVehicle(camera,autoCenter,width,height,progress,pose)
@@ -22,7 +23,7 @@ function frame(progress) {
   }
   const auto=[]
   for(const x of [-.8,.8])for(const y of [0,2])for(const z of [-1.4,1.4])auto.push(project(
-    car.pos.clone().addScaledVector(car.right,x).addScaledVector(car.tan,z).addScaledVector(up,y),
+    car.pos.clone().addScaledVector(car.vehicleRight,x).addScaledVector(car.heading,z).addScaledVector(up,y),
   ))
   return {project,auto,center:project(autoCenter)}
 }
@@ -89,7 +90,7 @@ it('keeps every roadside project below the caption and available before the scul
 it('frames the Shore Temple in the desktop arrival, clear of the left reading column',()=>{
   const p=.49,desktopWidth=1440,desktopHeight=900,desktopAspect=desktopWidth/desktopHeight
   const camera=new THREE.PerspectiveCamera(journeyLens(desktopAspect,p),desktopAspect,.3,1600)
-  const pose=rig.sample(p,desktopAspect),car=route.at(storyAt(p).road)
+  const pose=rig.sample(p,desktopAspect),car=vehicleAt(route,p)
   camera.position.copy(pose.eye);camera.lookAt(pose.target);camera.updateMatrixWorld(true)
   frameVehicle(camera,car.pos.clone().add(up),desktopWidth,desktopHeight,p,pose)
   const points=[[-6,1.2,-1],[-6,20,-1],[-13,6,-1],[1,6,-1]].map(local=>landmarkPoint(.27,84,local).project(camera))

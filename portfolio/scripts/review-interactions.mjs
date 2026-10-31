@@ -9,15 +9,15 @@ const phone=process.argv[2]==='phone',width=phone?390:1440,height=phone?844:900
 const targets=await (await fetch('http://127.0.0.1:9224/json/list')).json()
 const ws=new WebSocket(targets.find(t=>t.type==='page').webSocketDebuggerUrl)
 await new Promise(r=>ws.addEventListener('open',r,{once:true}))
-const pending=new Map(),errors=[],checks=[];let sequence=0
+const pending=new Map(),errors=[],checks=[],connection=[];let sequence=0
 ws.addEventListener('message',e=>{
   const m=JSON.parse(e.data)
   if(m.id){const p=pending.get(m.id);pending.delete(m.id);if(!p)return;if(m.error)p.reject(m.error);else p.resolve(m.result)}
   if(m.method==='Runtime.exceptionThrown')errors.push(m.params.exceptionDetails)
   if(m.method==='Runtime.consoleAPICalled' && ['error','assert'].includes(m.params.type))errors.push({console:m.params.args.map(a=>a.value||a.description).join(' ')})
-  if(m.method==='Inspector.targetCrashed')for(const p of pending.values())p.reject(new Error('Renderer crashed'))
+  if(m.method==='Inspector.targetCrashed'){errors.push({type:'Renderer crashed',details:m.params});for(const p of pending.values())p.reject(new Error('Renderer crashed'))}
 })
-ws.addEventListener('close',()=>{for(const p of pending.values())p.reject(new Error('Tab closed'));pending.clear()})
+ws.addEventListener('close',event=>{connection.push({type:'close',code:event.code,reason:event.reason});for(const p of pending.values())p.reject(new Error('Tab closed'));pending.clear()})
 ws.addEventListener('error',event=>{for(const p of pending.values())p.reject(new Error('Browser connection error: '+(event.message||'unknown')));pending.clear()})
 const call=(method,params={})=>new Promise((resolve,reject)=>{
   if(ws.readyState!==WebSocket.OPEN){reject(new Error('Browser connection is closed: '+method));return}
@@ -68,8 +68,11 @@ await evaluate('document.querySelector(".journey-clean").click()')
 pass((phone?'Native touch':'Native pointer')+' raycasts all seven project installations with the correct source')
   }catch(error){
     const dir=new URL('../../../review-product/',import.meta.url);await fs.mkdir(dir,{recursive:true})
-    const state=await evaluate('({trace:window.__modalTrace,open:document.querySelector(".project-detail").open,reading:document.body.className,visibility:document.visibilityState,active:{tag:document.activeElement?.tagName,class:document.activeElement?.className,href:document.activeElement?.href}})')
-    await fs.writeFile(new URL((phone?'phone':'desktop')+'-exhibit-failure.json',dir),JSON.stringify({error:String(error),state,targets:(await (await fetch('http://127.0.0.1:9224/json/list')).json()).map(({type,url})=>({type,url})),errors},null,2));await capture('exhibit-failure');throw error
+    const state=await evaluate('({trace:window.__modalTrace,open:document.querySelector(".project-detail").open,reading:document.body.className,visibility:document.visibilityState,active:{tag:document.activeElement?.tagName,class:document.activeElement?.className,href:document.activeElement?.href}})').catch(failure=>({unavailable:String(failure)}))
+    const targets=await fetch('http://127.0.0.1:9224/json/list').then(response=>response.json()).then(list=>list.map(({type,url})=>({type,url}))).catch(failure=>({unavailable:String(failure)}))
+    await fs.writeFile(new URL((phone?'phone':'desktop')+'-exhibit-failure.json',dir),JSON.stringify({error:String(error),state,targets,errors,connection},null,2))
+    if(ws.readyState===WebSocket.OPEN)await capture('exhibit-failure').catch(()=>{})
+    throw error
   }
 }
 const scrollTrace=[]

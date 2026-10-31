@@ -3,6 +3,7 @@ import { surface } from './util.js'
 import { batchStaticMeshes } from './batch.js'
 import { quality } from './quality.js'
 import { loftGeometry,CHARACTER_SECTIONS as sections } from './character-geometry.js'
+import { legPose } from './intro-actors.js'
 
 function shirtPattern() {
   const size=64,data=new Uint8Array(size*size*4)
@@ -12,7 +13,7 @@ function shirtPattern() {
     data.set([value,value,value,255],i)
   }
   const map=new THREE.DataTexture(data,size,size);map.colorSpace=THREE.SRGBColorSpace
-  map.wrapS=map.wrapT=THREE.RepeatWrapping;map.repeat.set(1,1.5)
+  map.wrapS=map.wrapT=THREE.RepeatWrapping;map.repeat.set(3,4.5)
   map.generateMipmaps=true;map.minFilter=THREE.LinearMipmapLinearFilter;map.magFilter=THREE.LinearFilter;map.needsUpdate=true
   return map
 }
@@ -43,6 +44,7 @@ export function createRamAvatar({seated=false}={}) {
   mesh(new THREE.BoxGeometry(.016,.40,.012),cloth,[0,.349,.119],torsoRoot)
   for(const y of [.18,.27,.36,.45,.53])mesh(new THREE.SphereGeometry(.0065,8,6),trim,[0,y,.131],torsoRoot)
   const head=new THREE.Group();head.position.set(0,seated?.70:.78,0);torsoRoot.add(head)
+  head.scale.set(.88,.90,.90)
   part('head',skin,[0,0,0],head)
   const hairCap=mesh(new THREE.SphereGeometry(1,segments,14,0,Math.PI*2,0,Math.PI*.59),hair,[0,.086,-.012],head)
   hairCap.scale.set(.131,.135,.114);hairCap.rotation.z=-.08
@@ -70,13 +72,14 @@ export function createRamAvatar({seated=false}={}) {
     const knee=new THREE.Group();knee.position.y=-.4;thigh.add(knee)
     part('shin',pants,[0,0,0],knee)
     const foot=new THREE.Group();foot.position.y=-.36;knee.add(foot)
+    foot.name=side<0?'Ram left ankle':'Ram right ankle'
     part('shoe',leather,[0,0,0],foot)
     const base=loftGeometry([[-.11,.081,.16,.055],[-.085,.087,.167,.06]],segments)
     mesh(base,sole,[0,0,0],foot)
     for(let i=0;i<3;i++) {
       const lace=mesh(new THREE.CapsuleGeometry(.002,.065,3,6),trim,[0,-.005,.03+i*.025],foot);lace.rotation.z=Math.PI/2
     }
-    legs.push({thigh,knee})
+    legs.push({thigh,knee,foot})
     const shoulder=new THREE.Group();shoulder.position.set(side*.226,.565,-.005);torsoRoot.add(shoulder)
     part('sleeve',cloth,[0,0,0],shoulder)
     const cuff=mesh(new THREE.CylinderGeometry(.057,.057,.036,segments),trim,[0,-.275,0],shoulder)
@@ -98,24 +101,43 @@ export function createRamAvatar({seated=false}={}) {
     }
     arms.push({shoulder,elbow,hand,side})
   }
-  function update(time,boarding=0,reduced=false) {
-    hips.position.y=seated?.94:.9-boarding*.15
-    hips.position.x=seated?0:.025*(1-boarding)
-    hips.rotation.z=seated?0:.025*(1-boarding)
-    torsoRoot.rotation.x=seated?.10:0
-    torsoRoot.rotation.z=seated?0:-.035*(1-boarding)
-    head.rotation.y=reduced?0:Math.sin(time*.45)*.075
-    for(const [index,{thigh,knee}] of legs.entries()) {
-      thigh.rotation.x=seated?-1.67:boarding*.32
-      thigh.rotation.z=seated?0:(index?-.018:.018)*(1-boarding)
-      knee.rotation.x=seated?1.67:Math.max(0,Math.sin(boarding*24))*boarding*.35
+  function update(time,boarding=0,reduced=false,activity={}) {
+    const sit=seated?1:THREE.MathUtils.smoothstep(boarding,.12,1)
+    const walking=seated||reduced?0:activity.walking??0
+    const distance=activity.distance??0,cycle=distance/.76
+    const stride=.76,stance=.56
+    const idle=1-walking
+    hips.position.y=THREE.MathUtils.lerp(.88*(1-walking)+(.844+.004*Math.cos(cycle*Math.PI*4))*walking,.94,sit)
+    hips.position.x=.026*idle*(1-sit)
+    hips.rotation.z=.022*idle*(1-sit)
+    torsoRoot.rotation.x=.10*sit-.025*walking*(1-sit)
+    torsoRoot.rotation.z=-.043*idle*(1-sit)
+    head.position.y=THREE.MathUtils.lerp(.80,.70,sit)
+    head.rotation.y=(-.10*idle+(reduced?0:Math.sin(time*.45)*.025))*(1-sit)
+    for(const [index,{thigh,knee,foot}] of legs.entries()) {
+      const phase=((cycle+index*.5)%1+1)%1
+      const swing=Math.max(0,(phase-stance)/(1-stance))
+      const zWalk=phase<stance?stride*(stance/2-phase):THREE.MathUtils.lerp(-stride*stance/2,stride*stance/2,THREE.MathUtils.smoothstep(swing,0,1))
+      const lift=.075*Math.sin(swing*Math.PI)
+      const idleZ=index===0?-.012:.10
+      const idleY=index===0?-.758:-.738
+      const targetZ=THREE.MathUtils.lerp(idleZ,zWalk,walking)
+      const targetY=THREE.MathUtils.lerp(idleY,.112+lift-(hips.position.y-.01),walking)
+      const pose=legPose(targetZ,targetY)
+      thigh.rotation.x=THREE.MathUtils.lerp(pose.hip,-1.67,sit)
+      thigh.rotation.z=(index?-.018:.018)*idle*(1-sit)
+      knee.rotation.x=THREE.MathUtils.lerp(pose.knee,1.67,sit)
+      foot.rotation.x=THREE.MathUtils.lerp(pose.ankle,0,sit)
+      if(index===1)foot.rotation.x+=.10*idle*(1-sit)
     }
     for(const {shoulder,elbow,hand,side} of arms) {
-      shoulder.rotation.z=seated?side*.06:side*.08
-      shoulder.rotation.x=seated?-1.06:-.04-boarding*.65+(reduced?0:Math.sin(time*.7+side)*.025)
-      elbow.rotation.x=seated?-.35:-.18-boarding*.2
-      hand.rotation.x=seated?-.45:0
-      hand.rotation.z=seated?0:side*.08
+      const pocket=side===1
+      const swing=Math.sin(cycle*Math.PI*2+(pocket?0:Math.PI))*.26*walking
+      shoulder.rotation.z=THREE.MathUtils.lerp((pocket?-.22:-.05)*idle+side*.035*walking,side*.06,sit)
+      shoulder.rotation.x=THREE.MathUtils.lerp((pocket?.08:-.04)*idle+swing,-1.06,sit)
+      elbow.rotation.x=THREE.MathUtils.lerp((pocket?-.65:-.15)*idle-.22*walking,-.35,sit)
+      hand.rotation.x=THREE.MathUtils.lerp(pocket?-.20:0,-.45,sit)
+      hand.rotation.z=(pocket?.10:-.06)*(1-sit)
     }
   }
   update(0,0,true)

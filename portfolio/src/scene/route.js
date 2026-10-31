@@ -11,6 +11,7 @@ const POINTS = [
 ]
 
 const UP = new THREE.Vector3(0, 1, 0)
+export const ROAD_DECK_HEIGHT=.04
 
 export function createRoute() {
   const plan = new THREE.CatmullRomCurve3(

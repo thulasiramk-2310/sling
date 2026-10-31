@@ -3,6 +3,7 @@
 import * as THREE from 'three'
 import { createAuto } from './auto.js'
 import { createRamAvatar } from './avatar.js'
+import { vehicleAt, introductionActor } from './intro-actors.js'
 import { createFrameBudget } from './frame-budget.js'
 import { renderProfile } from './render-profile.js'
 import { updateDetailLods } from './detail-lod.js'
@@ -68,7 +69,7 @@ export async function createScene({ canvas, report, onCredits = () => {}, onProj
       buildTown(scene, c.route, { from: 0.005, to: 0.11, count: quality.buildings, minH: 8, maxH: 26, seed: 3, lateral: [22, 90], side: -1 })
       buildTown(scene,c.route,{from:.028,to:.118,count:quality.low?8:18,seed:73,flat:false,side:-1,setback:185})
       buildTown(scene, c.route, { from: .115, to: .235, count: quality.houses, seed: 26, flat: true, setback: 12.5 })
-      scene.add(createStreetEdges(c.route,.035,.108))
+      scene.add(createStreetEdges(c.route,.035,.115))
       scene.add(createStreetEdges(c.route))
       buildTown(scene, c.route, { from: 0.52, to: 0.76, count: quality.houses, minH: 3, maxH: 7, seed: 9, flat: true, lateral: [16, 110] })
     }],
@@ -190,12 +191,13 @@ export async function createScene({ canvas, report, onCredits = () => {}, onProj
     speed = clamp(Math.abs(roadVelocity) / TOP_SPEED, 0, 1)
 
     // The auto sits on the road; the camera follows behind it.
-    route.at(currentStory.road, car)
+    vehicleAt(route,u,car)
     auto.root.position.copy(car.pos)
-    auto.root.lookAt(car.pos.x + car.tan.x, car.pos.y + car.tan.y, car.pos.z + car.tan.z)
+    auto.root.up.copy(car.normal)
+    auto.root.lookAt(car.pos.x + car.heading.x, car.pos.y + car.heading.y, car.pos.z + car.heading.z)
     auto.root.updateMatrixWorld()
-    const turn = (prevTan.x * car.tan.z - prevTan.z * car.tan.x) / Math.max(dt, 0.001)
-    prevTan.copy(car.tan)
+    const turn = (prevTan.x * car.heading.z - prevTan.z * car.heading.x) / Math.max(dt, 0.001)
+    prevTan.copy(car.heading)
     turnS += (clamp(turn, -0.6, 0.6) - turnS) * ease(3, dt)
 
     // Mouse parallax (desktop only), eased.
@@ -223,7 +225,7 @@ export async function createScene({ canvas, report, onCredits = () => {}, onProj
     const lens = journeyLens(camera.aspect,u,speed)
     if (first || reduced) camera.fov = lens
     else camera.fov += (lens - camera.fov) * ease(3, dt)
-    camera.far=journeyFar(u)
+    camera.far=journeyFar(u,quality.low)
     camera.updateProjectionMatrix()
     vehicleCenter.copy(car.pos)
     vehicleCenter.y += 1
@@ -281,11 +283,13 @@ export async function createScene({ canvas, report, onCredits = () => {}, onProj
 
     auto.update(reduced ? 0 : dt, speed, dir, reduced ? 0 : turnS * 0.02, time, p.night)
     const boarding = currentStory.progress < .5 ? currentStory.boarding : 0
+    const actor=introductionActor(u,reduced)
     avatar.root.visible = (u > .185 && u < .325) || (u > .92 && u < .955)
-    avatar.root.position.copy(car.pos).addScaledVector(car.right,1.65*(1-boarding*.75))
-    avatar.root.lookAt(camera.position.x,avatar.root.position.y,camera.position.z)
-    avatar.update(time,boarding,reduced)
-    auto.driver.visible = u >= .32 && u <= .92
+    avatar.root.position.copy(car.pos).addScaledVector(car.heading,actor.along).addScaledVector(car.vehicleRight,actor.lateral)
+    avatar.root.position.y+=actor.height+auto.body.position.y*boarding
+    avatar.root.rotation.y=Math.atan2(car.heading.x,car.heading.z)-actor.heading
+    avatar.update(time,boarding,reduced,actor)
+    auto.driver.visible = u >= .325 && u <= .92
     discovered = exhibits.update(currentStory, time, camera)
     dust.update(camera.position, time, p.night)
     ctx.lamps.setNight(p.night)

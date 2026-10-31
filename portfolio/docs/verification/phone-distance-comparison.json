@@ -1,0 +1,181 @@
+{
+  "scope": "Paired real phone WebGL frames, fixed low quality. Only viewing-distance change between builds. Submission counts are not FPS measurements.",
+  "beforeFar": 1600,
+  "afterFar": 1000,
+  "phoneWidth": 390,
+  "height": 844,
+  "frames": [
+    {
+      "name": "opening-sky",
+      "progress": 0.02,
+      "beforeTriangles": 546540,
+      "afterTriangles": 355448,
+      "reductionPercent": 34.963955062758444,
+      "beforeCalls": 218,
+      "afterCalls": 155,
+      "imageMeanAbsoluteChannelDifference": 0.07549722526025844
+    },
+    {
+      "name": "under-bridge",
+      "progress": 0.172,
+      "beforeTriangles": 781450,
+      "afterTriangles": 380910,
+      "reductionPercent": 51.255998464393116,
+      "beforeCalls": 215,
+      "afterCalls": 117,
+      "imageMeanAbsoluteChannelDifference": 1.676229391987686
+    },
+    {
+      "name": "arrival-start",
+      "progress": 0.205,
+      "beforeTriangles": 164152,
+      "afterTriangles": 164152,
+      "reductionPercent": 0.0,
+      "beforeCalls": 153,
+      "afterCalls": 153,
+      "imageMeanAbsoluteChannelDifference": 0.014409405760116659
+    },
+    {
+      "name": "arrival-walk",
+      "progress": 0.225,
+      "beforeTriangles": 162516,
+      "afterTriangles": 162516,
+      "reductionPercent": 0.0,
+      "beforeCalls": 148,
+      "afterCalls": 148,
+      "imageMeanAbsoluteChannelDifference": 0.016458054846680437
+    },
+    {
+      "name": "arrival-turn",
+      "progress": 0.237,
+      "beforeTriangles": 162516,
+      "afterTriangles": 162516,
+      "reductionPercent": 0.0,
+      "beforeCalls": 147,
+      "afterCalls": 147,
+      "imageMeanAbsoluteChannelDifference": 0.015161826062299997
+    },
+    {
+      "name": "introduction",
+      "progress": 0.245,
+      "beforeTriangles": 162516,
+      "afterTriangles": 162516,
+      "reductionPercent": 0.0,
+      "beforeCalls": 147,
+      "afterCalls": 147,
+      "imageMeanAbsoluteChannelDifference": 0.015177016243366953
+    },
+    {
+      "name": "boarding-start",
+      "progress": 0.292,
+      "beforeTriangles": 157480,
+      "afterTriangles": 157480,
+      "reductionPercent": 0.0,
+      "beforeCalls": 147,
+      "afterCalls": 147,
+      "imageMeanAbsoluteChannelDifference": 0.026170656620893587
+    },
+    {
+      "name": "boarding-seat",
+      "progress": 0.315,
+      "beforeTriangles": 1282320,
+      "afterTriangles": 442208,
+      "reductionPercent": 65.51500405515004,
+      "beforeCalls": 453,
+      "afterCalls": 227,
+      "imageMeanAbsoluteChannelDifference": 0.03715214485356665
+    },
+    {
+      "name": "departure",
+      "progress": 0.33,
+      "beforeTriangles": 1051460,
+      "afterTriangles": 404052,
+      "reductionPercent": 61.57228995872406,
+      "beforeCalls": 400,
+      "afterCalls": 214,
+      "imageMeanAbsoluteChannelDifference": 0.0335287803297282
+    },
+    {
+      "name": "mamallapuram",
+      "progress": 0.49,
+      "beforeTriangles": 167886,
+      "afterTriangles": 167886,
+      "reductionPercent": 0.0,
+      "beforeCalls": 116,
+      "afterCalls": 116,
+      "imageMeanAbsoluteChannelDifference": 0.015351196986268077
+    },
+    {
+      "name": "thanjavur",
+      "progress": 0.635,
+      "beforeTriangles": 221432,
+      "afterTriangles": 221432,
+      "reductionPercent": 0.0,
+      "beforeCalls": 137,
+      "afterCalls": 137,
+      "imageMeanAbsoluteChannelDifference": 0.011118199862275692
+    },
+    {
+      "name": "madurai",
+      "progress": 0.725,
+      "beforeTriangles": 1115556,
+      "afterTriangles": 1115556,
+      "reductionPercent": 0.0,
+      "beforeCalls": 234,
+      "afterCalls": 234,
+      "imageMeanAbsoluteChannelDifference": 0.014125855713533439
+    },
+    {
+      "name": "rameswaram",
+      "progress": 0.815,
+      "beforeTriangles": 286708,
+      "afterTriangles": 286708,
+      "reductionPercent": 0.0,
+      "beforeCalls": 164,
+      "afterCalls": 164,
+      "imageMeanAbsoluteChannelDifference": 0.011140478794507231
+    },
+    {
+      "name": "kanyakumari",
+      "progress": 0.915,
+      "beforeTriangles": 146988,
+      "afterTriangles": 146988,
+      "reductionPercent": 0.0,
+      "beforeCalls": 119,
+      "afterCalls": 119,
+      "imageMeanAbsoluteChannelDifference": 0.009221452586381497
+    },
+    {
+      "name": "poet-visit",
+      "progress": 0.947,
+      "beforeTriangles": 80908,
+      "afterTriangles": 80908,
+      "reductionPercent": 0.0,
+      "beforeCalls": 22,
+      "afterCalls": 22,
+      "imageMeanAbsoluteChannelDifference": 0.13955421881962168
+    },
+    {
+      "name": "poet-exit",
+      "progress": 0.973,
+      "beforeTriangles": 138666,
+      "afterTriangles": 138666,
+      "reductionPercent": 0.0,
+      "beforeCalls": 52,
+      "afterCalls": 52,
+      "imageMeanAbsoluteChannelDifference": 0.009006764693968486
+    },
+    {
+      "name": "sky-farewell",
+      "progress": 0.987,
+      "beforeTriangles": 85586,
+      "afterTriangles": 85586,
+      "reductionPercent": 0.0,
+      "beforeCalls": 18,
+      "afterCalls": 18,
+      "imageMeanAbsoluteChannelDifference": 0.004891238303560579
+    }
+  ],
+  "beforeErrors": [],
+  "afterErrors": []
+}

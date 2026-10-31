@@ -11,10 +11,10 @@ import { elephantBodyGeometry,createStoneElephant } from '../src/scene/landmarks
 import { rockGeometry } from '../src/scene/landmarks/rocks.js'
 import { streetGeometry } from '../src/scene/architecture.js'
 import { readFile } from 'node:fs/promises'
-import { storyAt } from '../src/scene/story.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { createRathas } from '../src/scene/landmarks/rathas.js'
 import { faceRoad } from '../src/scene/route.js'
+import { vehicleAt } from '../src/scene/intro-actors.js'
 
 export function registerSceneCases(test) {
   test('generated elephant GLBs load successfully with a smaller mobile asset', async () => {
@@ -157,7 +157,7 @@ export function registerSceneCases(test) {
         const pose = rig.sample(u,camera.aspect)
         camera.position.copy(pose.eye)
         camera.lookAt(pose.target)
-        const car = route.at(storyAt(u).road)
+        const car = vehicleAt(route,u)
         const center = car.pos.clone().add(new THREE.Vector3(0,1,0)).addScaledVector(car.right,.9*pose.portrait)
         frameVehicle(camera,center,width,height,u,pose)
         // Authored sculpture visits briefly release the vehicle anchor. The
@@ -171,7 +171,7 @@ export function registerSceneCases(test) {
           : projected.y>=-.401 && projected.y<=-.239)
         const corners = []
         for (const x of [-.8,.8]) for (const y of [0,2]) for (const z of [-1.4,1.4]) {
-          const corner = car.pos.clone().addScaledVector(car.right,x).addScaledVector(car.tan,z)
+          const corner = car.pos.clone().addScaledVector(car.vehicleRight,x).addScaledVector(car.heading,z)
           corner.y += y
           corner.project(camera)
           assert.ok(Math.abs(corner.x) < .99 && Math.abs(corner.y) < .99)
@@ -211,7 +211,7 @@ export function registerSceneCases(test) {
       const ease = 1-Math.exp(-3.2/60)
       eye.lerp(pose.eye,ease)
       look.lerp(pose.target,ease)
-      const car = route.at(storyAt(drive.u).road).pos
+      const car = vehicleAt(route,drive.u).pos
       assert.ok(Number.isFinite(eye.length()))
       // Includes the off-road visits: tracking must stay within 25 m of the
       // authored shot at normal pace, including the reverse journey.

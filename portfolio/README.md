@@ -78,6 +78,12 @@ curved panels, wheel suspension and an articulated character form the vehicle
 sequence. Static architecture is batched; repeated elements are instanced with
 spatial culling and projected-size ornament LODs.
 
+The Chennai arrival now has open station arcades, shaded frontage wings, branching
+trees and a curved paved forecourt. The auto follows the dropped driveway with
+three-wheel surface support; Ram's arrival walk starts after the camera closes in.
+See the [Chennai craft review](docs/chennai-arrival-review.md) for the measured
+phone geometry reduction, physical departure proof and remaining visual work.
+
 Desktop uses physically based materials, sky lighting, AO, shadows, water
 reflection and bloom. Phones use lighter materials, geometry and effects. Slow
 frames progressively reduce effects and DPR. If the measured rate remains below

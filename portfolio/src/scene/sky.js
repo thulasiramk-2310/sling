@@ -96,20 +96,20 @@ export function createSky(scene) {
   stars.renderOrder = -9
   group.add(stars)
 
-  // Soft clouds that drift past, low over the horizon where the light catches them.
+  // Sparse, uneven coastal banks leave clear sky around the architecture.
+  // Original density/light integrals are baked once, with no runtime march.
   const clouds = []
-  const cloudMap = cloudTexture()
   const cloudCount = quality.clouds
   for (let i = 0; i < cloudCount; i++) {
-    const mat = new THREE.SpriteMaterial({ map: cloudMap, depthWrite: false, transparent: true, fog: false, opacity: 0.8 })
+    const variant=i%5===4?2:i%3===2?1:0
+    const mat = new THREE.SpriteMaterial({ map: cloudTexture(variant), depthWrite: false, transparent: true, fog: false, opacity: 0.6 })
     const s = new THREE.Sprite(mat)
     const k = 0.7 + r() * 0.9
-    // Coastal banks stay behind the architecture instead of reading as huge
-    // cotton props immediately over the character and station.
-    s.scale.set(210 * k, 86 * k, 1)
-    const a = r() * Math.PI * 2
-    const dist = 520 + r() * 260
-    s.userData = { a, dist, y: 100 + r() * 170, speed: 0.004 + r() * 0.006, k }
+    const size=variant===2?[120,70]:variant===1?[370,82]:[440,112]
+    s.scale.set(size[0]*k,size[1]*k,1)
+    const a=i/cloudCount*Math.PI*2+(r()-.5)*.58
+    const dist = 620 + r() * 260
+    s.userData = { a, dist, y:variant===2?210+r()*60:95+r()*90, speed: .0008+r()*.0012, k, variant }
     s.renderOrder = -8
     clouds.push(s)
     group.add(s)
@@ -132,6 +132,7 @@ export function createSky(scene) {
   const moonDir = dirFrom(46, -20)
   const lightDir = new THREE.Vector3()
   const tint = new THREE.Color()
+  const haze = new THREE.Color()
 
   return {
     group,
@@ -159,14 +160,15 @@ export function createSky(scene) {
       lightDir.copy(sunDir).lerp(moonDir, smooth(0.55, 0.9, p.night)).normalize()
       // clouds take the sky's glow: gold at dawn, rose at sunset, silver-blue at night
       tint.setRGB(1, 1, 1).lerp(new THREE.Color().setRGB(...p.glow), Math.min(0.75, 0.25 + p.glowAmt * 0.45)).multiplyScalar(0.35 + 0.75 * (1 - p.night * 0.8))
+      haze.setRGB(...p.horizon)
       for (const c of clouds) {
         const d = c.userData
         const a = d.a + time * d.speed
         c.position.set(Math.cos(a) * d.dist, d.y, Math.sin(a) * d.dist)
         // clouds facing the sun glow brighter
         const facing = Math.max(0, (Math.cos(a) * sunDir.x + Math.sin(a) * sunDir.z) / Math.hypot(sunDir.x, sunDir.z || 1e-3))
-        c.material.color.copy(tint).multiplyScalar(0.85 + facing * 0.35)
-        c.material.opacity = 0.62 * (1 - p.night * 0.7)
+        c.material.color.copy(tint).multiplyScalar(0.85 + facing * 0.35).lerp(haze,.24)
+        c.material.opacity = (d.variant===2?.48:.56) * (1 - p.night * 0.7)
       }
       for (const b of birds) {
         const d = b.userData

@@ -245,7 +245,7 @@ export function createAuto(routeLength = 1270) {
   // soft contact shadow under the auto
   const shade = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 3.4), new THREE.MeshBasicMaterial({ map: glowTexture(), color: 0x000000, transparent: true, opacity: 0.45, depthWrite: false }))
   shade.rotation.x = -Math.PI / 2
-  shade.position.y = 0.052
+  shade.position.y = 0.012
   shade.userData.noShadow = true
   root.add(shade)
 

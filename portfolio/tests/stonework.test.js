@@ -109,7 +109,7 @@ it('the final approach frames the actual statue at useful desktop and phone scal
 
 it('keeps the distant ocean inside the final ascent instead of exposing its clip boundary',()=>{
   const progress=.987,aspect=1440/900,pose=createJourneyCamera(createRoute()).sample(progress,aspect)
-  const camera=new THREE.PerspectiveCamera(journeyLens(aspect,progress),aspect,.3,journeyFar(progress))
+  const camera=new THREE.PerspectiveCamera(journeyLens(aspect,progress),aspect,.3,journeyFar(progress,aspect<.8))
   camera.position.copy(pose.eye);camera.lookAt(pose.target);camera.updateMatrixWorld(true)
   const ahead=pose.target.clone().sub(pose.eye);ahead.y=0;ahead.normalize()
   const water=pose.eye.clone().addScaledVector(ahead,3000);water.y=-1.4

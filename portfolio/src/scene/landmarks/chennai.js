@@ -1,12 +1,13 @@
 // Chennai: Marina Beach, the lighthouse and Chennai Central (red-brick station with a clock tower).
 import * as THREE from 'three'
 import { faceRoad } from '../route.js'
-import { brickTexture, clockTexture, glowTexture, grainTexture, withRelief } from '../textures.js'
-import { block, column, glow, lambert, rng, surface, uvScale } from '../util.js'
+import { glowTexture, grainTexture, withRelief } from '../textures.js'
+import { block, glow, lambert, rng, surface } from '../util.js'
 import { quality } from '../quality.js'
 import { createLighthouse } from './lighthouse.js'
 import { createArrivalPlaza } from './arrival-plaza.js'
 import { createPromenade } from './promenade.js'
+import { createCentralStation } from './central-station.js'
 
 function lighthouse() {
   const paint = withRelief('lighthouse-render', grainTexture, 0.45)
@@ -28,76 +29,6 @@ function lighthouse() {
   beam.position.y = 43.3
   g.add(beam)
   g.userData.beam = beam
-  return g
-}
-
-function station() {
-  const g = new THREE.Group()
-  g.userData.staticBatchRoot = true
-  const relief = withRelief('central-brick', brickTexture, 1.2)
-  const brick = lambert(0xffffff, { map: relief.map, normalMap: quality.low ? null : relief.normalMap, roughness: 0.91 })
-  const trim = lambert(0xe9e1cf)
-  const W = 52
-  const wall = block(W, 13, 11, brick)
-  uvScale(wall.geometry, W / 8, 1.6)
-  g.add(wall)
-  g.add(block(W + 1, 0.8, 12, trim, 0, 13))
-  g.add(block(W + 0.6, 0.6, 11.6, trim, 0, 6.2))
-  // Projecting arch surrounds and inset glazing give the station real facade depth.
-  const arch = (radius, spring) => {
-    const shape = new THREE.Shape()
-    shape.moveTo(-radius, 0)
-    shape.lineTo(-radius, spring)
-    shape.absarc(0, spring, radius, Math.PI, 0, true)
-    shape.lineTo(radius, 0)
-    shape.closePath()
-    return shape
-  }
-  const opening = arch(0.8, 2.2)
-  const border = arch(1.08, 2.2)
-  const hole = new THREE.Path(opening.getPoints(16))
-  border.holes.push(hole)
-  const archGeo = new THREE.ExtrudeGeometry(border, { depth: 0.3, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: 0.035, bevelThickness: 0.035, curveSegments: 12 })
-  const glassGeo = new THREE.ShapeGeometry(opening, 12)
-  const glazing = glow(surface({ color: 0x233835, emissive: 0xffbd70, emissiveIntensity: 0, roughness: 0.25, metalness: 0.15 }), 0.6)
-  const arches = new THREE.InstancedMesh(archGeo, trim, 24)
-  const panes = new THREE.InstancedMesh(glassGeo, glazing, 24)
-  const matrix = new THREE.Matrix4()
-  let n = 0
-  for (const y of [1.1, 7.3]) for (let x = -23; x <= 23; x += 4) {
-    arches.setMatrixAt(n, matrix.makeTranslation(x, y, 5.51))
-    panes.setMatrixAt(n++, matrix.makeTranslation(x, y, 5.52))
-    g.add(block(0.12, 3, 0.15, trim, x, y, 5.64))
-    g.add(block(2.5, 0.24, 0.65, trim, x, y - 0.24, 5.65))
-  }
-  arches.count = panes.count = n
-  g.add(arches, panes)
-  // clock tower with four clock faces and a dark pyramid roof
-  const tower = block(9, 24, 9, brick, 0, 13)
-  uvScale(tower.geometry, 1.4, 3)
-  g.add(tower)
-  g.add(block(10, 0.8, 10, trim, 0, 37))
-  const roof = new THREE.Mesh(new THREE.ConeGeometry(7.6, 9, 4), lambert(0x3a3a40))
-  roof.rotation.y = Math.PI / 4
-  roof.position.y = 42
-  g.add(roof)
-  const face = new THREE.MeshBasicMaterial({ map: clockTexture() })
-  for (const [x, z, ry] of [
-    [0, 4.6, 0],
-    [0, -4.6, Math.PI],
-    [4.6, 0, Math.PI / 2],
-    [-4.6, 0, -Math.PI / 2],
-  ]) {
-    const c = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), face)
-    c.position.set(x, 31, z)
-    c.rotation.y = ry
-    g.add(c)
-  }
-  // wing turrets
-  for (const x of [-W / 2 + 3, W / 2 - 3]) {
-    g.add(column(2.6, 2.8, 18, brick, x, 0, 0, 12))
-    g.add(column(0.1, 3.2, 4.4, lambert(0x3a3a40), x, 18, 0, 12))
-  }
   return g
 }
 
@@ -130,7 +61,7 @@ export function buildChennai({ scene, route, u }) {
   house.position.copy(route.side(u - 0.012, 50))
   faceRoad(house, route, u)
   world.add(house)
-  const central = station()
+  const central = createCentralStation()
   central.position.copy(route.side(u + 0.027, -105))
   faceRoad(central, route, u + 0.027)
   central.rotation.y+=Math.PI
