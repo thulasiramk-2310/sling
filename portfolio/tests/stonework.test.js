@@ -219,3 +219,17 @@ it('painted guardian details retain distinct finishes without coloring the stone
   assembly.place(0,0,0,0,3,'#ff0000')
   expect(assembly.build().children[0].material.vertexColors).toBe(true)
 })
+
+it('retains a physical muzzle recess in both Nandi detail levels',()=>{
+  for(const low of [false,true]){
+    const mesh=new THREE.Mesh(nandiGeometry(low),new THREE.MeshBasicMaterial()),ray=new THREE.Raycaster()
+    mesh.updateMatrixWorld(true)
+    const faceAt=y=>{
+      ray.set(new THREE.Vector3(4,y,0),new THREE.Vector3(-1,0,0))
+      const hit=ray.intersectObject(mesh)[0];expect(hit).toBeDefined();return hit.point.x
+    }
+    // The sampled surface must keep the mouth behind the upper muzzle.
+    // A sub-voxel cut silently disappeared in the phone geometry previously.
+    expect(faceAt(1.96)-faceAt(1.82)).toBeGreaterThan(.08)
+  }
+})

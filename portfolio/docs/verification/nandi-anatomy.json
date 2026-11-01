@@ -1,0 +1,13 @@
+{
+  "testsPassed": 132,
+  "files": 28,
+  "lint": "passed",
+  "build": "passed",
+  "views": 8,
+  "heroTriangles": {
+    "desktop": 19856,
+    "phone": 5276
+  },
+  "buildEntrySha256": "f0cba8cc72337c99bea8ff41b4e9b746a3af2daf00868b11a58865faaeee224e",
+  "scope": "Nandi sculpture and rooftop ornament detail, fourposes eachwidth; prior full-route and native-input reports historical"
+}

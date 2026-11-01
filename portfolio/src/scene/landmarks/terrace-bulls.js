@@ -28,6 +28,16 @@ export function terraceBullGeometry(far = false) {
   const plinth = new THREE.BoxGeometry(5.8, .3, 2.55)
   plinth.translate(0, -.11, 0); parts.push(plinth)
   const geometry = combineStone(parts)
+  // Keep the new curved-horn envelope identical across detail levels, so
+  // changing roof ornament LOD cannot shorten its silhouette or foot level.
+  const target=nandiGeometry(true).boundingBox,source=geometry.boundingBox.clone()
+  const positions=geometry.attributes.position
+  for(let i=0;i<positions.count;i++){
+    const y=positions.getY(i)
+    positions.setY(i,y===source.max.y?target.max.y:y===source.min.y?target.min.y:
+      target.min.y+(y-source.min.y)/(source.max.y-source.min.y)*(target.max.y-target.min.y))
+  }
+  geometry.computeVertexNormals();geometry.computeBoundingBox();geometry.computeBoundingSphere()
   geometry.name = far ? 'Terrace bull distant silhouette' : 'Terrace bull medium silhouette'
   cache.set(far, geometry)
   return geometry
@@ -51,7 +61,7 @@ export function createTerraceBulls(matrices, material) {
     mesh.computeBoundingBox(); mesh.computeBoundingSphere()
     registerDetailLod(mesh, {
       levels, center: mesh.boundingBox.getCenter(new THREE.Vector3()),
-      height: (near.boundingBox.max.y - near.boundingBox.min.y) * scale, thresholds: [12, 3],
+      height: (near.boundingBox.max.y - near.boundingBox.min.y) * scale, thresholds: [30, 3],
     })
     group.add(mesh)
   }
