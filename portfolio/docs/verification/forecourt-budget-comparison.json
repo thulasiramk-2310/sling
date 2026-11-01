@@ -1,0 +1,150 @@
+{
+  "baselineCommit": "9053bd9",
+  "scope": "Matched static software WebGL submissions, not FPS measurements",
+  "poses": {
+    "desktop": [
+      {
+        "pose": "arrival-start",
+        "drawCallsBefore": 1104,
+        "drawCallsAfter": 1134,
+        "primaryTrianglesBefore": 678224,
+        "primaryTrianglesAfter": 680384
+      },
+      {
+        "pose": "arrival-walk",
+        "drawCallsBefore": 889,
+        "drawCallsAfter": 909,
+        "primaryTrianglesBefore": 571912,
+        "primaryTrianglesAfter": 574072
+      },
+      {
+        "pose": "arrival-turn",
+        "drawCallsBefore": 880,
+        "drawCallsAfter": 900,
+        "primaryTrianglesBefore": 565720,
+        "primaryTrianglesAfter": 567880
+      },
+      {
+        "pose": "introduction",
+        "drawCallsBefore": 880,
+        "drawCallsAfter": 900,
+        "primaryTrianglesBefore": 565720,
+        "primaryTrianglesAfter": 567880
+      },
+      {
+        "pose": "boarding-start",
+        "drawCallsBefore": 895,
+        "drawCallsAfter": 925,
+        "primaryTrianglesBefore": 601528,
+        "primaryTrianglesAfter": 603688
+      },
+      {
+        "pose": "boarding-seat",
+        "drawCallsBefore": 2546,
+        "drawCallsAfter": 2564,
+        "primaryTrianglesBefore": 2082892,
+        "primaryTrianglesAfter": 2083084
+      },
+      {
+        "pose": "departure",
+        "drawCallsBefore": 2566,
+        "drawCallsAfter": 2586,
+        "primaryTrianglesBefore": 2057908,
+        "primaryTrianglesAfter": 2061940
+      },
+      {
+        "pose": "driveway-crossing",
+        "drawCallsBefore": 2592,
+        "drawCallsAfter": 2606,
+        "primaryTrianglesBefore": 2097120,
+        "primaryTrianglesAfter": 2097156
+      },
+      {
+        "pose": "road-merge",
+        "drawCallsBefore": 2460,
+        "drawCallsAfter": 2472,
+        "primaryTrianglesBefore": 2030150,
+        "primaryTrianglesAfter": 2030150
+      },
+      {
+        "pose": "riding-start",
+        "drawCallsBefore": 2471,
+        "drawCallsAfter": 2483,
+        "primaryTrianglesBefore": 2014758,
+        "primaryTrianglesAfter": 2014758
+      }
+    ],
+    "phone": [
+      {
+        "pose": "arrival-start",
+        "drawCallsBefore": 153,
+        "drawCallsAfter": 159,
+        "primaryTrianglesBefore": 169300,
+        "primaryTrianglesAfter": 171460
+      },
+      {
+        "pose": "arrival-walk",
+        "drawCallsBefore": 148,
+        "drawCallsAfter": 154,
+        "primaryTrianglesBefore": 167664,
+        "primaryTrianglesAfter": 169824
+      },
+      {
+        "pose": "arrival-turn",
+        "drawCallsBefore": 147,
+        "drawCallsAfter": 153,
+        "primaryTrianglesBefore": 167664,
+        "primaryTrianglesAfter": 169824
+      },
+      {
+        "pose": "introduction",
+        "drawCallsBefore": 147,
+        "drawCallsAfter": 153,
+        "primaryTrianglesBefore": 167664,
+        "primaryTrianglesAfter": 169824
+      },
+      {
+        "pose": "boarding-start",
+        "drawCallsBefore": 147,
+        "drawCallsAfter": 153,
+        "primaryTrianglesBefore": 162628,
+        "primaryTrianglesAfter": 164788
+      },
+      {
+        "pose": "boarding-seat",
+        "drawCallsBefore": 228,
+        "drawCallsAfter": 228,
+        "primaryTrianglesBefore": 477824,
+        "primaryTrianglesAfter": 477824
+      },
+      {
+        "pose": "departure",
+        "drawCallsBefore": 215,
+        "drawCallsAfter": 215,
+        "primaryTrianglesBefore": 439668,
+        "primaryTrianglesAfter": 439668
+      },
+      {
+        "pose": "driveway-crossing",
+        "drawCallsBefore": 279,
+        "drawCallsAfter": 279,
+        "primaryTrianglesBefore": 540310,
+        "primaryTrianglesAfter": 540310
+      },
+      {
+        "pose": "road-merge",
+        "drawCallsBefore": 207,
+        "drawCallsAfter": 207,
+        "primaryTrianglesBefore": 322750,
+        "primaryTrianglesAfter": 322750
+      },
+      {
+        "pose": "riding-start",
+        "drawCallsBefore": 204,
+        "drawCallsAfter": 204,
+        "primaryTrianglesBefore": 339036,
+        "primaryTrianglesAfter": 339036
+      }
+    ]
+  }
+}

@@ -5,21 +5,22 @@
   },
   "lint": "passed",
   "build": "passed",
-  "buildEntrySha256": "97c6e1579c5637b8654fb949fc6c3ad51dc80eb34f680aae75a89ccae1c8d581",
+  "buildEntrySha256": "7da286b849507ed10d75c3a56327b5b3672582121bc02cb56aac7e9b1ad086f1",
   "nativeInput": {
     "desktop": 21,
     "phone": 21,
     "reducedMotion": true,
-    "scope": "Current production build; native mouse wheel, keyboard, pointer/touch exhibit activation, reverse stops and context loss on software WebGL"
+    "scope": "Historical native checks from source commit 9053bd9; environment-only forecourt revision not rerun through the native suite",
+    "sourceCommit": "9053bd992be13b719a01245dea78bed503967a28"
   },
   "staticViews": {
-    "desktop": 8,
-    "phone": 8,
-    "scope": "Opening sky through introduction stop, plus loader each width; final opening-lighting candidate"
+    "desktop": 10,
+    "phone": 10,
+    "scope": "Current forecourt framing: arrival, walk, introduction, boarding, departure and merge, plus loader at each width. Opening-lighting reports are historical."
   },
   "hardwareGpuFps": "Unverified",
   "motion": "CPU continuity, aperture clearance and sustained-request timing tests; static views and reduced-motion native checks do not prove real-time smoothness",
-  "fullJourneyVisualReview": "Current matched views cover the opening only. Independent review accepts this lighting revision with underlit introduction and sparse forecourt limitations. No full-route completion or visual score above 9/10 is established.",
+  "fullJourneyVisualReview": "Current matched views cover Chennai arrival/departure only. Independent review accepts a modest forecourt boundary improvement. Broad paving, frontal composition and character finish remain limitations; no visual score above 9/10 is established.",
   "sourceHashes": {
     "src/audio.js": "2a94f998b13310f2a00fe739204a8880938aa4d390fd9ac6235a0e927b69700b",
     "src/content.js": "ddb5f175f24145b6f26816b4dc3b04285ce95024b6c01b20fb4e3ac5d70c3874",
@@ -52,7 +53,7 @@
     "src/scene/interactions/journey-exhibits.js": "f2a1bcef132248ff7f7a601edbe4a48194da760d2656cbdd640f4a70f2800f96",
     "src/scene/interactions/skills.js": "ea7aa492535ce274801766515fce8a93509754dadc7df3521b86c6e7e54783b6",
     "src/scene/intro-actors.js": "4fee6ffdfad78fb419f4f5879a27f6e06428dd6bd16e5ff34e391158a324aac8",
-    "src/scene/landmarks/arrival-frontage.js": "f1cfb95962d827b9d215b48cd4568d7829c9cc92b15ba62d225ed25f5304387d",
+    "src/scene/landmarks/arrival-frontage.js": "d3c6c822c0e1528fc84a1ea1a776f94cf7b0afa0196f927653aa17b975184804",
     "src/scene/landmarks/arrival-plaza.js": "bc5894d35907a58651f946e6de794d05b50598f1eec51f6e21f1787bef62eb1d",
     "src/scene/landmarks/arrival-trees.js": "b7ab7a781757625bcb3cd07140d5b93dcee6a0ac45ffd86748ae111dc159f569",
     "src/scene/landmarks/central-station.js": "487161c9cf828753a7fd52af2da69f03e8dcbadc35c581171b1af9575a98d12b",

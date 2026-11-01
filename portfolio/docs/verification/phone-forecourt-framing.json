@@ -1,0 +1,1815 @@
+{
+  "mode": "phone",
+  "errors": [],
+  "credits": "3D models: Original stone elephant study · generated in code · Original Thiruvalluvar study · code-authored and finished in Blender",
+  "assets": [
+    {
+      "url": "http://127.0.0.1:5174/models/models.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/models/elephant-study-low.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/models/poet-carving-low.glb",
+      "status": 200
+    }
+  ],
+  "poses": [
+    {
+      "progress": 0.205,
+      "name": "arrival-start",
+      "metrics": {
+        "frames": 4,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 159,
+        "triangles": 171832,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 171460,
+        "meshes": 150,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Chennai arrival forecourt / Station forecourt shade trees / Individual pointed leaves in open branching crowns",
+            "geometry": "BufferGeometry",
+            "instances": 240,
+            "geometryTriangles": 72,
+            "triangles": 17280
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage wood",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1176,
+            "triangles": 14112
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower",
+            "geometry": "ExtrudeGeometry",
+            "instances": 96,
+            "geometryTriangles": 88,
+            "triangles": 8448
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 1752,
+            "triangles": 7008
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower / Station masonry and recessed arcade walls",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 6752,
+            "triangles": 6752
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 540,
+            "geometryTriangles": 12,
+            "triangles": 6480
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage trim",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 540,
+            "triangles": 6480
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 408,
+            "triangles": 5304
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 440,
+            "geometryTriangles": 12,
+            "triangles": 5280
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 4280,
+            "triangles": 4280
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 792,
+            "triangles": 3168
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower",
+            "geometry": "ExtrudeGeometry",
+            "instances": 36,
+            "geometryTriangles": 88,
+            "triangles": 3168
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 744,
+            "triangles": 2976
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2632,
+            "triangles": 2632
+          },
+          {
+            "name": "Chennai arrival forecourt / Station apron paving joints",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2564,
+            "triangles": 2564
+          },
+          {
+            "name": "Chennai arrival forecourt / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2560,
+            "triangles": 2560
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 588,
+            "triangles": 2352
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage metal",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 180,
+            "triangles": 2160
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.225,
+      "name": "arrival-walk",
+      "metrics": {
+        "frames": 5,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 154,
+        "triangles": 170196,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 169824,
+        "meshes": 145,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Chennai arrival forecourt / Station forecourt shade trees / Individual pointed leaves in open branching crowns",
+            "geometry": "BufferGeometry",
+            "instances": 240,
+            "geometryTriangles": 72,
+            "triangles": 17280
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage wood",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1176,
+            "triangles": 14112
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower",
+            "geometry": "ExtrudeGeometry",
+            "instances": 96,
+            "geometryTriangles": 88,
+            "triangles": 8448
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 1752,
+            "triangles": 7008
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower / Station masonry and recessed arcade walls",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 6752,
+            "triangles": 6752
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 540,
+            "geometryTriangles": 12,
+            "triangles": 6480
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage trim",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 540,
+            "triangles": 6480
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 408,
+            "triangles": 5304
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 440,
+            "geometryTriangles": 12,
+            "triangles": 5280
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 4280,
+            "triangles": 4280
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 792,
+            "triangles": 3168
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower",
+            "geometry": "ExtrudeGeometry",
+            "instances": 36,
+            "geometryTriangles": 88,
+            "triangles": 3168
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 744,
+            "triangles": 2976
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2632,
+            "triangles": 2632
+          },
+          {
+            "name": "Chennai arrival forecourt / Station apron paving joints",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2564,
+            "triangles": 2564
+          },
+          {
+            "name": "Chennai arrival forecourt / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2560,
+            "triangles": 2560
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 588,
+            "triangles": 2352
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage metal",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 180,
+            "triangles": 2160
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.237,
+      "name": "arrival-turn",
+      "metrics": {
+        "frames": 6,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 153,
+        "triangles": 170194,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 169824,
+        "meshes": 145,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Chennai arrival forecourt / Station forecourt shade trees / Individual pointed leaves in open branching crowns",
+            "geometry": "BufferGeometry",
+            "instances": 240,
+            "geometryTriangles": 72,
+            "triangles": 17280
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage wood",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1176,
+            "triangles": 14112
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower",
+            "geometry": "ExtrudeGeometry",
+            "instances": 96,
+            "geometryTriangles": 88,
+            "triangles": 8448
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 1752,
+            "triangles": 7008
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower / Station masonry and recessed arcade walls",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 6752,
+            "triangles": 6752
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 540,
+            "geometryTriangles": 12,
+            "triangles": 6480
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage trim",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 540,
+            "triangles": 6480
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 408,
+            "triangles": 5304
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 440,
+            "geometryTriangles": 12,
+            "triangles": 5280
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 4280,
+            "triangles": 4280
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 792,
+            "triangles": 3168
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower",
+            "geometry": "ExtrudeGeometry",
+            "instances": 36,
+            "geometryTriangles": 88,
+            "triangles": 3168
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 744,
+            "triangles": 2976
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2632,
+            "triangles": 2632
+          },
+          {
+            "name": "Chennai arrival forecourt / Station apron paving joints",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2564,
+            "triangles": 2564
+          },
+          {
+            "name": "Chennai arrival forecourt / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2560,
+            "triangles": 2560
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 588,
+            "triangles": 2352
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage metal",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 180,
+            "triangles": 2160
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.245,
+      "name": "introduction",
+      "metrics": {
+        "frames": 7,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 153,
+        "triangles": 170194,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 169824,
+        "meshes": 145,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Chennai arrival forecourt / Station forecourt shade trees / Individual pointed leaves in open branching crowns",
+            "geometry": "BufferGeometry",
+            "instances": 240,
+            "geometryTriangles": 72,
+            "triangles": 17280
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage wood",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1176,
+            "triangles": 14112
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower",
+            "geometry": "ExtrudeGeometry",
+            "instances": 96,
+            "geometryTriangles": 88,
+            "triangles": 8448
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 1752,
+            "triangles": 7008
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower / Station masonry and recessed arcade walls",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 6752,
+            "triangles": 6752
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 540,
+            "geometryTriangles": 12,
+            "triangles": 6480
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage trim",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 540,
+            "triangles": 6480
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 408,
+            "triangles": 5304
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 440,
+            "geometryTriangles": 12,
+            "triangles": 5280
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 4280,
+            "triangles": 4280
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 792,
+            "triangles": 3168
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower",
+            "geometry": "ExtrudeGeometry",
+            "instances": 36,
+            "geometryTriangles": 88,
+            "triangles": 3168
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 744,
+            "triangles": 2976
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2632,
+            "triangles": 2632
+          },
+          {
+            "name": "Chennai arrival forecourt / Station apron paving joints",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2564,
+            "triangles": 2564
+          },
+          {
+            "name": "Chennai arrival forecourt / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2560,
+            "triangles": 2560
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 588,
+            "triangles": 2352
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage metal",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 180,
+            "triangles": 2160
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.292,
+      "name": "boarding-start",
+      "metrics": {
+        "frames": 8,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 153,
+        "triangles": 165160,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 164788,
+        "meshes": 144,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Chennai arrival forecourt / Station forecourt shade trees / Individual pointed leaves in open branching crowns",
+            "geometry": "BufferGeometry",
+            "instances": 240,
+            "geometryTriangles": 72,
+            "triangles": 17280
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage wood",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 1176,
+            "triangles": 14112
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower",
+            "geometry": "ExtrudeGeometry",
+            "instances": 96,
+            "geometryTriangles": 88,
+            "triangles": 8448
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower / Station masonry and recessed arcade walls",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 6752,
+            "triangles": 6752
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 540,
+            "geometryTriangles": 12,
+            "triangles": 6480
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage trim",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 540,
+            "triangles": 6480
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 408,
+            "triangles": 5304
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 440,
+            "geometryTriangles": 12,
+            "triangles": 5280
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 4280,
+            "triangles": 4280
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -2:-3",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 1056,
+            "triangles": 4224
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 792,
+            "triangles": 3168
+          },
+          {
+            "name": "Chennai Central — arched verandahs and clock tower",
+            "geometry": "ExtrudeGeometry",
+            "instances": 36,
+            "geometryTriangles": 88,
+            "triangles": 3168
+          },
+          {
+            "name": "Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2632,
+            "triangles": 2632
+          },
+          {
+            "name": "Chennai arrival forecourt / Station apron paving joints",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2564,
+            "triangles": 2564
+          },
+          {
+            "name": "Chennai arrival forecourt / Static architecture batch",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 2560,
+            "triangles": 2560
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 588,
+            "triangles": 2352
+          },
+          {
+            "name": "Spatial palm trunks / Palm trunks -2:-3",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 544,
+            "triangles": 2176
+          },
+          {
+            "name": "Chennai arrival forecourt / Chennai forecourt — shaded heritage frontage wings / Forecourt frontage metal",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 180,
+            "triangles": 2160
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.315,
+      "name": "boarding-seat",
+      "metrics": {
+        "frames": 9,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 228,
+        "triangles": 478204,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 477824,
+        "meshes": 215,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 25,
+            "instances": 166
+          }
+        ],
+        "largest": [
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 5460,
+            "triangles": 60060
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 39,
+            "geometryTriangles": 280,
+            "triangles": 10920
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 39,
+            "geometryTriangles": 280,
+            "triangles": 10920
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Arjuna — two-storey square shrine",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Dharmaraja — three-storey vimana",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 574,
+            "geometryTriangles": 12,
+            "triangles": 6888
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 574,
+            "geometryTriangles": 12,
+            "triangles": 6888
+          },
+          {
+            "name": "Thanjavur — granite vimana",
+            "geometry": "BufferGeometry",
+            "instances": 104,
+            "geometryTriangles": 64,
+            "triangles": 6656
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 540,
+            "geometryTriangles": 12,
+            "triangles": 6480
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.33,
+      "name": "departure",
+      "metrics": {
+        "frames": 10,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 215,
+        "triangles": 440048,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 439668,
+        "meshes": 202,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 25,
+            "instances": 166
+          }
+        ],
+        "largest": [
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 5460,
+            "triangles": 60060
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 39,
+            "geometryTriangles": 280,
+            "triangles": 10920
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 39,
+            "geometryTriangles": 280,
+            "triangles": 10920
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Arjuna — two-storey square shrine",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 574,
+            "geometryTriangles": 12,
+            "triangles": 6888
+          },
+          {
+            "name": "Thanjavur — granite vimana",
+            "geometry": "BufferGeometry",
+            "instances": 104,
+            "geometryTriangles": 64,
+            "triangles": 6656
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 540,
+            "geometryTriangles": 12,
+            "triangles": 6480
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns 0:-11",
+            "geometry": "BufferGeometry",
+            "instances": 6,
+            "geometryTriangles": 1056,
+            "triangles": 6336
+          },
+          {
+            "name": "Mamallapuram — granite monument garden approach / Granite paving and low garden kerbs",
+            "geometry": "BoxGeometry",
+            "instances": 522,
+            "geometryTriangles": 12,
+            "triangles": 6264
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.342,
+      "name": "driveway-crossing",
+      "metrics": {
+        "frames": 11,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 279,
+        "triangles": 540694,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 540310,
+        "meshes": 264,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 46,
+            "instances": 259
+          }
+        ],
+        "largest": [
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 11,
+            "geometryTriangles": 5460,
+            "triangles": 60060
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 39,
+            "geometryTriangles": 280,
+            "triangles": 10920
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 39,
+            "geometryTriangles": 280,
+            "triangles": 10920
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-8",
+            "geometry": "BufferGeometry",
+            "instances": 8,
+            "geometryTriangles": 1056,
+            "triangles": 8448
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Mesh",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Arjuna — two-storey square shrine",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Pancha Rathas — five distinct architectural studies / Dharmaraja — three-storey vimana",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 574,
+            "geometryTriangles": 12,
+            "triangles": 6888
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 574,
+            "geometryTriangles": 12,
+            "triangles": 6888
+          },
+          {
+            "name": "Thanjavur — granite vimana",
+            "geometry": "BufferGeometry",
+            "instances": 104,
+            "geometryTriangles": 64,
+            "triangles": 6656
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.3705,
+      "name": "road-merge",
+      "metrics": {
+        "frames": 12,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 207,
+        "triangles": 323150,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 322750,
+        "meshes": 184,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 1176,
+            "triangles": 55272
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 540,
+            "triangles": 25380
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood metal",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 180,
+            "triangles": 8460
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-8",
+            "geometry": "BufferGeometry",
+            "instances": 8,
+            "geometryTriangles": 1056,
+            "triangles": 8448
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 574,
+            "geometryTriangles": 12,
+            "triangles": 6888
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 574,
+            "geometryTriangles": 12,
+            "triangles": 6888
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 540,
+            "geometryTriangles": 12,
+            "triangles": 6480
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-13",
+            "geometry": "BufferGeometry",
+            "instances": 6,
+            "geometryTriangles": 1056,
+            "triangles": 6336
+          },
+          {
+            "name": "Mamallapuram — granite monument garden approach / Granite paving and low garden kerbs",
+            "geometry": "BoxGeometry",
+            "instances": 522,
+            "geometryTriangles": 12,
+            "triangles": 6264
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 408,
+            "triangles": 5304
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 408,
+            "triangles": 5304
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 440,
+            "geometryTriangles": 12,
+            "triangles": 5280
+          },
+          {
+            "name": "Original three-dimensional stone elephant / AuxScene / Original_three-dimensional_stone_elephant / mesh_0",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 4824,
+            "triangles": 4824
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.38,
+      "name": "riding-start",
+      "metrics": {
+        "frames": 13,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 204,
+        "triangles": 339432,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 339036,
+        "meshes": 183,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 1176,
+            "triangles": 55272
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 540,
+            "triangles": 25380
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood metal",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 180,
+            "triangles": 8460
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-8",
+            "geometry": "BufferGeometry",
+            "instances": 8,
+            "geometryTriangles": 1056,
+            "triangles": 8448
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 9,
+            "geometryTriangles": 816,
+            "triangles": 7344
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 574,
+            "geometryTriangles": 12,
+            "triangles": 6888
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 574,
+            "geometryTriangles": 12,
+            "triangles": 6888
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 540,
+            "geometryTriangles": 12,
+            "triangles": 6480
+          },
+          {
+            "name": "Spatial palm crowns / Palm crowns -1:-13",
+            "geometry": "BufferGeometry",
+            "instances": 6,
+            "geometryTriangles": 1056,
+            "triangles": 6336
+          },
+          {
+            "name": "Mamallapuram — granite monument garden approach / Granite paving and low garden kerbs",
+            "geometry": "BoxGeometry",
+            "instances": 522,
+            "geometryTriangles": 12,
+            "triangles": 6264
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 408,
+            "triangles": 5304
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 408,
+            "triangles": 5304
+          },
+          {
+            "name": "Curved heritage street footways",
+            "geometry": "BoxGeometry",
+            "instances": 440,
+            "geometryTriangles": 12,
+            "triangles": 5280
+          }
+        ]
+      }
+    }
+  ],
+  "layout": {
+    "width": 390,
+    "overflow": false
+  }
+}
