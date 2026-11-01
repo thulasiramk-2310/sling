@@ -63,9 +63,14 @@ export async function buildJourneyExhibits(scene,route) {
     group.rotation.y=Math.atan2(route.at(u).tan.x,route.at(u).tan.z)
     const ring=new THREE.Mesh(new THREE.TorusGeometry(.85,.10,8,32),gold)
     ring.position.y=1.6
-    const text=skillLabel(name);text.position.y=4.2
-    const backing=new THREE.Mesh(new THREE.PlaneGeometry(6.8,1.4),dark);backing.position.z=-.03;text.add(backing)
-    group.add(ring,text,block(.1,4.9,.1,dark,-3.6),block(.1,4.9,.1,dark,3.6));scene.add(group)
+    // A compact verge sign keeps the lane and the left reading column clear.
+    // In this forward-facing frame local -X is the road's right-hand verge.
+    const sign=new THREE.Group();sign.position.set(-6.2,3.05,0)
+    const text=skillLabel(name);text.geometry.computeBoundingBox()
+    const width=text.geometry.boundingBox.getSize(new THREE.Vector3()).x
+    text.scale.setScalar(Math.min(.55,3.25/width));text.position.z=.09
+    sign.add(block(3.6,.95,.14,dark,0,-.475),text)
+    group.add(ring,sign,block(.12,3.55,.12,dark,-6.2));scene.add(group)
     return {u,group,ring,name,collected:false}
   })
   const targets=[]

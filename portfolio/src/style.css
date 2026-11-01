@@ -1782,10 +1782,10 @@ body.no-3d .hero-role { letter-spacing:.10em; font-size:14px; line-height:1.6; }
 body.world-first .journey-caption[data-stage='skills']::before {display:none;}
 body.world-first[data-story-stage='skills']:not(.clean-journey)::before {
   content:'';display:block;position:fixed;inset:0;z-index:2;pointer-events:none;
-  background:linear-gradient(90deg,rgba(242,235,218,.98),rgba(242,235,218,.96) 27%,rgba(242,235,218,.35) 36%,transparent 46%);
+  background:linear-gradient(90deg,rgba(242,235,218,.92),rgba(242,235,218,.82) 23%,rgba(242,235,218,.18) 32%,transparent 40%);
 }
 @media(max-width:700px) {
   body.world-first[data-story-stage='skills']:not(.clean-journey)::before {
-    background:linear-gradient(180deg,rgba(242,235,218,.97) 0,rgba(242,235,218,.96) 340px,transparent 460px);
+    background:linear-gradient(180deg,rgba(242,235,218,.90) 0,rgba(242,235,218,.78) 290px,transparent 390px);
   }
 }

@@ -131,7 +131,7 @@ export function createJourneyCamera(route) {
   const visits=[
     {range:[.408,.435,.444,.458],eye:landmarkPoint(.23,42,[7,4.8,14]),target:landmarkPoint(.23,42,[0,2.2,2])},
     {range:[.451,.469,.474,.488],eye:landmarkPoint(.27,52,[30,18,53]),phoneEye:landmarkPoint(.27,52,[15,16,94]),target:landmarkPoint(.27,52,[-2,5,0])},
-    {range:[.585,.610,.615,.632],eye:landmarkPoint(.47,100,[14,4.8,45],-Math.PI/2),target:landmarkPoint(.47,100,[0,4,58],-Math.PI/2),lift:16},
+    {range:[.585,.610,.615,.632],eye:landmarkPoint(.47,100,[14,4.8,45],-Math.PI/2),target:landmarkPoint(.47,100,[0,4,58],-Math.PI/2),lift:16,lookLead:.08},
     {range:[.692,.708,.718,.725],eye:landmarkPoint(.64,112,[14,13,118]),phoneEye:landmarkPoint(.64,112,[10,13,134]),target:landmarkPoint(.64,112,[0,25,58]),lift:12,lookLead:.62},
     {range:POET_VISIT,eye:landmarkPoint(.976,96,[21,31,57],0,.96),target:landmarkPoint(.976,96,[0,21,0],0,.96)},
   ]
@@ -159,8 +159,8 @@ export function createJourneyCamera(route) {
         eye.lerp(aspect<.8 && visit.phoneEye?visit.phoneEye:visit.eye,weight)
         // Clear the cloister during entry/exit before settling below its roof.
         eye.y+=(visit.lift||0)*Math.sin(Math.PI*weight)
-        // Look into Madurai's gateway before the lateral dolly arrives, so
-        // the tower enters the open frame rather than the reading column.
+        // Lead the dolly with the sculpture/gateway view, keeping the
+        // destination visible while the eye crosses the open approach.
         target.lerp(visit.target,visit.lookLead?THREE.MathUtils.smootherstep(weight,0,visit.lookLead):weight)
         visitWeight=Math.max(visitWeight,weight)
       }
