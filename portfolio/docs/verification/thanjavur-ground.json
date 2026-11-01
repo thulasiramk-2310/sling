@@ -1,0 +1,13 @@
+{
+  "samples": 930,
+  "before": {
+    "maximumTerrainY": 1.9562090518135378,
+    "aboveLawn": 344
+  },
+  "after": {
+    "maximumTerrainY": -0.07494318614374507,
+    "aboveLawn": 0
+  },
+  "lawnTop": 0.12,
+  "pathTop": 0.18
+}

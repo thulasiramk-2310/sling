@@ -264,7 +264,7 @@ function cloister(stone, x0, z0, x1, z1, bulls) {
 export function buildThanjavur({ scene, route, u }) {
   const stone = granite('thanjavur-stone', () => stoneTexture('#b59775', 19), 2.2)
   const wall = granite('vimana-wall', vimanaWallTexture, 3)
-  const polished = surface({ color: 0x3d3733, roughness: 0.32, metalness: 0 })
+  const polished = surface({ color: 0x56564f, roughness: 0.55, metalness: 0 })
 
   const temple = new THREE.Group()
   temple.userData.staticBatchRoot = true

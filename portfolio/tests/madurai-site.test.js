@@ -83,3 +83,17 @@ it('releases the vehicle projection smoothly across the Madurai camera-plane cro
     }
   }
 })
+
+it('keeps actual terrain beneath Thanjavur lawn and axial path',()=>{
+  const ground=buildGround(new THREE.Scene(),route),local=new THREE.Group()
+  local.position.copy(route.side(STOPS[2],100));faceRoad(local,route,STOPS[2]);local.rotation.y-=Math.PI/2
+  local.updateMatrixWorld(true);ground.updateMatrixWorld(true)
+  for(let x=-58;x<=58;x+=4)for(let z=-44;z<=78;z+=4){
+    const point=new THREE.Vector3(x,0,z).applyMatrix4(local.matrixWorld)
+    expect(topAt(ground,point),`lawn at ${x},${z}`).toBeLessThan(.10)
+  }
+  for(let z=12;z<=112;z+=2)for(const x of [-4,0,4]){
+    const point=new THREE.Vector3(x,0,z).applyMatrix4(local.matrixWorld)
+    expect(topAt(ground,point),`path at ${x},${z}`).toBeLessThan(.16)
+  }
+})

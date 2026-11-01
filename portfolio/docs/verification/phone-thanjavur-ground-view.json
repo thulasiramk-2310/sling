@@ -1,0 +1,89 @@
+{
+  "mode": "phone",
+  "errors": [],
+  "credits": "3D models: Original stone elephant study · generated in code · Original Thiruvalluvar study · code-authored and finished in Blender",
+  "assets": [
+    {
+      "url": "http://127.0.0.1:5174/models/models.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/models/elephant-study-low.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/models/poet-carving-low.glb",
+      "status": 200
+    }
+  ],
+  "poses": [
+    {
+      "progress": 0.589,
+      "name": "nandi-entry",
+      "metrics": {
+        "frames": 5,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 153,
+        "triangles": 403989,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      }
+    },
+    {
+      "progress": 0.6,
+      "name": "nandi-approach",
+      "metrics": {
+        "frames": 6,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 184,
+        "triangles": 498914,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      }
+    },
+    {
+      "progress": 0.612,
+      "name": "nandi-detail",
+      "metrics": {
+        "frames": 7,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 401,
+        "triangles": 834158,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      }
+    },
+    {
+      "progress": 0.625,
+      "name": "nandi-exit",
+      "metrics": {
+        "frames": 8,
+        "fps": null,
+        "environment": null,
+        "drawCalls": 99,
+        "triangles": 267526,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      }
+    }
+  ],
+  "layout": {
+    "width": 390,
+    "overflow": false
+  }
+}

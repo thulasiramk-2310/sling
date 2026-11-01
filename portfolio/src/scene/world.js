@@ -40,6 +40,7 @@ export function buildGround(scene, route) {
   const seaFrom = route.bridgeU - 0.012
   const seaTo = route.bridgeU + 0.02
   const madurai=route.at(STOPS[3]),templeOrigin=route.side(STOPS[3],112)
+  const thanjavur=route.at(STOPS[2]),courtOrigin=route.side(STOPS[2],100)
   const s = route.sample()
   for (let i = 0; i < rows; i++) {
     const u = i / (rows - 1)
@@ -69,7 +70,15 @@ export function buildGround(scene, route) {
       const localX=-dx*madurai.tan.x-dz*madurai.tan.z
       const localZ=-dx*madurai.right.x-dz*madurai.right.z
       const temple=(1-smooth(64,82,Math.abs(localX)))*smooth(-92,-72,localZ)*(1-smooth(110,124,localZ))
-      y=lerp(y,-.075,temple)
+      // Thanjavur is quarter-turned relative to the road-facing Madurai
+      // compound. Grade below its modeled lawn and axial paving, including
+      // neighboring terrain vertices so interpolated triangles stay below it.
+      const cx=p.x-courtOrigin.x,cz=p.z-courtOrigin.z
+      const courtX=-cx*thanjavur.right.x-cz*thanjavur.right.z
+      const courtZ=cx*thanjavur.tan.x+cz*thanjavur.tan.z
+      const court=(1-smooth(80,100,Math.abs(courtX)))*smooth(-76,-60,courtZ)*(1-smooth(120,140,courtZ))
+      const grade=Math.max(temple,court)
+      y=lerp(y,-.075,grade)
       y = lerp(y, -6, sea)
       // Beyond the final promenade, the sea must surround both rock islands.
       // Apply after hills so a terrain ridge cannot join the memorial to shore.
@@ -78,7 +87,7 @@ export function buildGround(scene, route) {
       const k = (i * COLUMNS.length + j) * 3
       // Thanjavur and Madurai are inland. Extend their land to the horizon
       // instead of exposing the shared ocean plane behind the temple compounds.
-      y += outer*inland*(8+Math.pow(Math.sin(u*22+lat*.009),2)*20)*(1-temple)
+      y += outer*inland*(8+Math.pow(Math.sin(u*22+lat*.009),2)*20)*(1-grade)
       pos[k] = p.x
       pos[k + 1] = y
       pos[k + 2] = p.z

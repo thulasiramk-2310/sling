@@ -1,0 +1,8 @@
+{
+  "testsPassed": 131,
+  "files": 28,
+  "lint": "passed",
+  "build": "passed",
+  "views": 8,
+  "buildEntrySha256": "eb02c2d9bd7cf20c9b87f6dc5f830ab7d3a5b0aa6c0f01812d56255b5f87704f"
+}

@@ -1,0 +1,117 @@
+{
+  "mode": "desktop",
+  "errors": [],
+  "credits": "3D models: Original stone elephant study · generated in code · Original Thiruvalluvar study · code-authored and finished in Blender",
+  "assets": [
+    {
+      "url": "http://127.0.0.1:5174/models/models.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/models/elephant-study.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/models/poet-carving.glb",
+      "status": 200
+    }
+  ],
+  "poses": [
+    {
+      "progress": 0.589,
+      "name": "nandi-entry",
+      "metrics": {
+        "frames": 4,
+        "fps": null,
+        "environment": {
+          "road": 0.40971443148688036,
+          "top": [
+            0.07560991756924253,
+            0.23506107367449675,
+            0.5520114015120001
+          ]
+        },
+        "drawCalls": 1787,
+        "triangles": 6513227,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      }
+    },
+    {
+      "progress": 0.6,
+      "name": "nandi-approach",
+      "metrics": {
+        "frames": 5,
+        "fps": null,
+        "environment": {
+          "road": 0.4303498542274052,
+          "top": [
+            0.07484697812629228,
+            0.23407347197785594,
+            0.5520114015120001
+          ]
+        },
+        "drawCalls": 1697,
+        "triangles": 11579705,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      }
+    },
+    {
+      "progress": 0.612,
+      "name": "nandi-detail",
+      "metrics": {
+        "frames": 6,
+        "fps": null,
+        "environment": {
+          "road": 0.44919999999999993,
+          "top": [
+            0.07415004451382834,
+            0.23317131280326434,
+            0.5520114015120001
+          ]
+        },
+        "drawCalls": 1655,
+        "triangles": 10406461,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      }
+    },
+    {
+      "progress": 0.625,
+      "name": "nandi-exit",
+      "metrics": {
+        "frames": 7,
+        "fps": null,
+        "environment": {
+          "road": 0.46360422740524776,
+          "top": [
+            0.0736174868157926,
+            0.2324819332057102,
+            0.5520114015120001
+          ]
+        },
+        "drawCalls": 1781,
+        "triangles": 11050117,
+        "dpr": 1,
+        "ao": true,
+        "reflections": true,
+        "bloom": true,
+        "shadows": true
+      }
+    }
+  ],
+  "layout": {
+    "width": 1440,
+    "overflow": false
+  }
+}
