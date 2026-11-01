@@ -250,6 +250,9 @@ export async function createScene({ canvas, report, onCredits = () => {}, onProj
     const introShadow=smooth(.195,.225,u)*(1-smooth(.285,.335,u))
     const shadowFocus=Math.max(introShadow,pose.visitWeight)
     sun.target.position.copy(car.pos).addScaledVector(car.tan, 30)
+    // Cover the bridge while the vehicle is parked far inland. Hand back
+    // before the character arrival, preserving its existing close shadow rig.
+    sun.target.position.lerp(ctx.intro.shadowAnchor,1-smooth(.17,.195,u))
     sun.target.position.lerp(vehicleCenter,introShadow)
     sun.target.position.lerp(lookTarget,pose.visitWeight)
     if(!quality.low) {
@@ -267,9 +270,9 @@ export async function createScene({ canvas, report, onCredits = () => {}, onProj
     // low sun is behind them. Follow the authored camera, not the inland side.
     fill.target.position.copy(lookTarget)
     fill.position.copy(camera.position);fill.position.y+=20
-    fill.intensity=THREE.MathUtils.lerp(.7,.26,p.finalDawn)*(1-p.night*.78)
+    fill.intensity=THREE.MathUtils.lerp(.7-.15*p.opening+.30*introShadow*p.opening,.26,p.finalDawn)*(1-p.night*.78)
     fill.target.updateMatrixWorld()
-    scene.fog.color.setRGB(...p.fog).lerp(new THREE.Color().setRGB(...p.horizon),THREE.MathUtils.lerp(.8,.15,p.finalDawn))
+    scene.fog.color.setRGB(...p.fog).lerp(new THREE.Color().setRGB(...p.horizon),THREE.MathUtils.lerp(.8-.45*p.opening,.15,p.finalDawn))
     scene.fog.density = THREE.MathUtils.lerp(quality.low ? .0025 : .0013,quality.low ? .00098 : .00085,p.finalDawn) * (1 + p.glowAmt * 0.3)
     setNight(p.night)
     sea.update(time, p, sky.lightDir)

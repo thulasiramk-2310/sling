@@ -42,6 +42,13 @@ const COASTAL_DAWN=Object.fromEntries(Object.entries({
   light:'#ffdda9',hemiSky:'#b0c8d2',hemiGround:'#344b50',sea:'#165969',
 }).map(([key,value])=>[key,hex(value)]))
 
+// A road-domain profile keeps parked Chennai lighting coherent throughout
+// the greeting, flight and introduction, and clears before the inland day.
+const OPENING_DAWN=Object.fromEntries(Object.entries({
+  top:'#657e9a',horizon:'#d8bdad',fog:'#aab3ba',light:'#ffd2a2',
+  hemiSky:'#cdd8e2',hemiGround:'#657078',
+}).map(([key,value])=>[key,hex(value)]))
+
 export function sunBearing(u) {
   const original=-25+60*Math.min(1,Math.max(0,u)/.7)
   // Rotate below the horizon before the new dawn. The same direction drives
@@ -61,6 +68,9 @@ export function sample(u) {
   const out = { phase: t < 0.5 ? a.phase : b.phase }
   for (const f of NUMBER_FIELDS) out[f] = a[f] + (b[f] - a[f]) * t
   for (const f of COLOR_FIELDS) out[f] = a[f].map((v, k) => v + (b[f][k] - v) * t)
+  out.opening=1-smooth(.10,.24,x)
+  for(const [field,color]of Object.entries(OPENING_DAWN))out[field]=out[field].map((value,k)=>value+(color[k]-value)*out.opening)
+  out.hemiI+=(.76-out.hemiI)*out.opening
   out.finalDawn=smooth(.89,.94,x)
   for(const f of COLOR_FIELDS)out[f]=out[f].map((value,k)=>value+(COASTAL_DAWN[f][k]-value)*out.finalDawn)
   out.hemiI+=(.58-out.hemiI)*out.finalDawn

@@ -35,6 +35,10 @@ be tested before palette changes. Phone has shadows disabled, so a separate,
 road-bounded dawn atmosphere trial is needed there. Keep the parked opening's
 road-domain clock coherent and preserve noon/sunset/final-dawn states.
 
+Follow-up: this investigation is implemented and verified in
+`opening-lighting-review.md`; the measurements and checks below describe the
+earlier coastal-route revision.
+
 Final validation: 136 tests in 29 files, oxlint and production build pass. The
 final build passes 42 native interaction checks and 14 matched desktop/phone
 opening views, plus both loaders. Native inputs use reduced motion on software

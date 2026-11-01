@@ -51,3 +51,18 @@ it('joins both bridge faces with a continuous circular soffit above the flight',
     expect(hit.point.y).toBeCloseTo(2.1+Math.sqrt((4.8-.13)**2-offset**2),1)
   }
 })
+
+it('keeps the complete bridge inside its opening sun shadow frustum',async()=>{
+  const {sample,sunBearing}=await import('../src/scene/timeline.js')
+  const {group,shadowAnchor}=buildIntroBridge(new THREE.Scene(),route);group.updateMatrixWorld(true)
+  const bounds=new THREE.Box3().setFromObject(group),p=sample(.07)
+  const e=THREE.MathUtils.degToRad(p.elev),b=THREE.MathUtils.degToRad(sunBearing(.07))
+  const direction=new THREE.Vector3(Math.sin(b)*Math.cos(e),Math.sin(e),-Math.cos(b)*Math.cos(e))
+  const shadow=new THREE.OrthographicCamera(-110,110,110,-110,1,600)
+  shadow.position.copy(shadowAnchor).addScaledVector(direction,300);shadow.lookAt(shadowAnchor);shadow.updateMatrixWorld(true)
+  for(const x of[bounds.min.x,bounds.max.x])for(const y of[bounds.min.y,bounds.max.y])for(const z of[bounds.min.z,bounds.max.z]){
+    const point=new THREE.Vector3(x,y,z).project(shadow)
+    expect(Math.abs(point.x)).toBeLessThan(.95);expect(Math.abs(point.y)).toBeLessThan(.95)
+    expect(point.z).toBeGreaterThan(-1);expect(point.z).toBeLessThan(1)
+  }
+})

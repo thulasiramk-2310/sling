@@ -69,5 +69,5 @@ export function buildIntroBridge(scene,route) {
   const frame=introFrame(route)
   group.position.copy(frame.position);group.quaternion.copy(frame.rotation)
   scene.add(group)
-  return {group,frame}
+  return {group,frame,shadowAnchor:frame.point(0,5,0)}
 }

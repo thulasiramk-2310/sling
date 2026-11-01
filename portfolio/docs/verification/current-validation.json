@@ -1,24 +1,25 @@
 {
   "unitTests": {
-    "passed": 136,
-    "files": 29
+    "passed": 139,
+    "files": 30
   },
   "lint": "passed",
   "build": "passed",
-  "buildEntrySha256": "1783296eea19b3722a19735c0cd8a149e5aeed3fe106ba857122fa3061f0e493",
+  "buildEntrySha256": "97c6e1579c5637b8654fb949fc6c3ad51dc80eb34f680aae75a89ccae1c8d581",
   "nativeInput": {
     "desktop": 21,
     "phone": 21,
-    "reducedMotion": true
+    "reducedMotion": true,
+    "scope": "Current production build; native mouse wheel, keyboard, pointer/touch exhibit activation, reverse stops and context loss on software WebGL"
   },
   "staticViews": {
-    "desktop": 7,
-    "phone": 7,
-    "scope": "Opening sky through character arrival, plus loader each width"
+    "desktop": 8,
+    "phone": 8,
+    "scope": "Opening sky through introduction stop, plus loader each width; final opening-lighting candidate"
   },
   "hardwareGpuFps": "Unverified",
   "motion": "CPU continuity, aperture clearance and sustained-request timing tests; static views and reduced-motion native checks do not prove real-time smoothness",
-  "fullJourneyVisualReview": "Earlier broad-route reports are historical. Current views cover the opening only. The requested visual score above 9/10 remains unmet.",
+  "fullJourneyVisualReview": "Current matched views cover the opening only. Independent review accepts this lighting revision with underlit introduction and sparse forecourt limitations. No full-route completion or visual score above 9/10 is established.",
   "sourceHashes": {
     "src/audio.js": "2a94f998b13310f2a00fe739204a8880938aa4d390fd9ac6235a0e927b69700b",
     "src/content.js": "ddb5f175f24145b6f26816b4dc3b04285ce95024b6c01b20fb4e3ac5d70c3874",
@@ -47,7 +48,7 @@
     "src/scene/detail-lod.js": "a0f81fc914518b9d1e4ab590ac17ba7d5774f291613763d6fe2dca0971f00db3",
     "src/scene/drive.js": "5389707953de84a6975f5adc33bd2d1beab4d9ef508f5adbd72f08e12ee935b9",
     "src/scene/frame-budget.js": "ac73eed2b6dd6233d1cc38345726b1667801208f5bb1b187bb74f2bdebc96a42",
-    "src/scene/index.js": "74911f1cbf1f2cd96c0784643692776823afa8633a881afa763c840797474d21",
+    "src/scene/index.js": "f372df6b075cbf8d16ffaa50fa4ac8bc06ef314236452d79ec84ed88be99f5d8",
     "src/scene/interactions/journey-exhibits.js": "f2a1bcef132248ff7f7a601edbe4a48194da760d2656cbdd640f4a70f2800f96",
     "src/scene/interactions/skills.js": "ea7aa492535ce274801766515fce8a93509754dadc7df3521b86c6e7e54783b6",
     "src/scene/intro-actors.js": "4fee6ffdfad78fb419f4f5879a27f6e06428dd6bd16e5ff34e391158a324aac8",
@@ -60,7 +61,7 @@
     "src/scene/landmarks/elephant.js": "67b9134356af2aec5c360b41bc7ccabe989c5c9ec3e95299c5cccab65a4b5e8a",
     "src/scene/landmarks/gopuram-scrolls.js": "9ba36e54dac1c68c7dae2040cb721cb3afd792576cc8defb0a67104c7dd1908d",
     "src/scene/landmarks/gopuram.js": "15465e5968c8e0ccdaad344a2ef65fa9b0b4ca5c778cb4fffb106023f4d8aff4",
-    "src/scene/landmarks/intro-bridge.js": "1aab2e48a7254cf4ab6240164bb1826458ee7843a2e1c939170120fb9f269b97",
+    "src/scene/landmarks/intro-bridge.js": "6e1e170709c8186303482900d18116fd99625d91c8ec5acf16c726b6bb7de424",
     "src/scene/landmarks/kanyakumari.js": "41e22cdeeff96c6fdd386b6345419bdb6f86f001d7b9cca44744daab6119e5d2",
     "src/scene/landmarks/lighthouse.js": "ffae1be69f685a85c098a392c10fe418223668bb3e74d817447b5fe8c71821c6",
     "src/scene/landmarks/madurai-crown.js": "1b172f8bd64b3c16a5276279e11892496932a979bf7007fac916d8374ab429cc",
@@ -99,7 +100,7 @@
     "src/scene/street-edges.js": "1f0a0f248b23301645c7ee63fd3396de96a11c3ee0aac8a263d61e08c2d39b53",
     "src/scene/suspension.js": "d720194c6aba69669a1fd1dc678c9a039bb1c31cb54f75ba43aec09ed853efd0",
     "src/scene/textures.js": "a015378dd5067ee8fdadac987d99543613b9bdcde662c191145d9259e3d6786b",
-    "src/scene/timeline.js": "eb1d0271aed17bb995f7b90980864ab362fcbd66cf4039dba93c71534d37686e",
+    "src/scene/timeline.js": "de252499a4cef41b1f60d8945bfc7401afb57381e6fe0d2d67d566b59d3343e6",
     "src/scene/util.js": "e42f97ce6d57f5c1eabc91df3b93bda4f06d4a7441470bf3357292550887a8dc",
     "src/scene/world.js": "fafc43afd3a965c8656a61708df0e5deb46ca1d9b9fa4e27295b15fd3aae6565",
     "src/scroll.js": "91f6b656bf18b212d42e5e5761ab7f223e290d2065e551c597a1cda0438fcd4a",
@@ -133,13 +134,15 @@
     "tests/coastal-rock.test.js": "63948a7344fd419f324b8bfedbb35d2aea1cf36d836719fded38f89017f784b3",
     "tests/cookies.test.js": "bfe069a49faa6eed7ecc87bcb70453d5988afa61c9f8fda4c6c475ecae9d9891",
     "tests/detail-lod.test.js": "502e2bbe369b914459af8a8376884e5c22a9018cd707dba10531dd95c008e006",
+    "tests/fixtures/later-lighting-baseline.json": "b2ff0affc8d92d3810d6b88130cff170457d82cc985ed84dce46f4c88864e46e",
     "tests/frame-budget.test.js": "f8303ef54f9b05faff5fb47f00f2ecd07ea876be3d8d773d2197e1d2c8a6c2a0",
     "tests/intro-actors.test.js": "f36e90834137fd449383f532dcb8d39f3b36d50cac033cc50e4160dee3934b57",
     "tests/journey-pacing.test.js": "e9f9c1971f3c5a055dfa58ddb65e5604f25229115a27496f4ded92282ad89293",
     "tests/loading-reveal.test.js": "4cbe9aafd29974608f1a098775609b13f7fd8c659629d0977b5b1ee567264dde",
     "tests/madurai-site.test.js": "c91391f5f0be43aa1fe52492d485839064058a69393fe65d464fe463e63e3c04",
     "tests/models.test.js": "ad10331d91dd4c8e6f67a9808dc0b5ffd0f8a1df94fe114dfc420bc0367e6668",
-    "tests/opening-composition.test.js": "944ed13217f485bab2f7f2be2e47ccc5f64299cded96b1ecbdedcba4808c3402",
+    "tests/opening-composition.test.js": "fb7da182dc5a010ae69341828bc719e706a60c8ea48259bd6c336551c6891eb3",
+    "tests/opening-lighting.test.js": "5ba0605642ea56a7054ad1c46dcb8d2e6b07c7ad2b8560daa69ca11cc2fbcf26",
     "tests/palm-chunks.test.js": "cb635a6551ade3e497eeaafa22e39f1238a84dca9f742b937392a42e94193d51",
     "tests/poet-pedestal.test.js": "72655d4e70ade15ccf917ad6df5bbb4ea1868c8912eb773d7bb9fdc5c31f4ec1",
     "tests/poet-statue.test.js": "0240b3d3416947f4d2032409bd6d84a8ef8cb74cf4a37a405115409ff9289d63",
