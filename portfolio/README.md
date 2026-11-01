@@ -152,3 +152,7 @@ is pushed or published automatically.
 
 The [Madurai revision review](docs/madurai-review.md) records the current gateway,
 terrain, camera and mobile geometry work, with the remaining visual defects.
+
+Latest scoped validation: [opening route review](docs/opening-route-review.md) and
+[current verification](docs/verification/current-validation.json). Earlier
+full-route reports retain their original scope and build identity.

@@ -1,0 +1,91 @@
+{
+  "baselineCommit": "dbdf6d43b5c5a3d4809ea908d68edc7b3e0094c6",
+  "scope": "Matched camera beats; changed compositions and full-depth bridge, not pixel-identical isolated optimization",
+  "views": [
+    {
+      "device": "desktop",
+      "pose": "opening-sky",
+      "beforePrimaryTriangles": 2167998,
+      "afterPrimaryTriangles": 2163486
+    },
+    {
+      "device": "desktop",
+      "pose": "coastal-establishing",
+      "beforePrimaryTriangles": 2057814,
+      "afterPrimaryTriangles": 1622134
+    },
+    {
+      "device": "desktop",
+      "pose": "bridge-approach",
+      "beforePrimaryTriangles": 2019266,
+      "afterPrimaryTriangles": 2014754
+    },
+    {
+      "device": "desktop",
+      "pose": "arch-frame",
+      "beforePrimaryTriangles": 2001926,
+      "afterPrimaryTriangles": 2001862
+    },
+    {
+      "device": "desktop",
+      "pose": "arch-threshold",
+      "beforePrimaryTriangles": 2004646,
+      "afterPrimaryTriangles": 2001798
+    },
+    {
+      "device": "desktop",
+      "pose": "bridge-exit",
+      "beforePrimaryTriangles": 748406,
+      "afterPrimaryTriangles": 743882
+    },
+    {
+      "device": "desktop",
+      "pose": "arrival-start",
+      "beforePrimaryTriangles": 576520,
+      "afterPrimaryTriangles": 576520
+    },
+    {
+      "device": "phone",
+      "pose": "opening-sky",
+      "beforePrimaryTriangles": 382936,
+      "afterPrimaryTriangles": 378424
+    },
+    {
+      "device": "phone",
+      "pose": "coastal-establishing",
+      "beforePrimaryTriangles": 408856,
+      "afterPrimaryTriangles": 239602
+    },
+    {
+      "device": "phone",
+      "pose": "bridge-approach",
+      "beforePrimaryTriangles": 388840,
+      "afterPrimaryTriangles": 384328
+    },
+    {
+      "device": "phone",
+      "pose": "arch-frame",
+      "beforePrimaryTriangles": 408464,
+      "afterPrimaryTriangles": 381144
+    },
+    {
+      "device": "phone",
+      "pose": "arch-threshold",
+      "beforePrimaryTriangles": 385578,
+      "afterPrimaryTriangles": 381066
+    },
+    {
+      "device": "phone",
+      "pose": "bridge-exit",
+      "beforePrimaryTriangles": 218612,
+      "afterPrimaryTriangles": 240548
+    },
+    {
+      "device": "phone",
+      "pose": "arrival-start",
+      "beforePrimaryTriangles": 165520,
+      "afterPrimaryTriangles": 165520
+    }
+  ],
+  "fps": "Unmeasured in this comparison"
+}

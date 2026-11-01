@@ -72,10 +72,12 @@ export function createJourneyCamera(route) {
   const keys=[
     [0,intro.point(6,83,122),intro.point(6,66,30)],
     [.05,intro.point(6,76,105),intro.point(6,66,30)],
-    [.09,intro.point(6,43,70),intro.point(6,7,0)],
+    [.09,intro.point(-8,15,54),intro.point(-26,17,-6)],
     [.13,intro.point(6,13,34),intro.point(6,3.2,0)],
     [.155,intro.point(6,3.3,13),intro.point(6,3.2,-14)],
-    [.18,intro.point(6,3.3,-10),intro.point(6,4,-30)],
+    [.17,intro.point(6,3.3,12),intro.point(6,3.3,-14)],
+    [.18,intro.point(6,3.3,2),intro.point(6,3.3,-14)],
+    [.185,intro.point(6,3.3,-10),intro.point(6,4,-30)],
     [.195,intro.point(6,9,-25),park.clone().add(up)],
     [.213,park.clone().addScaledVector(route.at(.07).tan,-7).addScaledVector(route.at(.07).right,11).addScaledVector(up,2.7),park.clone().addScaledVector(route.at(.07).right,-1.3).addScaledVector(up,1.2)],
     [.235,park.clone().addScaledVector(route.at(.07).tan,-4).addScaledVector(route.at(.07).right,7).addScaledVector(up,2.4),park.clone().addScaledVector(route.at(.07).right,-1.3).addScaledVector(up,1.1)],
@@ -83,12 +85,12 @@ export function createJourneyCamera(route) {
   const portraitKeys=keys.map(key=>[key[0],key[1].clone(),key[2].clone()])
   portraitKeys[0]=[0,intro.point(-16,85,132),intro.point(-14,30,5)]
   portraitKeys[1]=[.05,intro.point(-15,76,115),intro.point(-12,30,0)]
-  portraitKeys[2]=[.09,intro.point(-6,43,70),intro.point(0,7,0)]
-  portraitKeys[7]=[.213,
+  portraitKeys[2]=[.09,intro.point(-5,17,76),intro.point(-27,17,-5)]
+  portraitKeys[portraitKeys.findIndex(key=>key[0]===.213)]=[.213,
     park.clone().addScaledVector(route.at(.07).tan,-10).addScaledVector(route.at(.07).right,20).addScaledVector(up,3),
     park.clone().addScaledVector(route.at(.07).tan,10).addScaledVector(route.at(.07).right,-68).addScaledVector(up,22),
   ]
-  portraitKeys[8]=[.235,
+  portraitKeys[portraitKeys.findIndex(key=>key[0]===.235)]=[.235,
     park.clone().addScaledVector(route.at(.07).tan,-6).addScaledVector(route.at(.07).right,15).addScaledVector(up,2),
     park.clone().addScaledVector(route.at(.07).tan,10).addScaledVector(route.at(.07).right,-68).addScaledVector(up,22),
   ]

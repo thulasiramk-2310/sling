@@ -17,13 +17,15 @@ export function buildIntroBridge(scene,route) {
   arch.moveTo(-6,-2);arch.lineTo(-4.8,-2);arch.lineTo(-4.8,2.1)
   arch.absarc(0,2.1,4.8,Math.PI,0,true)
   arch.lineTo(4.8,-2);arch.lineTo(6,-2);arch.lineTo(6,8);arch.lineTo(-6,8);arch.closePath()
-  const archGeometry=new THREE.ExtrudeGeometry(arch,{depth:1.1,bevelEnabled:true,bevelSize:.13,bevelThickness:.13,bevelSegments:2,curveSegments:28})
-  const arches=new THREE.InstancedMesh(archGeometry,stone,12),m=new THREE.Matrix4()
+  const archGeometry=new THREE.ExtrudeGeometry(arch,{depth:8.1,bevelEnabled:true,bevelSize:.13,bevelThickness:.13,bevelSegments:2,curveSegments:28})
+  const arches=new THREE.InstancedMesh(archGeometry,stone,6),m=new THREE.Matrix4()
   let k=0
-  for(const x of [-30,-18,-6,6,18,30]) for(const z of [-4,3]) {
-    arches.setMatrixAt(k++,m.makeTranslation(x,0,z))
+  for(const x of [-30,-18,-6,6,18,30]) {
+    arches.setMatrixAt(k++,m.makeTranslation(x,0,-4))
   }
   group.add(arches,block(74,.6,9,trim,0,8))
+  // Full-depth arch solids provide a continuous soffit and piers without
+  // coincident liner surfaces. Both decorated faces share the same aperture.
   // Individually cut arch stones, with recessed mortar and projecting keystones.
   // The opening stays a continuous 9.6m clear span for the camera flight.
   const voussoir = new THREE.Shape(), step = Math.PI / 19, gap = .009
