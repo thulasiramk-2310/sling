@@ -12,7 +12,7 @@ export function nandiGeometry(low=false) {
   // Broad recumbent torso, raised shoulder hump and a tapering bovine
   // forehead/bridge. Separate knee, folded cannon and hoof masses avoid paws.
   const forms=[[-.45,1.05,0,1.65,.85,.82],[-1.4,.7,0,.8,.65,.80],[.48,1.83,0,.61,.75,.64],[1.13,1.37,0,.48,.86,.56],[1.62,2.14,0,.47,.57,.46],[1.97,2.04,0,.40,.40,.34],[2.31,1.88,0,.39,.22,.37],[2.21,1.67,0,.40,.18,.35]]
-  for(const side of [-1,1])forms.push([.55,.40,side*.64,.65,.30,.29],[-.12,.20,side*.77,.67,.16,.23],[.50,.16,side*.79,.31,.14,.24],[-1.35,.40,side*.63,.64,.36,.34],[-1.00,.19,side*.79,.48,.16,.25])
+  for(const side of [-1,1])forms.push([.65,.42,side*.64,.36,.28,.27],[.04,.25,side*.70,.53,.13,.17],[-1.35,.43,side*.63,.48,.26,.29],[-.90,.23,side*.79,.32,.14,.20])
   for(let z=0;z<resolution;z++) for(let y=0;y<resolution;y++) for(let x=0;x<resolution;x++) {
     const px=(x/resolution*2-1)*3.3,py=(y/resolution*2-1)*3.3+1.4,pz=(z/resolution*2-1)*3.3
     let distance=99
@@ -75,7 +75,15 @@ export function nandiGeometry(low=false) {
     const eye=new THREE.SphereGeometry(1,low?8:14,low?4:8)
     eye.scale(.10,.055,.03).translate(1.78,2.27,s*.41);parts.push(eye)
     parts.push(tube([[2.03,1.68,s*.28],[2.30,1.63,s*.33],[2.56,1.72,s*.23]],.025))
-    parts.push(tube([[.92,.29,s*.86],[.67,.20,s*.98],[.44,.18,s*.99]],.018))
+    parts.push(tube([[.78,.38,s*.84],[.44,.26,s*.86],[.06,.20,s*.84]],.018))
+    // Flattened, paired hoof capsules stay distinct at the phone field's
+    // coarse resolution. Their split is physical geometry, not painted toes.
+    const hoof=new THREE.Shape();hoof.moveTo(-.23,.02);hoof.lineTo(.20,.02)
+    hoof.quadraticCurveTo(.22,.06,.17,.12);hoof.lineTo(.02,.20);hoof.lineTo(-.16,.17);hoof.closePath()
+    for(const [x,z] of [[-.43,s*.73],[-.83,s*.81]])for(const half of [-1,1]){
+      const geometry=new THREE.ExtrudeGeometry(hoof,{depth:.12,bevelEnabled:true,bevelSize:.02,bevelThickness:.02,bevelSegments:low?1:2,curveSegments:low?3:6})
+      geometry.translate(x,.04,z+half*.085-.06);parts.push(geometry)
+    }
   }
   // Paired carved neck cords follow the chest instead of a horizontal ring.
   for(const offset of [0,.10,.20]){

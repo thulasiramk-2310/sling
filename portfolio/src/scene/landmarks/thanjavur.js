@@ -280,6 +280,10 @@ export function buildThanjavur({ scene, route, u }) {
   const nm = nandiMandapam(stone, polished)
   nm.position.z = 58
   temple.add(nm)
+  // A local unshadowed bounce approximation lifts the shaded stone within
+  // the pavilion. Keep its range local and retain the cheaper phone lighting.
+  const pavilionBounce=quality.low?null:new THREE.PointLight(0xe4e8df,8,12,2)
+  if(pavilionBounce){pavilionBounce.position.set(0,5.0,54.2);temple.add(pavilionBounce)}
   // gateways: inner Rajarajan (3 tiers) in the cloister wall, outer Keralantakan (5 tiers)
   const inner = makeGopuram({ tiers: 3, baseW: 22, baseD: 12, tierH: 4.6, palette: 'thanjavur', seed: 12, podiumH: 9 })
   inner.position.z = 82
@@ -314,5 +318,5 @@ export function buildThanjavur({ scene, route, u }) {
   scene.add(temple)
   temple.updateMatrixWorld(true)
   const focus = new THREE.Vector3(0, 34, 0).applyMatrix4(temple.matrixWorld)
-  return { focus, slots: [{ name: 'thanjavur', group: v, height: 66 }], update() {} }
+  return { focus, slots: [{ name: 'thanjavur', group: v, height: 66 }], update(time,night) {if(pavilionBounce)pavilionBounce.intensity=8*(1-night)} }
 }

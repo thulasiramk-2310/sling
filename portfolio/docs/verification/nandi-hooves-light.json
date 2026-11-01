@@ -1,0 +1,13 @@
+{
+  "testsPassed": 132,
+  "files": 28,
+  "lint": "passed",
+  "build": "passed",
+  "views": 8,
+  "heroTriangles": {
+    "desktop": 20288,
+    "phone": 5460
+  },
+  "buildEntrySha256": "4861a3b6a1b86d38425f1cb1756773a09d445575f3ace933b2993c5b59613ff4",
+  "scope": "Nandi folded leg/hoof forms and localized desktop light. No fresh full-route or native-input run."
+}

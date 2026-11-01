@@ -1,0 +1,759 @@
+{
+  "mode": "phone",
+  "errors": [],
+  "credits": "3D models: Original stone elephant study · generated in code · Original Thiruvalluvar study · code-authored and finished in Blender",
+  "assets": [
+    {
+      "url": "http://127.0.0.1:5174/models/models.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/models/elephant-study-low.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/models/poet-carving-low.glb",
+      "status": 200
+    }
+  ],
+  "poses": [
+    {
+      "progress": 0.589,
+      "name": "nandi-entry",
+      "metrics": {
+        "frames": 6,
+        "fps": 46.51162790697674,
+        "environment": null,
+        "drawCalls": 153,
+        "triangles": 414149,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 414147,
+        "meshes": 146,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 23,
+            "instances": 174
+          },
+          {
+            "level": 2,
+            "meshes": 42,
+            "instances": 402
+          }
+        ],
+        "largest": [
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 1176,
+            "triangles": 55272
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 540,
+            "triangles": 25380
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 64,
+            "geometryTriangles": 280,
+            "triangles": 17920
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 39,
+            "geometryTriangles": 280,
+            "triangles": 10920
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 39,
+            "geometryTriangles": 280,
+            "triangles": 10920
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood metal",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 180,
+            "triangles": 8460
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 9,
+            "geometryTriangles": 816,
+            "triangles": 7344
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Thanjavur — granite vimana",
+            "geometry": "BufferGeometry",
+            "instances": 104,
+            "geometryTriangles": 64,
+            "triangles": 6656
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 92,
+            "geometryTriangles": 64,
+            "triangles": 5888
+          },
+          {
+            "name": "Thanjavur — granite vimana",
+            "geometry": "BufferGeometry",
+            "instances": 52,
+            "geometryTriangles": 108,
+            "triangles": 5616
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original recumbent Nandi sculpture",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 5460,
+            "triangles": 5460
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original recumbent Nandi sculpture",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 5460,
+            "triangles": 5460
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.6,
+      "name": "nandi-approach",
+      "metrics": {
+        "frames": 7,
+        "fps": 46.51162790697674,
+        "environment": null,
+        "drawCalls": 242,
+        "triangles": 605968,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 605962,
+        "meshes": 233,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 6,
+            "instances": 38
+          },
+          {
+            "level": 1,
+            "meshes": 35,
+            "instances": 204
+          },
+          {
+            "level": 2,
+            "meshes": 58,
+            "instances": 1331
+          }
+        ],
+        "largest": [
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 1176,
+            "triangles": 55272
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 540,
+            "triangles": 25380
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 64,
+            "geometryTriangles": 280,
+            "triangles": 17920
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 216,
+            "geometryTriangles": 64,
+            "triangles": 13824
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "BufferGeometry",
+            "instances": 216,
+            "geometryTriangles": 64,
+            "triangles": 13824
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 39,
+            "geometryTriangles": 280,
+            "triangles": 10920
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 39,
+            "geometryTriangles": 280,
+            "triangles": 10920
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:0",
+            "geometry": "BufferGeometry",
+            "instances": 7,
+            "geometryTriangles": 1236,
+            "triangles": 8652,
+            "detailLevel": 0,
+            "pixels": 96.88390149436935
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 15708:1",
+            "geometry": "BufferGeometry",
+            "instances": 7,
+            "geometryTriangles": 1236,
+            "triangles": 8652,
+            "detailLevel": 0,
+            "pixels": 257.6005272413676
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood metal",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 180,
+            "triangles": 8460
+          },
+          {
+            "name": "Ramanathaswamy-inspired open pillared approach",
+            "geometry": "BufferGeometry",
+            "instances": 30,
+            "geometryTriangles": 280,
+            "triangles": 8400
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study",
+            "geometry": "ExtrudeGeometry",
+            "instances": 12,
+            "geometryTriangles": 644,
+            "triangles": 7728
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:1",
+            "geometry": "BufferGeometry",
+            "instances": 6,
+            "geometryTriangles": 1236,
+            "triangles": 7416,
+            "detailLevel": 0,
+            "pixels": 99.2048138049992
+          },
+          {
+            "name": "Thanjavur — granite vimana / Original modeled architectural figures — three poses / Guardian facade 0:2",
+            "geometry": "BufferGeometry",
+            "instances": 6,
+            "geometryTriangles": 1236,
+            "triangles": 7416,
+            "detailLevel": 0,
+            "pixels": 107.15595116494231
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.612,
+      "name": "nandi-detail",
+      "metrics": {
+        "frames": 8,
+        "fps": 46.51162790697674,
+        "environment": null,
+        "drawCalls": 101,
+        "triangles": 326776,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 326770,
+        "meshes": 92,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 7,
+            "instances": 38
+          },
+          {
+            "level": 1,
+            "meshes": 16,
+            "instances": 113
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 1176,
+            "triangles": 55272
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood trim",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 540,
+            "triangles": 25380
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood metal",
+            "geometry": "BufferGeometry",
+            "instances": 47,
+            "geometryTriangles": 180,
+            "triangles": 8460
+          },
+          {
+            "name": "Madurai — Meenakshi Amman Temple architectural study / Madurai — low terrace and shop neighborhood / Madurai neighborhood wood",
+            "geometry": "BufferGeometry",
+            "instances": 9,
+            "geometryTriangles": 816,
+            "triangles": 7344
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Molded deep niche frames",
+            "geometry": "ExtrudeGeometry",
+            "instances": 10,
+            "geometryTriangles": 644,
+            "triangles": 6440,
+            "detailLevel": 0,
+            "pixels": 70.27660549799512
+          },
+          {
+            "name": "Molded deep niche frames",
+            "geometry": "ExtrudeGeometry",
+            "instances": 10,
+            "geometryTriangles": 644,
+            "triangles": 6440,
+            "detailLevel": 0,
+            "pixels": 93.08093495352372
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 92,
+            "geometryTriangles": 64,
+            "triangles": 5888
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Thanjavur — open Nandi mandapam / Great Nandi beneath the mandapam",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 5460,
+            "triangles": 5460
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 408,
+            "triangles": 5304
+          },
+          {
+            "name": "Original modeled architectural figures — three poses / Guardian facade 31416:0",
+            "geometry": "BufferGeometry",
+            "instances": 4,
+            "geometryTriangles": 1236,
+            "triangles": 4944,
+            "detailLevel": 0,
+            "pixels": 83.39811929141511
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 280,
+            "triangles": 4480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 280,
+            "triangles": 4480
+          }
+        ]
+      }
+    },
+    {
+      "progress": 0.625,
+      "name": "nandi-exit",
+      "metrics": {
+        "frames": 9,
+        "fps": 46.51162790697674,
+        "environment": null,
+        "drawCalls": 98,
+        "triangles": 216542,
+        "dpr": 1,
+        "ao": false,
+        "reflections": false,
+        "bloom": false,
+        "shadows": false
+      },
+      "profile": {
+        "primaryPassTriangles": 216540,
+        "meshes": 91,
+        "detailLevels": [
+          {
+            "level": 0,
+            "meshes": 0,
+            "instances": 0
+          },
+          {
+            "level": 1,
+            "meshes": 40,
+            "instances": 244
+          },
+          {
+            "level": 2,
+            "meshes": 0,
+            "instances": 0
+          }
+        ],
+        "largest": [
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 1176,
+            "triangles": 15288
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 12852,
+            "triangles": 12852
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 41,
+            "geometryTriangles": 280,
+            "triangles": 11480
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 540,
+            "triangles": 7020
+          },
+          {
+            "name": "Thanjavur — granite vimana",
+            "geometry": "BufferGeometry",
+            "instances": 104,
+            "geometryTriangles": 64,
+            "triangles": 6656
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 92,
+            "geometryTriangles": 64,
+            "triangles": 5888
+          },
+          {
+            "name": "Tamil terrace street frontage / trim",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 420,
+            "triangles": 5460
+          },
+          {
+            "name": "Thanjavur — open Nandi mandapam / Great Nandi beneath the mandapam",
+            "geometry": "BufferGeometry",
+            "instances": 1,
+            "geometryTriangles": 5460,
+            "triangles": 5460
+          },
+          {
+            "name": "Tamil terrace street frontage / wood",
+            "geometry": "BufferGeometry",
+            "instances": 13,
+            "geometryTriangles": 408,
+            "triangles": 5304
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 280,
+            "triangles": 4480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 280,
+            "triangles": 4480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 280,
+            "triangles": 4480
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 16,
+            "geometryTriangles": 280,
+            "triangles": 4480
+          },
+          {
+            "name": "Molded deep niche frames",
+            "geometry": "ExtrudeGeometry",
+            "instances": 21,
+            "geometryTriangles": 172,
+            "triangles": 3612,
+            "detailLevel": 1,
+            "pixels": 21.611835053550646
+          },
+          {
+            "name": "Molded deep niche frames",
+            "geometry": "ExtrudeGeometry",
+            "instances": 21,
+            "geometryTriangles": 172,
+            "triangles": 3612,
+            "detailLevel": 1,
+            "pixels": 23.355503850647224
+          },
+          {
+            "name": "Thanjavur — open Nandi mandapam / Nandi mandapam perimeter columns",
+            "geometry": "BufferGeometry",
+            "instances": 12,
+            "geometryTriangles": 280,
+            "triangles": 3360
+          },
+          {
+            "name": "Mesh",
+            "geometry": "BufferGeometry",
+            "instances": 46,
+            "geometryTriangles": 64,
+            "triangles": 2944
+          }
+        ]
+      }
+    }
+  ],
+  "layout": {
+    "width": 390,
+    "overflow": false
+  }
+}

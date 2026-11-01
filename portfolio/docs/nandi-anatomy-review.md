@@ -40,3 +40,17 @@ ornament or terrain intrusion was observed in the eight frames. Remaining
 limitations: subdued facial features, rounded paw-like leg forms, weak shoulder
 and cheek definition, and desktop lighting that hides much of the new detail.
 This revision does not establish a 9/10 result.
+
+## Folded legs and desktop readability
+
+The next revision reduces round knee bulges and tucks the lower legs back toward
+paired flattened hoof volumes. Their physical split survives the low-resolution
+phone field. The meshes now contain 20,288 desktop and 5,460 phone triangles.
+A desktop-only local bounce approximation (8cd,12m range) lifts the shaded face
+without adding a shadow pass; it fades with the night factor. It adds lighting
+work, and no FPS improvement is claimed. Phones retain the existing lighting.
+
+The independent eight-frame review accepts the controlled nose highlight and
+improved face/necklace readability. Hoof splits are visible, with no observed
+floating pieces. Anatomy and fine facial definition remain simplified. 132 tests,
+oxlint and build pass; current targeted reports are in verification/*-nandi-hooves-light.json.
