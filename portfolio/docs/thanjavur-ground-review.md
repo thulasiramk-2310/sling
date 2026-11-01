@@ -21,3 +21,18 @@ This is a material rendering-budget regression to address; no FPS gain or
 hardware-GPU 60 FPS claim is made. Full-route/native-input reports from earlier
 commits are historical rather than re-run for this revision. Overall 9/10
 craftsmanship remains unproven.
+
+## Subsequent phone composition
+
+A dedicated phone eye now views Nandi in three-quarter profile through a side
+bay. The independent reviewer confirms the head, folded legs and body read
+more clearly; a foreground pillar partly covers the hindquarters. Captions and
+terrain remain clear. Desktop framing is unchanged.
+
+Actual phone primary-pass triangles at detail fall from 834,122 to 324,738
+(61.1%); draw calls fall from 401 to 101. The approach rises from 498,912 to 603,930
+triangles, while exit falls from 267,524 to 261,908. These are submission counts,
+not an FPS benchmark. Four fresh phone WebGL views pass with no errors/overflow;
+131 tests, oxlint and the production build pass. The exact paired budgets and
+current report are in `verification/nandi-phone-budget.json` and
+`verification/phone-nandi-profile.json`. Further sculpture work remains needed.

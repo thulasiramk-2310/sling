@@ -1,0 +1,37 @@
+{
+  "scope": "Phone Nandi visit only; desktop eye unchanged",
+  "comparison": [
+    {
+      "pose": "nandi-entry",
+      "beforePrimaryTriangles": 403987,
+      "afterPrimaryTriangles": 403987,
+      "beforeCalls": 153,
+      "afterCalls": 153
+    },
+    {
+      "pose": "nandi-approach",
+      "beforePrimaryTriangles": 498912,
+      "afterPrimaryTriangles": 603930,
+      "beforeCalls": 184,
+      "afterCalls": 242
+    },
+    {
+      "pose": "nandi-detail",
+      "beforePrimaryTriangles": 834122,
+      "afterPrimaryTriangles": 324738,
+      "beforeCalls": 401,
+      "afterCalls": 101
+    },
+    {
+      "pose": "nandi-exit",
+      "beforePrimaryTriangles": 267524,
+      "afterPrimaryTriangles": 261908,
+      "beforeCalls": 99,
+      "afterCalls": 98
+    }
+  ],
+  "browserErrors": [],
+  "overflow": false,
+  "buildEntrySha256": "488e168451249eb0e8fc11f166514e48e670ae55a774998efee929c48ce9b3a7",
+  "note": "Geometry submissions, not measured FPS. Approach cost rises while detail and exit fall."
+}

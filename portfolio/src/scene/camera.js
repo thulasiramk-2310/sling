@@ -131,7 +131,7 @@ export function createJourneyCamera(route) {
   const visits=[
     {range:[.408,.435,.444,.458],eye:landmarkPoint(.23,42,[7,4.8,14]),target:landmarkPoint(.23,42,[0,2.2,2])},
     {range:[.451,.469,.474,.488],eye:landmarkPoint(.27,52,[30,18,53]),phoneEye:landmarkPoint(.27,52,[15,16,94]),target:landmarkPoint(.27,52,[-2,5,0])},
-    {range:[.585,.610,.615,.632],eye:landmarkPoint(.47,100,[0,4.4,40],-Math.PI/2),target:landmarkPoint(.47,100,[0,3.6,58],-Math.PI/2),lift:16,lookLead:.08},
+    {range:[.585,.610,.615,.632],eye:landmarkPoint(.47,100,[0,4.4,40],-Math.PI/2),phoneEye:landmarkPoint(.47,100,[-9,4.4,46],-Math.PI/2),target:landmarkPoint(.47,100,[0,3.6,58],-Math.PI/2),lift:16,lookLead:.08},
     {range:[.692,.708,.718,.725],eye:landmarkPoint(.64,112,[14,13,118]),phoneEye:landmarkPoint(.64,112,[10,13,134]),target:landmarkPoint(.64,112,[0,25,58]),lift:12,lookLead:.62},
     {range:POET_VISIT,eye:landmarkPoint(.976,96,[21,31,57],0,.96),target:landmarkPoint(.976,96,[0,21,0],0,.96)},
   ]
