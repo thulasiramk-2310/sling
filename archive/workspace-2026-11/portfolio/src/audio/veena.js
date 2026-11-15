@@ -1,0 +1,7 @@
+// Original Karplus–Strong plucked-string synthesis. Inspired by the timbre of a
+// veena; this is a synthesized ambient pattern, not a recording or a raga claim.
+export function createVeena(){let context=null,timer=null,on=false;const notes=[146.83,164.81,196,220,261.63,293.66,261.63,220];let index=0;
+ function pluck(){if(!context||context.state!=='running')return;const frequency=notes[index++%notes.length],length=context.sampleRate*2.5,buffer=context.createBuffer(1,length,context.sampleRate),output=buffer.getChannelData(0),delay=Math.floor(context.sampleRate/frequency),ring=new Float32Array(delay);for(let i=0;i<delay;i++)ring[i]=(Math.random()*2-1)*.28;for(let i=0;i<length;i++){const j=i%delay,value=ring[j];ring[j]=(value+ring[(j+1)%delay])*.496;output[i]=value*Math.exp(-i/length*2);}
+ const source=context.createBufferSource();source.buffer=buffer;const gain=context.createGain();gain.gain.value=.13;const filter=context.createBiquadFilter();filter.type='lowpass';filter.frequency.value=2400;source.connect(filter).connect(gain).connect(context.destination);source.start();}
+ return {get enabled(){return on;},async toggle(){if(on){clearInterval(timer);timer=null;on=false;await context?.close();context=null;return false;}try{context=new AudioContext();await context.resume();on=true;pluck();timer=setInterval(pluck,950);return true;}catch{on=false;return false;}},dispose(){clearInterval(timer);context?.close();context=null;on=false;}};
+}

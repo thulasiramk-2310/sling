@@ -1,0 +1,2 @@
+export function createStore(initial){let state={...initial};const listeners=new Set();return {get:()=>state,set(update){state={...state,...update};listeners.forEach(fn=>fn(state));},subscribe(fn){listeners.add(fn);return()=>listeners.delete(fn);}};}
+export const store=createStore({target:0,progress:0,stop:0,lang:'en',reduced:typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches,game:false,dialog:false,ready:false});

@@ -1,0 +1,65 @@
+{
+  "sourceRevision": {
+    "commit": "9053bd992be13b719a01245dea78bed503967a28",
+    "branch": "claude/chat-session-ay91ey",
+    "workingTreeClean": true
+  },
+  "artifacts": [
+    {
+      "file": "ram-portfolio-source.zip",
+      "bytes": 3721089,
+      "sha256": "82d90711730e333014803a79bff15d691718c2410771cee8a49673bec7e1c48a"
+    },
+    {
+      "file": "ram-portfolio-dist.zip",
+      "bytes": 3890437,
+      "sha256": "37b5bcbf16cecce7ed74ecfb6d3f22c3fc9c51597e17b834c47319004bf6586a"
+    }
+  ],
+  "deployment": "Serve the contents of ram-portfolio-dist.zip from a static HTTP(S) host",
+  "buildEntrySha256": "97c6e1579c5637b8654fb949fc6c3ad51dc80eb34f680aae75a89ccae1c8d581",
+  "standaloneAcceptance": {
+    "sourceCommit": "9053bd992be13b719a01245dea78bed503967a28",
+    "sourceZipSha256": "82d90711730e333014803a79bff15d691718c2410771cee8a49673bec7e1c48a",
+    "freshApp": "/tmp/ram-source-acceptance-obr6s_yn/portfolio",
+    "commands": [
+      {
+        "command": [
+          "npm",
+          "ci",
+          "--prefer-offline",
+          "--cache",
+          "/home/Ram/Downloads/tamil-nadu-to-world/review-tools/npm-cache",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0
+      }
+    ],
+    "buildMatchesDeploymentByteForByte": true,
+    "filesCompared": 32
+  }
+}
